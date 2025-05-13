@@ -1,9 +1,9 @@
 const SET_USER = "SET_USER";
-const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 const LOGIN_FAILURE = "LOGIN_FAILURE";
 const LOGOUT = "LOGOUT";
+const SET_TOKEN = "SET_TOKEN";
 
-export { SET_USER, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT };
+export { SET_USER, LOGIN_FAILURE, LOGOUT, SET_TOKEN };
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -21,10 +21,10 @@ export const fetchLogin = (username, password) => {
       const data = await response.json();
 
       if (response.ok && data?.token) {
-        dispatch({ type: LOGIN_SUCCESS, payload: data });
         localStorage.setItem("token", data.token);
+        dispatch({ type: SET_TOKEN, payload: data.token });
       } else {
-        dispatch({ type: LOGIN_FAILURE, payload: data });
+        dispatch({ type: LOGIN_FAILURE, payload: { error: "Credenziali non valide" } });
       }
     } catch (error) {
       console.error("Errore nel login:", error);

@@ -1,0 +1,22 @@
+@import "../../app.scss";
+.navbar {
+  color: $warning;
+  .navbar-brand {
+    color: $warning;
+
+    &:hover {
+      color: $danger;
+    }
+  }
+  .navbar-nav .nav-link {
+    color: $light;
+
+    &:hover {
+      color: $danger;
+    }
+
+    &:active {
+      color: $warning;
+    }
+  }
+}

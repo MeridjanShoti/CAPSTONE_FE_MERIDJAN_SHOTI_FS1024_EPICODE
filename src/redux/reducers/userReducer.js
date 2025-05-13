@@ -1,4 +1,4 @@
-import { LOGOUT, SET_USER } from "../actions";
+import { LOGIN_FAILURE, LOGOUT, SET_USER } from "../actions";
 
 const userReducer = (state = { user: null }, action) => {
   switch (action.type) {
@@ -6,6 +6,9 @@ const userReducer = (state = { user: null }, action) => {
       return { ...state, user: action.payload };
     case LOGOUT:
       return { ...state, user: null };
+    case LOGIN_FAILURE:
+      return { ...state, error: action.payload.error };
+
     default:
       return state;
   }
