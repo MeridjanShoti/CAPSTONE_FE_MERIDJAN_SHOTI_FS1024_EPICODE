@@ -24,3 +24,4 @@ $custom-colors: (
 );
 @import "bootstrap/scss/variables";
 $theme-colors: map-merge($theme-colors, $custom-colors);
+@import "bootstrap/scss/bootstrap";
