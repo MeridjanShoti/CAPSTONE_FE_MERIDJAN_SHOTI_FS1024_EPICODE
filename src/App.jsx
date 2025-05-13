@@ -1,3 +1,4 @@
+import "./app.scss";
 function App() {
   return <></>;
 }
