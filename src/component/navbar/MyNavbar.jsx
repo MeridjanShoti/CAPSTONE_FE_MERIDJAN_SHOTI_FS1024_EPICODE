@@ -31,7 +31,7 @@ function MyNavbar() {
             Simposio der Medallo
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
+          <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
             {user && (
               <Nav className="me-auto">
                 <Nav.Link as={Link} to="/" active={window.location.pathname === "/"}>
@@ -49,50 +49,52 @@ function MyNavbar() {
                 </NavDropdown>
               </Nav>
             )}
+            <div className="d-flex gap-3">
+              {user ? (
+                <>
+                  <img
+                    src={(user?.roles || user?.appUser?.roles)?.includes("ROLE_ADMIN") ? adminLogo : user?.avatar}
+                    alt="logo"
+                    width="30"
+                    height="30"
+                    className="d-inline-block align-top me-2"
+                  />
+                  <NavDropdown
+                    title={
+                      (user?.roles || user?.appUser?.roles)?.includes("ROLE_ADMIN")
+                        ? user?.username || user?.appUser?.username
+                        : `${user?.nome} ${user?.cognome}`
+                    }
+                    id="basic-nav-dropdown"
+                  >
+                    <NavDropdown.Item as={Link} to="/profile">
+                      Profilo
+                    </NavDropdown.Item>
+                    <NavDropdown.Item
+                      onClick={() => {
+                        localStorage.removeItem("token");
+                        dispatch({ type: LOGOUT });
+                        navigate("/login");
+                      }}
+                    >
+                      Logout
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                </>
+              ) : (
+                <>
+                  <div className="d-flex gap-3">
+                    <Nav.Link as={Link} to="/login">
+                      Login
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="/register">
+                      Registrati
+                    </Nav.Link>
+                  </div>
+                </>
+              )}
+            </div>
           </Navbar.Collapse>
-          {user ? (
-            <>
-              <img
-                src={(user?.roles || user?.appUser?.roles)?.includes("ROLE_ADMIN") ? adminLogo : user?.avatar}
-                alt="logo"
-                width="30"
-                height="30"
-                className="d-inline-block align-top me-2"
-              />
-              <NavDropdown
-                title={
-                  (user?.roles || user?.appUser?.roles)?.includes("ROLE_ADMIN")
-                    ? user?.username || user?.appUser?.username
-                    : `${user?.nome} ${user?.cognome}`
-                }
-                id="basic-nav-dropdown"
-              >
-                <NavDropdown.Item as={Link} to="/profile">
-                  Profilo
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    dispatch({ type: LOGOUT });
-                    navigate("/login");
-                  }}
-                >
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
-            </>
-          ) : (
-            <>
-              <div className="d-flex gap-3">
-                <Nav.Link as={Link} to="/login">
-                  Login
-                </Nav.Link>
-                <Nav.Link as={Link} to="/register">
-                  Registrati
-                </Nav.Link>
-              </div>
-            </>
-          )}
         </Container>
       </Navbar>
     </>
