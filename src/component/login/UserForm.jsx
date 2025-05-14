@@ -1,6 +1,13 @@
-import { Button, Form } from "react-bootstrap";
+import { useRef, useState } from "react";
+import { Alert, Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router";
 
 function UserForm() {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("success");
+  const formRef = useRef(null);
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -68,17 +75,37 @@ function UserForm() {
         body: JSON.stringify(body),
       });
 
-      const result = await response.json();
-      console.log("Registrazione completata:", result);
+      const result = await response.text();
+      if (response.ok) {
+        setAlertMessage("Registrazione avvenuta con successo");
+        setAlertType("success");
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+          formRef.current.reset();
+          navigate("/login");
+        }, 3000);
+      }
     } catch (error) {
-      console.error("Errore nella registrazione", error);
+      setAlertMessage(error.message + "Errore durante la registrazione");
+      setAlertType("danger");
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+        formRef.current.reset();
+      }, 5000);
     }
   };
 
   return (
     <div>
       <h1 className="metal-mania-regular text-center">Registrati come Utente</h1>
-      <Form className="my-3" onSubmit={handleSubmit}>
+      {showAlert && (
+        <Alert variant={alertType} onClose={() => setShowAlert(false)} dismissible>
+          {alertMessage}
+        </Alert>
+      )}
+      <Form ref={formRef} className="my-3" onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Username</Form.Label>
           <Form.Control type="text" name="username" placeholder="Inserisci il tuo username" required />

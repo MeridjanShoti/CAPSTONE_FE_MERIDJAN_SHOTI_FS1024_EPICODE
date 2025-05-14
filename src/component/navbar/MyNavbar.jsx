@@ -61,9 +61,10 @@ function MyNavbar() {
                   />
                   <NavDropdown
                     title={
-                      (user?.roles || user?.appUser?.roles)?.includes("ROLE_ADMIN")
-                        ? user?.username || user?.appUser?.username
-                        : `${user?.nome} ${user?.cognome}`
+                      (user?.roles || user?.appUser?.roles)?.includes("ROLE_USER") ||
+                      (user?.roles || user?.appUser?.roles)?.includes("ROLE_INSEGNANTE")
+                        ? `${user?.nome} ${user?.cognome}`
+                        : user?.username || user?.appUser?.username
                     }
                     id="basic-nav-dropdown"
                   >

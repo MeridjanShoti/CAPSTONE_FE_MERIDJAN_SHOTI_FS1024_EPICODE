@@ -1,14 +1,21 @@
-import { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { useRef, useState } from "react";
+import { Alert, Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router";
 
 function GestoreSalaForm() {
   const [countIndirizziSecondari, setCountIndirizziSecondari] = useState(0);
   const [countSocialSecondari, setCountSocialSecondari] = useState(0);
   const [indirizzi, setIndirizzi] = useState([""]);
   const [social, setSocial] = useState([""]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("success");
+  const formRef = useRef(null);
+  const navigate = useNavigate();
   const aggiungiIndirizzo = () => {
     setIndirizzi([...indirizzi, ""]);
   };
+
   const rimuoviIndirizzo = () => {
     if (indirizzi.length > 1) {
       setIndirizzi(indirizzi.slice(0, indirizzi.length - 1));
@@ -90,20 +97,53 @@ function GestoreSalaForm() {
         body: JSON.stringify(data),
       });
       const response = await res.json();
-      if (response.success) {
-        console.log("Registrazione avvenuta con successo");
+      if (res.ok) {
+        await res.text();
+        setAlertMessage("Registrazione avvenuta con successo!");
+        setAlertType("success");
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+          navigate("/login");
+        }, 3000);
       } else {
-        console.error("Errore nella registrazione", response.message);
+        const response = await res.json();
+        setAlertMessage(response.message + ". Registrazione fallita. Riprova.");
+        setAlertType("danger");
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+          formRef.current.reset();
+          setIndirizzi([""]);
+          setSocial([""]);
+          setCountIndirizziSecondari(0);
+          setCountSocialSecondari(0);
+        }, 5000);
       }
     } catch (error) {
-      console.error("Errore nella richiesta di registrazione:", error);
+      setAlertMessage(error.message + ". Errore durante la registrazione");
+      setAlertType("danger");
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+        formRef.current.reset();
+        setIndirizzi([""]);
+        setSocial([""]);
+        setCountIndirizziSecondari(0);
+        setCountSocialSecondari(0);
+      }, 5000);
     }
   };
 
   return (
     <div>
-      <h1 className="metal-mania-regular text-center">Registrati come Gestore di Sala Prove</h1>
-      <Form className="my-3" onSubmit={handleSubmit}>
+      <h1 className="metal-mania-regular text-center">Registrati come Gestore di Sale Prove</h1>
+      {showAlert && (
+        <Alert variant={alertType} onClose={() => setShowAlert(false)} dismissible>
+          {alertMessage}
+        </Alert>
+      )}
+      <Form ref={formRef} className="my-3" onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Username</Form.Label>
           <Form.Control type="text" name="username" placeholder="Inserisci il tuo username" />
