@@ -22,9 +22,47 @@ function ScuolaForm() {
       setSocial(social.slice(0, social.length - 1));
     }
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const token = localStorage.getItem("token");
+
+    let avatarUrl = null;
+    let copertinaUrl = null;
+
+    const avatarFile = formData.get("avatar");
+    if (avatarFile && avatarFile instanceof File && avatarFile.name) {
+      const avatarFormData = new FormData();
+      avatarFormData.append("file", avatarFile);
+      try {
+        const res = await fetch(`${apiUrl}/uploadme`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: avatarFormData,
+        });
+        avatarUrl = await res.text();
+      } catch (err) {
+        console.error("Errore upload avatar:", err);
+      }
+    }
+
+    const copertinaFile = formData.get("copertina");
+    if (copertinaFile && copertinaFile instanceof File && copertinaFile.name) {
+      const copertinaFormData = new FormData();
+      copertinaFormData.append("file", copertinaFile);
+      try {
+        const res = await fetch(`${apiUrl}/uploadme`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: copertinaFormData,
+        });
+        copertinaUrl = await res.text();
+      } catch (err) {
+        console.error("Errore upload copertina:", err);
+      }
+    }
 
     const data = {
       username: formData.get("username"),
@@ -38,29 +76,28 @@ function ScuolaForm() {
       indirizziSecondari: indirizzi,
       partitaIva: formData.get("partitaIva"),
       roles: ["ROLE_SCUOLA"],
-      avatar: null,
-      copertina: null,
+      avatar: avatarUrl,
+      copertina: copertinaUrl,
     };
 
-    const apiUrl = import.meta.env.VITE_API_URL;
-    const token = localStorage.getItem("token");
-
-    fetch(`${apiUrl}/register-scuola`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((response) => {
-        if (response.success) {
-          console.log("Registrazione avvenuta con successo");
-        } else {
-          console.error("Errore nella registrazione", response.message);
-        }
+    try {
+      const res = await fetch(`${apiUrl}/register-scuola`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
       });
+      const response = await res.json();
+      if (response.success) {
+        console.log("Registrazione avvenuta con successo");
+      } else {
+        console.error("Errore nella registrazione", response.message);
+      }
+    } catch (error) {
+      console.error("Errore nella richiesta di registrazione:", error);
+    }
   };
 
   return (

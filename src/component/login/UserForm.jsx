@@ -1,13 +1,50 @@
 import { Button, Form } from "react-bootstrap";
 
 function UserForm() {
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    console.log(data);
     const apiUrl = import.meta.env.VITE_API_URL;
     const token = localStorage.getItem("token");
+
+    let avatarUrl = null;
+    let copertinaUrl = null;
+
+    if (formData.get("avatar") instanceof File && formData.get("avatar").name) {
+      const avatarFormData = new FormData();
+      avatarFormData.append("file", formData.get("avatar"));
+
+      try {
+        const res = await fetch(`${apiUrl}/uploadme`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: avatarFormData,
+        });
+        const result = await res.text();
+        avatarUrl = result;
+      } catch (error) {
+        console.error("Errore upload avatar", error);
+      }
+    }
+
+    if (formData.get("copertina") instanceof File && formData.get("copertina").name) {
+      const copertinaFormData = new FormData();
+      copertinaFormData.append("file", formData.get("copertina"));
+
+      try {
+        const res = await fetch(`${apiUrl}/uploadme`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: copertinaFormData,
+        });
+        const result = await res.text();
+        copertinaUrl = result;
+      } catch (error) {
+        console.error("Errore upload copertina", error);
+      }
+    }
+
     const body = {
       username: data.username,
       nome: data.nome,
@@ -16,21 +53,26 @@ function UserForm() {
       password: data.password,
       dataNascita: data.dataNascita,
       bio: data.bio,
-      avatar: null,
-      copertina: null,
+      avatar: avatarUrl,
+      copertina: copertinaUrl,
       roles: ["ROLE_USER"],
     };
-    fetch(`${apiUrl}/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error(error));
+
+    try {
+      const response = await fetch(`${apiUrl}/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      const result = await response.json();
+      console.log("Registrazione completata:", result);
+    } catch (error) {
+      console.error("Errore nella registrazione", error);
+    }
   };
 
   return (
