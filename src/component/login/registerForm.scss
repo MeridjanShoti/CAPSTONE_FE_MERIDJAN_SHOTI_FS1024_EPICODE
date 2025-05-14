@@ -1,0 +1,8 @@
+@import "../../app.scss";
+.select-user-type img {
+  height: 50px;
+  &.selected {
+    border: 2px solid $primary;
+    box-shadow: 0 0 5px $primary;
+  }
+}

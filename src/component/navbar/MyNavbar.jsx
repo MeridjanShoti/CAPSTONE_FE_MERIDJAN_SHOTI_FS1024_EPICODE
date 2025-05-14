@@ -17,7 +17,7 @@ function MyNavbar() {
   useEffect(() => {
     if (token && !user) {
       dispatch(fetchUserDetails(token));
-    } else if (!token) {
+    } else if (!token && window.location.pathname !== "/register") {
       dispatch({ type: LOGOUT });
       navigate("/login");
     }
@@ -32,21 +32,23 @@ function MyNavbar() {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link as={Link} to="/" active={window.location.pathname === "/"}>
-                Home
-              </Nav.Link>
-              <Nav.Link as={Link} to="/dashboard" active={window.location.pathname === "/dashboard"}>
-                Dashboard
-              </Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
+            {user && (
+              <Nav className="me-auto">
+                <Nav.Link as={Link} to="/" active={window.location.pathname === "/"}>
+                  Home
+                </Nav.Link>
+                <Nav.Link as={Link} to="/dashboard" active={window.location.pathname === "/dashboard"}>
+                  Dashboard
+                </Nav.Link>
+                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+            )}
           </Navbar.Collapse>
           {user ? (
             <>
