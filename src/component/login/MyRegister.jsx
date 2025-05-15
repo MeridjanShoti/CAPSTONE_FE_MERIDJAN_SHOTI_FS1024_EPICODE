@@ -13,10 +13,10 @@ function MyRegister() {
       {selectedUserType ? (
         <RegisterForm userType={selectedUserType} setSelectedUserType={setSelectedUserType} />
       ) : (
-        <div className="metal-mania-regular text-center">
+        <div className="metal-mania-regular text-center mt-5">
           <h1>Registrati</h1>
           <h2>Seleziona il tipo di utente da registrare</h2>
-          <Row xs={1} md={2} lg={4} className="g-4">
+          <Row xs={1} md={2} lg={4} className="g-4 mt-5">
             <Col className="d-flex flex-column">
               <img
                 src={user}
