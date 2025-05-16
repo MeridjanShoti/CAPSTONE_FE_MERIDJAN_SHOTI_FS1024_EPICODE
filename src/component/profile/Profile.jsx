@@ -11,23 +11,23 @@ function Profile() {
   const token = useSelector((state) => state.token.token);
   const userType = user?.roles || user?.appUser?.roles;
   let profile;
-  switch (userType) {
-    case "ROLE_ADMIN":
+  switch (true) {
+    case userType.includes("ROLE_ADMIN"):
       profile = <AdminProfile />;
       break;
-    case "ROLE_INSEGNANTE":
+    case userType.includes("ROLE_INSEGNANTE"):
       profile = <InsegnanteProfile />;
       break;
-    case "ROLE_SCUOLA":
+    case userType.includes("ROLE_SCUOLA"):
       profile = <ScuolaProfile />;
       break;
-    case "ROLE_USER":
+    case userType.includes("ROLE_USER"):
       profile = <UtenteProfile />;
       break;
-    case "ROLE_ORGANIZZATORE":
+    case userType.includes("ROLE_ORGANIZZATORE"):
       profile = <OrganizzatoreProfile />;
       break;
-    case "ROLE_GESTORE_SP":
+    case userType.includes("ROLE_GESTORE_SP"):
       profile = <SalaProfile />;
       break;
     default:

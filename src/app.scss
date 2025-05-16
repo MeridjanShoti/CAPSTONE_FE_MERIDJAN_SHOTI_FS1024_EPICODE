@@ -39,3 +39,27 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+.dashboard-element {
+  background-color: transparentize($primary, 0.3);
+  color: $light;
+  padding: 20px;
+  border-radius: 5px;
+  border: $warning 1px solid;
+}
+ul li {
+  list-style: none;
+  position: relative;
+  padding-left: 24px;
+}
+ul li::before {
+  content: "";
+  background-image: url("/assets/img/teschio.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 0;
+  top: 0.4em;
+}

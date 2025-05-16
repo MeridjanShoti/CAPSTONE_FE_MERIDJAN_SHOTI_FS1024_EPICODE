@@ -1,6 +1,6 @@
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router";
-import logo from "../../assets/img/logo.png";
+import logo from "../../assets/img/logoSdM.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchUserDetails, LOGOUT } from "../../redux/actions";
@@ -26,7 +26,7 @@ function MyNavbar() {
     <>
       <Navbar expand="lg" className="bg-primary">
         <Container>
-          <Navbar.Brand as={Link} to="/">
+          <Navbar.Brand as={Link} to="/" className="metal-mania-regular">
             <img src={logo} alt="logo" width="30" height="30" className="d-inline-block align-top me-2" />
             Simposio der Medallo
           </Navbar.Brand>
