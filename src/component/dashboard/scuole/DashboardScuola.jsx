@@ -1,7 +1,9 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { ArrowRightSquare } from "react-bootstrap-icons";
+import { useNavigate } from "react-router";
 
 function DashboardScuola() {
+  const navigate = useNavigate();
   return (
     <div>
       <Container>
@@ -10,7 +12,7 @@ function DashboardScuola() {
             <Col className="dashboard-element d-flex">
               <Col>Inserisci un nuovo insegnante</Col>
               <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                <ArrowRightSquare />
+                <ArrowRightSquare onClick={() => navigate("/registra-insegnante")} />
               </Col>
             </Col>
           </Col>

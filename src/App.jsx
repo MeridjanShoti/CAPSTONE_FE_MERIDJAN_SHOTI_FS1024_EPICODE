@@ -8,6 +8,7 @@ import DashboardGestore from "./component/dashboard/sale/DashboardGestore";
 import ChiEQuestaPersona from "./component/masgus/ChiEQuestaPersona";
 import MyHome from "./component/home/MyHome";
 import MyDashboard from "./component/dashboard/MyDashboard";
+import RegistraInsegnante from "./component/dashboard/scuole/RegistrazioneInsegnante.jsx/RegistraInsegnante";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/dashboard" element={<MyDashboard />} />
           <Route path="/test" element={<DashboardGestore />} />
           <Route path="*" element={<ChiEQuestaPersona />} />
+          <Route path="/registra-insegnante" element={<RegistraInsegnante />} />
         </Routes>
       </BrowserRouter>
     </>

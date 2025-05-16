@@ -161,7 +161,7 @@ function GestoreSalaForm() {
           <Form.Control type="text" name="indirizzo" placeholder="Inserisci il tuo indirizzo principale" required />
         </Form.Group>
         {indirizzi.map((_, idx) => (
-          <Form.Group className="mb-3" key={idx} controlId={`formBasicIndirizzoSecondario${idx + 1}`}>
+          <Form.Group className="mb-3" key={idx} controlId={`formBasicIndirizzoSecondario${idx + 2}`}>
             <Form.Label>Indirizzo Secondario {idx + 1}</Form.Label>
             <Form.Control
               type="text"

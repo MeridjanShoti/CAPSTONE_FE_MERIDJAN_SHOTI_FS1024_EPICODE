@@ -8,6 +8,7 @@ import insegnantepic from "../../assets/img/insegnante.png";
 import organizzatorepic from "../../assets/img/concerti.png";
 import salapic from "../../assets/img/sala.png";
 import genericpic from "../../assets/img/user-generico.png";
+import { Link } from "react-router";
 function MyHome() {
   const user = useSelector((state) => state.user?.user);
   const userType = user?.roles || user?.appUser?.roles;
@@ -121,7 +122,7 @@ function MyHome() {
             </div>
 
             <div>{homeText}</div>
-            <Button variant="primary" className="me-2">
+            <Button as={Link} to="/dashboard" variant="primary" className="me-2">
               Vai alla Dashboard!
             </Button>
           </Col>
