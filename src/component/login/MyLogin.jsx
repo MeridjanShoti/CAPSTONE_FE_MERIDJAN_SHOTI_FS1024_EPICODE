@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchLogin } from "../../redux/actions";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
+import logo from "/assets/img/logoSdM.png";
 
 function MyLogin() {
   const dispatch = useDispatch();
@@ -47,6 +48,16 @@ function MyLogin() {
           </Row>
         </Container>
       </Form>
+      <div className="d-flex justify-content-center">
+        <div className="position-relative">
+          <img
+            src={logo}
+            alt="logo"
+            className="position-absolute "
+            style={{ zIndex: -1, translate: "-50% -50%", maxWidth: "400px", height: "auto" }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
