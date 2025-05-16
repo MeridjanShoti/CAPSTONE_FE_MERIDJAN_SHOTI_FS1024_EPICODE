@@ -4,7 +4,6 @@ import { ArrowRightSquare } from "react-bootstrap-icons";
 function DashboardScuola() {
   return (
     <div>
-      <h1 className="text-center metal-mania-regular my-4">Dashboard Scuola</h1>
       <Container>
         <Row xs={1} lg={2} className="g-3">
           <Col>

@@ -3,7 +3,6 @@ import { ArrowRightSquare } from "react-bootstrap-icons";
 function DashboardGestore() {
   return (
     <div>
-      <h1 className="text-center metal-mania-regular my-4">Dashboard Gestore Sala Prove</h1>
       <Container>
         <Row xs={1} lg={2} className="g-3">
           <Col>

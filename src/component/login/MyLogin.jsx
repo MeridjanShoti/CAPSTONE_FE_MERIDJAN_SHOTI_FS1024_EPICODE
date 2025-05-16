@@ -20,13 +20,17 @@ function MyLogin() {
     }
   }, [user, navigate]);
   return (
-    <>
-      <h1 className="text-center">Login</h1>
+    <div>
+      <h1 className="text-center metal-mania-regular my-4">Login</h1>
       <Form onSubmit={handleSubmit}>
         <Container>
-          <Form.Label htmlFor="username">Username:</Form.Label>
+          <Form.Label htmlFor="username" className="fw-bold">
+            Username:
+          </Form.Label>
           <Form.Control type="text" id="username" name="username" required />
-          <Form.Label htmlFor="password">Password:</Form.Label>
+          <Form.Label htmlFor="password" className="fw-bold mt-3">
+            Password:
+          </Form.Label>
           <Form.Control type="password" id="password" name="password" required />
           <Row className="mt-3">
             <Col className="d-flex justify-content-center">
@@ -43,7 +47,7 @@ function MyLogin() {
           </Row>
         </Container>
       </Form>
-    </>
+    </div>
   );
 }
 export default MyLogin;

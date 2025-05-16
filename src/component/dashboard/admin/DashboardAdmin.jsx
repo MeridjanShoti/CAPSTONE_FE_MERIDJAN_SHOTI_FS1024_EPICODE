@@ -1,8 +1,10 @@
+import { Col, Container, Row } from "react-bootstrap";
+import { ArrowRightSquare } from "react-bootstrap-icons";
+
 function DashboardAdmin() {
   const apiUrl = import.meta.env.VITE_API_URL;
   return (
     <div>
-      <h1 className="text-center metal-mania-regular my-4">Dashboard Admin</h1>
       <Container>
         <Row xs={1} lg={2} className="g-3">
           <Col>

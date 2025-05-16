@@ -1,5 +1,5 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
-import logo from "../../assets/img/logoSdM.png";
+import logo from "/assets/img/logoSdM.png";
 import { useSelector } from "react-redux";
 import userpic from "../../assets/img/utente.png";
 import adminpic from "../../assets/img/admin.png";

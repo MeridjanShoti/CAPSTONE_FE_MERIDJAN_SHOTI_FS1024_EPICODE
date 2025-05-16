@@ -8,15 +8,21 @@
       color: $danger;
     }
   }
-  .navbar-nav .nav-link {
+  .nav-link {
     color: $light;
 
     &:hover {
       color: $danger;
     }
 
-    &:active {
-      color: $warning;
+    &.active {
+      -webkit-text-stroke: 1px $warning;
+      text-shadow: 0 0 5px $warning;
+      font-weight: bold;
     }
   }
+}
+
+.navbar .navbar-brand:visited {
+  color: $warning;
 }
