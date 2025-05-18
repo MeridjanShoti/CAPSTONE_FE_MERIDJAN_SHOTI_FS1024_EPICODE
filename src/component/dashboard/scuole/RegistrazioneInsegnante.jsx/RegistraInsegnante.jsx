@@ -12,30 +12,32 @@ function RegistraInsegnante() {
   const [insegnante, setInsegnante] = useState({});
   const formRef = useRef(null);
   const navigate = useNavigate();
-  const { insegnanteId } = useParams();
+  const { id } = useParams();
   const user = useSelector((state) => state.user.user);
+  const userType = user?.roles || user?.appUser?.roles;
 
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (insegnanteId) {
-      fetch(`${apiUrl}/insegnanti/${insegnanteId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setInsegnante(data);
-          const strumentiIniziali = data.strumenti?.length > 0 ? data.strumenti : [""];
-          setStrumenti(strumentiIniziali);
-          setCountStrumenti(strumentiIniziali.length - 1);
-        })
-        .catch((err) => console.error("Errore caricamento dati:", err));
-    } else {
-      setStrumenti([""]);
-      setCountStrumenti(0);
+    if (id && user && userType.includes("ROLE_INSEGNANTE")) {
+      const base = {
+        username: user.appUser?.username || "",
+        nome: user.nome || "",
+        cognome: user.cognome || "",
+        email: user.email || "",
+        dataNascita: user.dataNascita || "",
+        bio: user.bio || "",
+        pagaOraria: user.pagaOraria || "",
+      };
+      setInsegnante(base);
+
+      const strumentiIniziali = Array.isArray(user.strumenti) && user.strumenti.length > 0 ? user.strumenti : [""];
+
+      setStrumenti(strumentiIniziali);
+      setCountStrumenti(strumentiIniziali.length - 1);
     }
-  }, [insegnanteId]);
+  }, [id, user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,10 +95,10 @@ function RegistraInsegnante() {
         insegnanteFormData.append("curriculum", formData.get("curriculum"));
       }
 
-      strumenti.forEach((s) => insegnanteFormData.append("strumenti", s));
+      strumenti.filter((s) => s.trim() !== "").forEach((s) => insegnanteFormData.append("strumenti", s));
 
-      const method = insegnanteId ? "PUT" : "POST";
-      const endpoint = insegnanteId ? `${apiUrl}/insegnanti/${insegnanteId}` : `${apiUrl}/register-insegnante`;
+      const method = id ? "PUT" : "POST";
+      const endpoint = id ? `${apiUrl}/insegnanti/${id}` : `${apiUrl}/register-insegnante`;
 
       const response = await fetch(endpoint, {
         method,
@@ -106,13 +108,13 @@ function RegistraInsegnante() {
 
       const result = await response.text();
       if (response.ok) {
-        setAlertMessage(insegnanteId ? "Profilo insegnante aggiornato" : "Registrazione avvenuta con successo");
+        setAlertMessage(id ? "Profilo insegnante aggiornato" : "Registrazione avvenuta con successo");
         setAlertType("success");
         setShowAlert(true);
         setTimeout(() => {
           setShowAlert(false);
           formRef.current.reset();
-          navigate(insegnanteId ? `/insegnanti/${insegnanteId}` : "/login");
+          navigate(id ? `/insegnanti/${id}` : "/login");
         }, 3000);
       }
     } catch (error) {
@@ -129,7 +131,7 @@ function RegistraInsegnante() {
   return (
     <Container>
       <h1 className="metal-mania-regular text-center my-3">
-        {insegnanteId ? "Modifica profilo insegnante" : "Registra un nuovo insegnante"}
+        {id ? "Modifica profilo insegnante" : "Registra un nuovo insegnante"}
       </h1>
       {showAlert && (
         <Alert variant={alertType} onClose={() => setShowAlert(false)} dismissible>
@@ -158,7 +160,7 @@ function RegistraInsegnante() {
           <Form.Control
             type="password"
             name="password"
-            placeholder={insegnanteId ? "Nuova password (facoltativa)" : "Password"}
+            placeholder={id ? "Nuova password (facoltativa)" : "Password"}
           />
         </Form.Group>
         <Form.Group controlId="formBasicDataNascita">
@@ -183,7 +185,13 @@ function RegistraInsegnante() {
         </Form.Group>
         <Form.Group controlId="formBasicPagaOraria">
           <Form.Label>Paga oraria</Form.Label>
-          <Form.Control type="number" name="pagaOraria" defaultValue={insegnante.pagaOraria || ""} required />
+          <Form.Control
+            type="number"
+            name="pagaOraria"
+            disabled={!!id}
+            defaultValue={insegnante.pagaOraria || ""}
+            required
+          />
         </Form.Group>
 
         {strumenti.map((val, idx) => (
@@ -227,13 +235,13 @@ function RegistraInsegnante() {
           </Button>
         )}
 
-        {!insegnanteId && (
+        {!id && (
           <Form.Group controlId="formBasicCheckbox" className="my-3">
             <Form.Check type="checkbox" label="Accetto i termini e le condizioni" required />
           </Form.Group>
         )}
 
-        <Button type="submit">{insegnanteId ? "Salva modifiche" : "Registrati"}</Button>
+        <Button type="submit">{id ? "Salva modifiche" : "Registrati"}</Button>
       </Form>
     </Container>
   );

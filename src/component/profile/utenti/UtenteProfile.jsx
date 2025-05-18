@@ -28,8 +28,9 @@ function UtenteProfile() {
               src={utente.avatar || utenteGenerico}
               className="profile-pic d-block mx-auto mt-5 border border-primary border-3  rounded-circle"
               style={{
-                width: "auto",
+                width: "300px",
                 height: "300px",
+                objectFit: "cover",
                 position: "absolute",
                 top: "70%",
                 left: "50%",
