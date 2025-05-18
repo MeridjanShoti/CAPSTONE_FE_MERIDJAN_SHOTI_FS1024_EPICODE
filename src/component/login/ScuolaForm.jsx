@@ -1,269 +1,240 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 function ScuolaForm() {
-  const [countIndirizziSecondari, setCountIndirizziSecondari] = useState(0);
-  const [countSocialSecondari, setCountSocialSecondari] = useState(0);
   const [indirizzi, setIndirizzi] = useState([""]);
   const [social, setSocial] = useState([""]);
+  const [countIndirizziSecondari, setCountIndirizziSecondari] = useState(0);
+  const [countSocialSecondari, setCountSocialSecondari] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("success");
+  const [formData, setFormData] = useState({});
   const formRef = useRef(null);
   const navigate = useNavigate();
-  const aggiungiIndirizzo = () => {
-    setIndirizzi([...indirizzi, ""]);
+  const { id } = useParams();
+  const isEditing = !!id;
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (isEditing) {
+      const fetchData = async () => {
+        const res = await fetch(`${apiUrl}/scuole/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        setFormData(data);
+        setIndirizzi(data.indirizziSecondari || [""]);
+        setSocial(data.linkSocial || [""]);
+      };
+      fetchData();
+    }
+  }, [id]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const rimuoviIndirizzo = () => {
-    if (indirizzi.length > 1) {
-      setIndirizzi(indirizzi.slice(0, indirizzi.length - 1));
-    }
-  };
-  const aggiungiSocial = () => {
-    setSocial([...social, ""]);
-  };
-  const rimuoviSocial = () => {
-    if (social.length > 1) {
-      setSocial(social.slice(0, social.length - 1));
-    }
-  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const fData = new FormData(e.target);
 
-    const apiUrl = import.meta.env.VITE_API_URL;
-    const token = localStorage.getItem("token");
+    const avatarFile = fData.get("avatar");
+    const copertinaFile = fData.get("copertina");
 
-    let avatarUrl = null;
-    let copertinaUrl = null;
-
-    const avatarFile = formData.get("avatar");
-    if (avatarFile && avatarFile instanceof File && avatarFile.name) {
-      const avatarFormData = new FormData();
-      avatarFormData.append("file", avatarFile);
-      try {
-        const res = await fetch(`${apiUrl}/uploadme`, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-          body: avatarFormData,
-        });
-        avatarUrl = await res.text();
-      } catch (err) {
-        console.error("Errore upload avatar:", err);
-      }
-    }
-
-    const copertinaFile = formData.get("copertina");
-    if (copertinaFile && copertinaFile instanceof File && copertinaFile.name) {
-      const copertinaFormData = new FormData();
-      copertinaFormData.append("file", copertinaFile);
-      try {
-        const res = await fetch(`${apiUrl}/uploadme`, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-          body: copertinaFormData,
-        });
-        copertinaUrl = await res.text();
-      } catch (err) {
-        console.error("Errore upload copertina:", err);
-      }
-    }
-
-    const data = {
-      username: formData.get("username"),
-      ragioneSociale: formData.get("ragioneSociale"),
-      indirizzoPrincipale: formData.get("indirizzo"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-      numeroTelefono: formData.get("telefono"),
-      bio: formData.get("bio"),
-      linkSocial: [...social, formData.get("linkSocial")].filter(Boolean),
-      indirizziSecondari: indirizzi,
-      partitaIva: formData.get("partitaIva"),
-      roles: ["ROLE_SCUOLA"],
-      avatar: avatarUrl,
-      copertina: copertinaUrl,
+    const uploadFile = async (file) => {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch(`${apiUrl}/uploadme`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: fd,
+      });
+      return await res.text();
     };
 
-    try {
-      const res = await fetch(`${apiUrl}/register-scuola`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-      });
+    let avatarUrl = formData.avatar || null;
+    let copertinaUrl = formData.copertina || null;
+    if (avatarFile?.name) avatarUrl = await uploadFile(avatarFile);
+    if (copertinaFile?.name) copertinaUrl = await uploadFile(copertinaFile);
 
-      if (res.ok) {
-        await res.text();
-        setAlertMessage("Registrazione avvenuta con successo!");
-        setAlertType("success");
-        setShowAlert(true);
-        setTimeout(() => {
-          setShowAlert(false);
-          navigate("/login");
-        }, 3000);
-      } else {
-        const response = await res.json();
-        setAlertMessage(response.message + ". Registrazione fallita. Riprova.");
-        setAlertType("danger");
-        setShowAlert(true);
-        setTimeout(() => {
-          setShowAlert(false);
-          formRef.current.reset();
-          setIndirizzi([""]);
-          setSocial([""]);
-          setCountIndirizziSecondari(0);
-          setCountSocialSecondari(0);
-        }, 5000);
-      }
-    } catch (error) {
-      setAlertMessage(error.message + ". Errore durante la registrazione");
-      setAlertType("danger");
+    const data = {
+      ...formData,
+      avatar: avatarUrl,
+      copertina: copertinaUrl,
+      indirizziSecondari: indirizzi,
+      linkSocial: social,
+      roles: ["ROLE_SCUOLA"],
+    };
+    if (isEditing && !formData.password) {
+      delete data.password;
+    }
+    const res = await fetch(`${apiUrl}/${isEditing ? `scuole/${id}` : "register-scuola"}`, {
+      method: isEditing ? "PUT" : "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (res.ok) {
+      setAlertMessage(isEditing ? "Modifica completata" : "Registrazione avvenuta con successo!");
+      setAlertType("success");
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
-        formRef.current.reset();
-        setIndirizzi([""]);
-        setSocial([""]);
-        setCountIndirizziSecondari(0);
-        setCountSocialSecondari(0);
-      }, 5000);
+        navigate(isEditing ? "/dashboard" : "/login");
+      }, 3000);
+    } else {
+      const err = await res.json();
+      setAlertMessage(err.message || "Errore durante l'operazione");
+      setAlertType("danger");
+      setShowAlert(true);
     }
   };
 
   return (
     <div>
-      <h1 className="metal-mania-regular text-center">Registrati come Scuola di Musica</h1>
-      {showAlert && (
-        <Alert variant={alertType} onClose={() => setShowAlert(false)} dismissible>
-          {alertMessage}
-        </Alert>
-      )}
-      <Form ref={formRef} className="my-3" onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicUsername">
+      <h1 className="text-center metal-mania-regular">
+        {isEditing ? "Modifica Scuola" : "Registrati come Scuola di Musica"}
+      </h1>
+      {showAlert && <Alert variant={alertType}>{alertMessage}</Alert>}
+      <Form ref={formRef} onSubmit={handleSubmit}>
+        <Form.Group>
           <Form.Label>Username</Form.Label>
-          <Form.Control type="text" name="username" placeholder="Inserisci il tuo username" />
+          <Form.Control name="username" value={formData.username || ""} onChange={handleChange} />
         </Form.Group>
-        <Form.Group controlId="formBasicRagioneSociale">
-          <Form.Label>RagioneSociale</Form.Label>
-          <Form.Control type="text" name="ragioneSociale" placeholder="Inserisci il nome della tua scuola" />
+        <Form.Group>
+          <Form.Label>Ragione Sociale</Form.Label>
+          <Form.Control name="ragioneSociale" value={formData.ragioneSociale || ""} onChange={handleChange} />
         </Form.Group>
-        <Form.Group controlId="formBasicPartitaIva">
+        <Form.Group>
           <Form.Label>Partita IVA</Form.Label>
-          <Form.Control type="text" name="partitaIva" placeholder="Inserisci la tua partita IVA" />
+          <Form.Control name="partitaIva" value={formData.partitaIva || ""} onChange={handleChange} />
         </Form.Group>
-        <Form.Group controlId="formBasicIndirizzo">
+        <Form.Group>
           <Form.Label>Indirizzo Principale</Form.Label>
-          <Form.Control type="text" name="indirizzo" placeholder="Inserisci il tuo indirizzo principale" required />
+          <Form.Control name="indirizzo" value={formData.indirizzo || ""} onChange={handleChange} />
         </Form.Group>
-        {indirizzi.map((_, idx) => (
-          <Form.Group className="mb-3" key={idx} controlId={`formBasicIndirizzoSecondario${idx + 2}`}>
-            <Form.Label>Indirizzo Secondario {idx + 1}</Form.Label>
+        {indirizzi.map((val, i) => (
+          <Form.Group key={i}>
+            <Form.Label>Indirizzo Secondario {i + 1}</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Inserisci un indirizzo"
+              value={val}
               onChange={(e) => {
-                const newIndirizzi = [...indirizzi];
-                newIndirizzi[idx] = e.target.value;
-                setIndirizzi(newIndirizzi);
+                const copy = [...indirizzi];
+                copy[i] = e.target.value;
+                setIndirizzi(copy);
               }}
             />
           </Form.Group>
         ))}
         <Button
-          className="my-3"
+          type="button"
           variant="secondary"
+          className="my-3 me-3"
           onClick={() => {
             setCountIndirizziSecondari(countIndirizziSecondari + 1);
-            aggiungiIndirizzo();
+            setIndirizzi([...indirizzi, ""]);
           }}
         >
           Aggiungi indirizzo
         </Button>
         {countIndirizziSecondari > 0 && (
           <Button
+            type="button"
             variant="secondary"
+            className="my-3 me-3"
             onClick={() => {
-              setCountIndirizziSecondari(countIndirizziSecondari - 1);
-              rimuoviIndirizzo();
+              if (countIndirizziSecondari > 0) {
+                setCountIndirizziSecondari(countIndirizziSecondari - 1);
+              }
+              setIndirizzi(indirizzi.slice(0, -1));
             }}
-            className="my-3 ms-3"
           >
             Rimuovi indirizzo
           </Button>
         )}
-        <Form.Group controlId="formBasicEmail">
+
+        <Form.Group>
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" name="email" placeholder="Inserisci la tua email" />
+          <Form.Control name="email" value={formData.email || ""} onChange={handleChange} />
         </Form.Group>
-        <Form.Group controlId="formBasicPassword">
+        <Form.Group>
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" name="password" placeholder="Password" />
+          <Form.Control name="password" type="password" onChange={handleChange} />
         </Form.Group>
-        <Form.Group controlId="formBasicTelefono">
-          <Form.Label>Numero di telefono</Form.Label>
-          <Form.Control type="text" name="telefono" placeholder="Numero di telefono" />
+        <Form.Group>
+          <Form.Label>Telefono</Form.Label>
+          <Form.Control name="telefono" value={formData.telefono || ""} onChange={handleChange} />
         </Form.Group>
-        <Form.Group controlId="formBasicBio">
+        <Form.Group>
           <Form.Label>Bio</Form.Label>
-          <Form.Control as={"textarea"} name="bio" rows={3} placeholder="Aggiungi una bio" />
+          <Form.Control as="textarea" name="bio" value={formData.bio || ""} onChange={handleChange} />
         </Form.Group>
-        <Form.Group controlId="formBasicLinkSocial">
-          <Form.Label>Link Social</Form.Label>
-          <Form.Control type="text" name="linkSocial" placeholder="Link Social" />
-        </Form.Group>
-        {social.map((_, idx) => (
-          <Form.Group className="mb-3" key={idx} controlId={`formBasicLinkSocial${idx + 2}`}>
-            <Form.Label>Link Social {idx + 2}</Form.Label>
+
+        {social.map((val, i) => (
+          <Form.Group key={i}>
+            <Form.Label>Link Social {i + 1}</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Link Social"
+              value={val}
               onChange={(e) => {
-                const newSocial = [...social];
-                newSocial[idx] = e.target.value;
-                setSocial(newSocial);
+                const copy = [...social];
+                copy[i] = e.target.value;
+                setSocial(copy);
               }}
             />
           </Form.Group>
         ))}
         <Button
+          type="button"
           variant="secondary"
+          className="my-3 me-3"
           onClick={() => {
             setCountSocialSecondari(countSocialSecondari + 1);
-            aggiungiSocial();
+            setSocial([...social, ""]);
           }}
-          className="my-3"
         >
-          Aggiungi un altro Social
+          Aggiungi Social
         </Button>
-        <Button
-          variant="secondary"
-          onClick={() => {
-            setCountSocialSecondari(countSocialSecondari - 1);
-            rimuoviSocial();
-          }}
-          className="my-3 ms-3"
-        >
-          Rimuovi Social{" "}
-        </Button>
-        <Form.Group controlId="formBasicAvatar" className="my-3">
-          <Form.Label>Carica un'immagine del profilo</Form.Label>
+        {countSocialSecondari > 0 && (
+          <Button
+            type="button"
+            variant="secondary"
+            className="my-3 me-3"
+            onClick={() => {
+              if (countSocialSecondari > 0) {
+                setCountSocialSecondari(countSocialSecondari - 1);
+              }
+              setSocial(social.slice(0, -1));
+            }}
+          >
+            Rimuovi Social
+          </Button>
+        )}
+
+        <Form.Group>
+          <Form.Label>Avatar</Form.Label>
           <Form.Control type="file" name="avatar" accept="image/*" />
         </Form.Group>
-        <Form.Group controlId="formBasicCopertina" className="my-3">
-          <Form.Label>Carica un'immagine di copertina</Form.Label>
+        <Form.Group>
+          <Form.Label>Copertina</Form.Label>
           <Form.Control type="file" name="copertina" accept="image/*" />
         </Form.Group>
-        <Form.Group controlId="formBasicCheckbox" className="my-3">
-          <Form.Check type="checkbox" label="Accetto i termini e le condizioni" required />
-        </Form.Group>
-        <Button type="submit">Registrati</Button>
+
+        {!isEditing && (
+          <Form.Group className="my-3">
+            <Form.Check type="checkbox" label="Accetto i termini e le condizioni" required />
+          </Form.Group>
+        )}
+
+        <Button type="submit">{isEditing ? "Salva modifiche" : "Registrati"}</Button>
       </Form>
     </div>
   );
 }
+
 export default ScuolaForm;

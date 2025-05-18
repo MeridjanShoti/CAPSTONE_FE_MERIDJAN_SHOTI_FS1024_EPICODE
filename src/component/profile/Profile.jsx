@@ -5,12 +5,15 @@ import ScuolaProfile from "./scuole/ScuolaProfile";
 import InsegnanteProfile from "./insegnanti/InsegnanteProfile";
 import OrganizzatoreProfile from "./eventi/OrganizzatoreProfile";
 import SalaProfile from "./sale/SalaProfile";
+import { Spinner } from "react-bootstrap";
 
 function Profile() {
   const user = useSelector((state) => state.user.user);
-  const token = useSelector((state) => state.token.token);
   const userType = user?.roles || user?.appUser?.roles;
   let profile;
+  if (!userType) {
+    return <Spinner animation="border" variant="primary" className="d-block mx-auto mt-5" />;
+  }
   switch (true) {
     case userType.includes("ROLE_ADMIN"):
       profile = <AdminProfile />;
@@ -34,6 +37,6 @@ function Profile() {
       profile = <h1 className="text-center">User type not recognized</h1>;
   }
 
-  return <h1 className="text-center"></h1>;
+  return profile;
 }
 export default Profile;

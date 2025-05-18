@@ -63,3 +63,11 @@ ul li::before {
   left: 0;
   top: 0.4em;
 }
+.copertina {
+  h1,
+  h3,
+  p {
+    -webkit-text-stroke: 1px $primary;
+    text-shadow: 0 0 5px $warning;
+  }
+}

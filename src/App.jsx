@@ -9,6 +9,8 @@ import ChiEQuestaPersona from "./component/masgus/ChiEQuestaPersona";
 import MyHome from "./component/home/MyHome";
 import MyDashboard from "./component/dashboard/MyDashboard";
 import RegistraInsegnante from "./component/dashboard/scuole/RegistrazioneInsegnante.jsx/RegistraInsegnante";
+import Profile from "./component/profile/Profile";
+import EditProfile from "./component/profile/EditProfile";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
           <Route path="/test" element={<DashboardGestore />} />
           <Route path="*" element={<ChiEQuestaPersona />} />
           <Route path="/registra-insegnante" element={<RegistraInsegnante />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/edit-profile/:id" element={<EditProfile />} />
         </Routes>
       </BrowserRouter>
     </>
