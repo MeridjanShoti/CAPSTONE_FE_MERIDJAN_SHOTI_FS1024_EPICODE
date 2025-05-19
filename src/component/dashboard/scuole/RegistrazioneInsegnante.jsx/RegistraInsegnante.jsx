@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Alert, Button, Container, Form } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
+import { fetchUserDetails } from "../../../../redux/actions";
 
 function RegistraInsegnante() {
   const [showAlert, setShowAlert] = useState(false);
@@ -15,6 +16,7 @@ function RegistraInsegnante() {
   const { id } = useParams();
   const user = useSelector((state) => state.user.user);
   const userType = user?.roles || user?.appUser?.roles;
+  const dispatch = useDispatch();
 
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
@@ -28,7 +30,7 @@ function RegistraInsegnante() {
         email: user.email || "",
         dataNascita: user.dataNascita || "",
         bio: user.bio || "",
-        pagaOraria: user.pagaOraria || "",
+        pagaOraria: user.pagaOraria != null ? user.pagaOraria : "",
       };
       setInsegnante(base);
 
@@ -43,7 +45,9 @@ function RegistraInsegnante() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-
+    if (!data.pagaOraria || isNaN(data.pagaOraria)) {
+      throw new Error("La paga oraria non è valida");
+    }
     let avatarUrl = insegnante.avatar || null;
     let copertinaUrl = insegnante.copertina || null;
 
@@ -88,8 +92,12 @@ function RegistraInsegnante() {
       }
       insegnanteFormData.append("dataNascita", data.dataNascita);
       insegnanteFormData.append("bio", data.bio);
-      insegnanteFormData.append("avatar", avatarUrl);
-      insegnanteFormData.append("copertina", copertinaUrl);
+      if (avatarUrl) {
+        insegnanteFormData.append("avatar", avatarUrl);
+      }
+      if (copertinaUrl) {
+        insegnanteFormData.append("copertina", copertinaUrl);
+      }
       insegnanteFormData.append("pagaOraria", data.pagaOraria);
       if (formData.get("curriculum") instanceof File && formData.get("curriculum").name) {
         insegnanteFormData.append("curriculum", formData.get("curriculum"));
@@ -114,7 +122,8 @@ function RegistraInsegnante() {
         setTimeout(() => {
           setShowAlert(false);
           formRef.current.reset();
-          navigate(id ? `/insegnanti/${id}` : "/login");
+          navigate(id ? `/profile` : "/login");
+          dispatch(fetchUserDetails(token));
         }, 3000);
       }
     } catch (error) {
@@ -188,7 +197,7 @@ function RegistraInsegnante() {
           <Form.Control
             type="number"
             name="pagaOraria"
-            disabled={!!id}
+            readOnly={!!id}
             defaultValue={insegnante.pagaOraria || ""}
             required
           />
@@ -241,7 +250,9 @@ function RegistraInsegnante() {
           </Form.Group>
         )}
 
-        <Button type="submit">{id ? "Salva modifiche" : "Registrati"}</Button>
+        <Button type="submit" className="d-block mx-auto">
+          {id ? "Salva modifiche" : "Registrati"}
+        </Button>
       </Form>
     </Container>
   );

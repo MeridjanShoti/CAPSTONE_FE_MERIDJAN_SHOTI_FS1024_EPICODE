@@ -162,7 +162,7 @@ function OrganizzatoreConcertiForm() {
 
         <Form.Group>
           <Form.Label>Email</Form.Label>
-          <Form.Control name="email" value={formData.email || ""} onChange={handleChange} />
+          <Form.Control name="email" type="email" value={formData.email || ""} onChange={handleChange} />
         </Form.Group>
         <Form.Group>
           <Form.Label>Password</Form.Label>
@@ -170,7 +170,7 @@ function OrganizzatoreConcertiForm() {
         </Form.Group>
         <Form.Group>
           <Form.Label>Telefono</Form.Label>
-          <Form.Control name="telefono" value={formData.telefono || ""} onChange={handleChange} />
+          <Form.Control name="telefono" type="tel" value={formData.telefono || ""} onChange={handleChange} />
         </Form.Group>
         <Form.Group>
           <Form.Label>Bio</Form.Label>
@@ -182,6 +182,7 @@ function OrganizzatoreConcertiForm() {
             <Form.Label>Link Social {i + 1}</Form.Label>
             <Form.Control
               value={val}
+              type="url"
               onChange={(e) => {
                 const copy = [...social];
                 copy[i] = e.target.value;
