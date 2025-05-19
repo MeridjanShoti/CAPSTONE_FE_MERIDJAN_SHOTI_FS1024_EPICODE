@@ -46,9 +46,10 @@ function OrganizzatoreConcertiForm() {
 
         setIndirizzi(user.altreSedi?.length ? user.altreSedi : [""]);
         setSocial(user.linkSocial?.length ? user.linkSocial : [""]);
+        setCountIndirizziSecondari(user.altreSedi?.length ? user.altreSedi.length : 0);
+        setCountSocialSecondari(user.linkSocial?.length ? user.linkSocial.length : 0);
+        setCountSocialSecondari(0);
       } else if (isEditing) {
-        console.log("Modifica altro utente (via API)");
-
         try {
           const res = await fetch(`${apiUrl}/organizzatori/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
@@ -57,6 +58,8 @@ function OrganizzatoreConcertiForm() {
           setFormData({ ...data, password: "" });
           setIndirizzi(data.altreSedi?.length ? data.altreSedi : [""]);
           setSocial(data.linkSocial?.length ? data.linkSocial : [""]);
+          setCountIndirizziSecondari(data.altreSedi?.length ? data.altreSedi.length : 0);
+          setCountSocialSecondari(data.linkSocial?.length ? data.linkSocial.length : 0);
         } catch (err) {
           console.error("Errore fetch organizzatore", err);
         }
@@ -224,7 +227,7 @@ function OrganizzatoreConcertiForm() {
               <Form.Label>Link Social {i + 1}</Form.Label>
               <Form.Control
                 value={val}
-                type="url"
+                type="text"
                 onChange={(e) => {
                   const copy = [...social];
                   copy[i] = e.target.value;
