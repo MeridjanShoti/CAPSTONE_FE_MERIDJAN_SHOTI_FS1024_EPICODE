@@ -203,22 +203,23 @@ function RegistraInsegnante() {
           />
         </Form.Group>
 
-        {strumenti.map((val, idx) => (
-          <Form.Group key={idx} controlId={`formStrumento${idx}`}>
-            <Form.Label>{idx === 0 ? "Strumento principale" : `Strumento secondario ${idx}`}</Form.Label>
-            <Form.Control
-              type="text"
-              name="strumenti"
-              value={val}
-              onChange={(e) => {
-                const newStrumenti = [...strumenti];
-                newStrumenti[idx] = e.target.value;
-                setStrumenti(newStrumenti);
-              }}
-              required={idx === 0}
-            />
-          </Form.Group>
-        ))}
+        {strumenti &&
+          strumenti.map((val, idx) => (
+            <Form.Group key={idx} controlId={`formStrumento${idx}`}>
+              <Form.Label>{idx === 0 ? "Strumento principale" : `Strumento secondario ${idx}`}</Form.Label>
+              <Form.Control
+                type="text"
+                name="strumenti"
+                value={val}
+                onChange={(e) => {
+                  const newStrumenti = [...strumenti];
+                  newStrumenti[idx] = e.target.value;
+                  setStrumenti(newStrumenti);
+                }}
+                required={idx === 0}
+              />
+            </Form.Group>
+          ))}
 
         <Button
           className="my-3"

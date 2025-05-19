@@ -27,7 +27,7 @@ export const fetchLogin = (username, password) => {
         dispatch({ type: LOGIN_FAILURE, payload: { error: "Credenziali non valide" } });
       }
     } catch (error) {
-      console.error("Errore nel login:", error);
+      alert("Errore nel login:", error);
       dispatch({ type: LOGIN_FAILURE, payload: { error: "Errore di rete" } });
     }
   };

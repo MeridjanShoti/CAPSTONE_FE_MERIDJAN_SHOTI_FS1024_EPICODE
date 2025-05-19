@@ -1,10 +1,38 @@
 import { Button, Container, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { Link } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import utenteGenerico from "../../../assets/img/user-generico.png";
+import { useEffect, useState } from "react";
 
 function UtenteProfile() {
-  const utente = useSelector((state) => state.user.user);
+  const utenteLoggato = useSelector((state) => state.user.user);
+  const [utente, setUtente] = useState(null);
+  const { id } = useParams();
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (id) {
+      fetch(`${apiUrl}/utenti/${id}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Errore nel recupero dell'insegnante");
+          return res.json();
+        })
+        .then((data) => {
+          setUtente(data);
+        })
+        .catch((error) => {
+          alert(error.message);
+          navigate("/");
+        });
+    } else {
+      setUtente(utenteLoggato);
+    }
+  }, [id, apiUrl, token, utenteLoggato, navigate]);
 
   return (
     <>
@@ -37,14 +65,16 @@ function UtenteProfile() {
                 transform: "translate(-50%, -50%)",
               }}
             />
-            <Button
-              as={Link}
-              to={`/edit-profile/${utente.id}`}
-              variant="primary"
-              className="d-block mx-auto mt-2 position-absolute top-0"
-            >
-              Modifica profilo
-            </Button>
+            {utente.id === utenteLoggato.id && (
+              <Button
+                as={Link}
+                to={`/edit-profile/${utente.id}`}
+                variant="primary"
+                className="d-block mx-auto mt-2 position-absolute top-0"
+              >
+                Modifica profilo
+              </Button>
+            )}
           </Container>
           <Container
             fluid

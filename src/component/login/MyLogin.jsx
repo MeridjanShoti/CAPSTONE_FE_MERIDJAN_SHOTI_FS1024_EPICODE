@@ -1,7 +1,7 @@
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLogin } from "../../redux/actions";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import logo from "/assets/img/logoSdM.png";
 
@@ -9,6 +9,8 @@ function MyLogin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
+  const error = useSelector((state) => state.user.error);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -20,6 +22,11 @@ function MyLogin() {
       navigate("/");
     }
   }, [user, navigate]);
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+  });
   return (
     <div>
       <h1 className="text-center metal-mania-regular my-4">Login</h1>
@@ -48,6 +55,9 @@ function MyLogin() {
           </Row>
         </Container>
       </Form>
+      <Alert show={error ? true : false} variant="danger" className="mt-3 text-center">
+        {error}
+      </Alert>
       <div className="d-flex justify-content-center">
         <div className="position-relative">
           <img

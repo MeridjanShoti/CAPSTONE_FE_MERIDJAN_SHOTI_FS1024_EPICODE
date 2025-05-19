@@ -88,14 +88,16 @@ function InsegnanteProfile() {
                 transform: "translate(-50%, -50%)",
               }}
             />
-            <Button
-              as={Link}
-              to={`/edit-profile/${insegnante.id}`}
-              variant="primary"
-              className="d-block mx-auto mt-2 position-absolute top-0"
-            >
-              Modifica profilo
-            </Button>
+            {insegnante.id === utente.id && (
+              <Button
+                as={Link}
+                to={`/edit-profile/${insegnante.id}`}
+                variant="primary"
+                className="d-block mx-auto mt-2 position-absolute top-0"
+              >
+                Modifica profilo
+              </Button>
+            )}
           </Container>
           <Container
             fluid
@@ -110,9 +112,10 @@ function InsegnanteProfile() {
                 <div className="rounded-4 border border-primary border-3 p-3 w-100">
                   <h4 className="metal-mania-regular">Strumenti Suonati:</h4>
                   <ul>
-                    {insegnante.strumenti.map((strumento, index) => (
-                      <li key={index}>{strumento.charAt(0).toUpperCase() + strumento.slice(1)}</li>
-                    ))}
+                    {insegnante.strumenti &&
+                      insegnante.strumenti.map((strumento, index) => (
+                        <li key={index}>{strumento.charAt(0).toUpperCase() + strumento.slice(1)}</li>
+                      ))}
                   </ul>
                 </div>
               </Col>
