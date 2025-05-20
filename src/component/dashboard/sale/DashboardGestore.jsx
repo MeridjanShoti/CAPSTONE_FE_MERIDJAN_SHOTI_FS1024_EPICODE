@@ -31,15 +31,7 @@ function DashboardGestore() {
           </Col>
           <Col>
             <Col className="dashboard-element d-flex">
-              <Col>Gestisci Corsi</Col>
-              <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                <ArrowRightSquare />
-              </Col>
-            </Col>
-          </Col>
-          <Col>
-            <Col className="dashboard-element d-flex">
-              <Col>Guarda recensioni Scuola</Col>
+              <Col>Guarda recensioni Sale Prove</Col>
               <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
                 <ArrowRightSquare />
               </Col>
