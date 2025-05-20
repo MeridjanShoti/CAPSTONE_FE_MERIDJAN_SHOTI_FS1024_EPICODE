@@ -11,6 +11,7 @@ import MyDashboard from "./component/dashboard/MyDashboard";
 import RegistraInsegnante from "./component/dashboard/scuole/RegistrazioneInsegnante.jsx/RegistraInsegnante";
 import Profile from "./component/profile/Profile";
 import EditProfile from "./component/profile/EditProfile";
+import AdminForm from "./component/login/AdminForm";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/registra-insegnante" element={<RegistraInsegnante />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/edit-profile/:id" element={<EditProfile />} />
+          <Route path="/register-admin" element={<AdminForm />} />
         </Routes>
       </BrowserRouter>
     </>
