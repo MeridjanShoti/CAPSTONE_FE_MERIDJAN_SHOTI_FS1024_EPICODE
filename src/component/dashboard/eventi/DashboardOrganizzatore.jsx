@@ -1,6 +1,8 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { ArrowRightSquare } from "react-bootstrap-icons";
+import { useNavigate } from "react-router";
 function DashboardOrganizzatore() {
+  const navigate = useNavigate();
   return (
     <div>
       <Container>
@@ -9,7 +11,7 @@ function DashboardOrganizzatore() {
             <Col className="dashboard-element d-flex">
               <Col>Inserisci un nuovo Evento</Col>
               <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                <ArrowRightSquare />
+                <ArrowRightSquare onClick={() => navigate("/registra-evento")} />
               </Col>
             </Col>
           </Col>

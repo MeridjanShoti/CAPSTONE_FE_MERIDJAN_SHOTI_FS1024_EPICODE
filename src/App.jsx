@@ -12,6 +12,7 @@ import RegistraInsegnante from "./component/dashboard/scuole/RegistrazioneInsegn
 import Profile from "./component/profile/Profile";
 import EditProfile from "./component/profile/EditProfile";
 import AdminForm from "./component/login/AdminForm";
+import FormEvento from "./component/dashboard/eventi/crea/FormEvento";
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/edit-profile/:id" element={<EditProfile />} />
           <Route path="/register-admin" element={<AdminForm />} />
+          <Route path="/registra-evento" element={<FormEvento />} />
+          <Route path="/edit-evento/:id" element={<FormEvento />} />
         </Routes>
       </BrowserRouter>
     </>
