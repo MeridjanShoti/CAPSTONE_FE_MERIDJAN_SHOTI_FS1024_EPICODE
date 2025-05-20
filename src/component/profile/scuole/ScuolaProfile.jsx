@@ -97,7 +97,14 @@ function ScuolaProfile() {
                   <p>
                     <strong>Link Social:</strong>
                   </p>
-                  <ul>{scuola.linkSocial && scuola.linkSocial.map((link, index) => <li key={index}>{link}</li>)}</ul>
+                  <ul>
+                    {scuola.linkSocial &&
+                      scuola.linkSocial.map((link, index) => (
+                        <li key={index}>
+                          {<a href={link}>{<a href={link.startsWith("http") ? link : "https://" + link}>{link}</a>}</a>}
+                        </li>
+                      ))}
+                  </ul>
                 </div>
               </Col>
               <Col xs={12} md={6} className="d-flex flex-column align-items-center">

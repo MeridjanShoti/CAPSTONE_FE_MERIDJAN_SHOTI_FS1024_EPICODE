@@ -99,7 +99,11 @@ function OrganizzatoreProfile() {
                   </p>
                   <ul>
                     {organizzatore.linkSocial &&
-                      organizzatore.linkSocial.map((link, index) => <li key={index}>{link}</li>)}
+                      organizzatore.linkSocial.map((link, index) => (
+                        <li key={index}>
+                          <a href={link.startsWith("http") ? link : "https://" + link}>{link}</a>
+                        </li>
+                      ))}
                   </ul>
                 </div>
               </Col>
