@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
+import AcquistaBiglietto from "../../../acquistabiglietti/AcquistaBiglietto";
 
 function EventoDetail() {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ function EventoDetail() {
   const userType = user?.roles || user?.appUser?.roles;
   const [evento, setEvento] = useState(null);
   const [tipoEvento, setTipoEvento] = useState(null);
+  const [modalShow, setModalShow] = useState(false);
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/eventi/${id}`, {
       method: "GET",
@@ -109,16 +111,19 @@ function EventoDetail() {
                 </>
               )}
               {userType && userType.includes("ROLE_USER") && (
-                <Button
-                  variant="primary"
-                  className="mt-3"
-                  onClick={() => {
-                    navigate(`/acquista-biglietto/${id}`);
-                  }}
-                >
-                  {" "}
-                  Acquista Biglietto
-                </Button>
+                <>
+                  <Button
+                    variant="primary"
+                    className="mt-3"
+                    onClick={() => {
+                      setModalShow(true);
+                    }}
+                  >
+                    {" "}
+                    Acquista Biglietto
+                  </Button>
+                  <AcquistaBiglietto show={modalShow} onHide={() => setModalShow(false)} evento={evento} />
+                </>
               )}
               {userType && userType.includes("ROLE_ORGANIZZATORE") && (
                 <Button
