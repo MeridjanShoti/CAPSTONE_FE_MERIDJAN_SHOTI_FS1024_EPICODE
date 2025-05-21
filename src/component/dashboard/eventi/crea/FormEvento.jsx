@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Form } from "react-bootstrap";
+import { Alert, Button, Container, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 
@@ -23,13 +23,16 @@ function FormEvento() {
   const [prezzoBiglietto, setPrezzoBiglietto] = useState("");
   const [locandina, setLocandina] = useState(null);
   const [artistiPartecipanti, setArtistiPartecipanti] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("success");
   useEffect(() => {
     if (userType) {
       if (!userType.includes("ROLE_ADMIN") && !userType.includes("ROLE_ORGANIZZATORE")) {
         navigate("/");
       } else {
         if (id) {
-          fetch(`${apiUrl}/evento/${id}`, {
+          fetch(`${apiUrl}/eventi/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -110,14 +113,31 @@ function FormEvento() {
     })
       .then((res) => res.json())
       .then((data) => {
-        alert(data.message);
+        setAlertMessage("Evento salvato con id " + data.id);
+        setAlertType("success");
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+          navigate("/dashboard/");
+        }, 5000);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setAlertMessage("Evento non salvato");
+        setAlertType("danger");
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 5000);
+      });
   };
   return (
     <>
       <Container>
         <h1 className="text-center metal-mania-regular my-4">{id ? "Modifica evento" : "Crea evento"}</h1>
+        <Alert show={showAlert} variant={alertType}>
+          {" "}
+          {alertMessage}{" "}
+        </Alert>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicNomeEvento">
             <Form.Label>Nome evento</Form.Label>
@@ -228,6 +248,16 @@ function FormEvento() {
               onChange={(e) => setArtistiPartecipanti(e.target.value.split(","))}
             />
           </Form.Group>
+          {locandina && (
+            <div className="mb-3">
+              <img
+                src={locandina}
+                alt="Locandina attuale"
+                className="img-fluid rounded border border-primary"
+                style={{ maxWidth: "200px", height: "auto" }}
+              />
+            </div>
+          )}
           <Form.Group className="mb-3" controlId="formBasicLocandina">
             <Form.Label>Locandina</Form.Label>
             <Form.Control
