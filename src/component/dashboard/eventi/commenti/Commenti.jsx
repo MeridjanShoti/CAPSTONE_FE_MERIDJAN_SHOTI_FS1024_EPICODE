@@ -9,6 +9,7 @@ function Commenti(props) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
   const [update, setUpdate] = useState(0);
+  const [commentiTotali, setCommentiTotali] = useState(0);
   useEffect(() => {
     fetch(
       apiUrl + "/commenti/eventi/" + props.id + "?page=0&size=" + commentiMostrati + "&sort=createdAt&sortDir=desc",
@@ -29,6 +30,7 @@ function Commenti(props) {
       })
       .then((data) => {
         setCommenti(data.content);
+        setCommentiTotali(data.totalElements);
       })
       .catch((error) => {
         console.error(error.message);
@@ -49,7 +51,7 @@ function Commenti(props) {
           <Button
             variant="secondary"
             onClick={() => {
-              setCommentiMostrati(commentiMostrati + 5);
+              if (commentiMostrati < commentiTotali) setCommentiMostrati(commentiMostrati + 5);
             }}
           >
             Mostra di più

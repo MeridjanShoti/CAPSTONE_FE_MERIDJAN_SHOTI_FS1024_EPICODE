@@ -29,7 +29,6 @@ function GestisciEventi() {
           setTotalPages(data.totalPages);
         })
         .catch((error) => {
-          alert(error.message);
           navigate("/");
         });
     }

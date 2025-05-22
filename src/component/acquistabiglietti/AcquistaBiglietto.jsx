@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Container, Form, Modal } from "react-bootstrap";
 
 function AcquistaBiglietto(props) {
   const [numeroCarta, setNumeroCarta] = useState("");
@@ -16,17 +16,13 @@ function AcquistaBiglietto(props) {
       cvv === "123" &&
       new Date(dataScadenza) > new Date().setHours(0, 0, 0, 0)
     ) {
-      fetch("http://localhost:8080/api/acquistaBiglietto", {
+      fetch(apiUrl + "/prenotazioni-eventi/" + props.evento.id, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          numeroCarta: numeroCarta,
-          cvv: cvv,
-          dataScadenza: dataScadenza,
           numeroBiglietti: numeroBiglietti,
-          idEvento: props.evento.id,
         }),
       });
     } else {
@@ -83,12 +79,22 @@ function AcquistaBiglietto(props) {
               required
             />
           </Form.Group>
+          <Container fluid className="d-flex justify-content-between px-0">
+            <Button
+              onClick={() => {
+                props.onHide();
+                setNumeroCarta("");
+                setCvv("");
+                setDataScadenza("");
+                setNumeroBiglietti(1);
+              }}
+            >
+              Annulla
+            </Button>
+            <Button type="submit">Acquista</Button>
+          </Container>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Annulla</Button>
-        <Button onClick={handleSubmit}>Acquista</Button>
-      </Modal.Footer>
     </Modal>
   );
 }
