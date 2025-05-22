@@ -36,6 +36,7 @@ function App() {
           <Route path="/edit-evento/:id" element={<FormEvento />} />
           <Route path="/gestisci-eventi" element={<GestisciEventi />} />
           <Route path="/eventi/:id" element={<EventoDetail />} />
+          <Route path="/utenti/:id" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </>

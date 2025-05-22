@@ -3,6 +3,7 @@ import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import AcquistaBiglietto from "../../../acquistabiglietti/AcquistaBiglietto";
+import Commenti from "../commenti/Commenti";
 
 function EventoDetail() {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ function EventoDetail() {
         <Container fluid>
           <h1 className="text-center metal-mania-regular my-4">{evento?.nomeEvento}</h1>
           <p className="text-center ">{evento?.artistiPartecipanti.join(", ")}</p>
-          <p className="text-center ">Tipo di evento: {evento?.tipoEvento}</p>
+          <p className="text-center ">Tipo di evento: {tipoEvento}</p>
           <Row xs={1} lg={2} className="g-3">
             <Col className="d-flex justify-content-center p-3">
               <img
@@ -139,6 +140,7 @@ function EventoDetail() {
               )}
             </Col>
           </Row>
+          <Commenti id={id} />
         </Container>
       ) : (
         <Spinner animation="border" />

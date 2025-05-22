@@ -7,12 +7,14 @@ function GestisciEventi() {
   const user = useSelector((state) => state.user.user);
   const userType = user?.roles || user?.appUser?.roles;
   const [eventi, setEventi] = useState([]);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const navigate = useNavigate();
   useEffect(() => {
     if (userType && !userType.includes("ROLE_ORGANIZZATORE")) {
       navigate("/");
     } else {
-      fetch(`${import.meta.env.VITE_API_URL}/eventi/my-events`, {
+      fetch(`${import.meta.env.VITE_API_URL}/eventi/my-events?page=${page}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -24,16 +26,38 @@ function GestisciEventi() {
         })
         .then((data) => {
           setEventi(data.content);
+          setTotalPages(data.totalPages);
         })
         .catch((error) => {
           alert(error.message);
           navigate("/");
         });
     }
-  }, [user, userType, navigate]);
+  }, [user, userType, navigate, page]);
   return (
     <>
       <Container>
+        <div className="d-flex justify-content-center my-4">
+          <Button
+            variant="secondary"
+            disabled={page === 0}
+            onClick={() => setPage((prev) => prev - 1)}
+            className="me-2"
+          >
+            Precedente
+          </Button>
+          <span className="align-self-center">
+            Pagina {page + 1} di {totalPages}
+          </span>
+          <Button
+            variant="secondary"
+            disabled={page + 1 >= totalPages}
+            onClick={() => setPage((prev) => prev + 1)}
+            className="ms-2"
+          >
+            Successiva
+          </Button>
+        </div>
         <h1 className="text-center metal-mania-regular my-4">Gestisci Eventi</h1>
         <Row xs={1} md={2} lg={4} className="g-3">
           {eventi &&
@@ -82,6 +106,27 @@ function GestisciEventi() {
               </Col>
             ))}
         </Row>
+        <div className="d-flex justify-content-center my-4">
+          <Button
+            variant="secondary"
+            disabled={page === 0}
+            onClick={() => setPage((prev) => prev - 1)}
+            className="me-2"
+          >
+            Precedente
+          </Button>
+          <span className="align-self-center">
+            Pagina {page + 1} di {totalPages}
+          </span>
+          <Button
+            variant="secondary"
+            disabled={page + 1 >= totalPages}
+            onClick={() => setPage((prev) => prev + 1)}
+            className="ms-2"
+          >
+            Successiva
+          </Button>
+        </div>
       </Container>
     </>
   );
