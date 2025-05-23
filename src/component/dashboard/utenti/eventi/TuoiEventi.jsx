@@ -58,89 +58,91 @@ function TuoiEventi() {
   return (
     <>
       <h1 className="text-center metal-mania-regular my-4">I tuoi eventi</h1>
-      <Row xs={1} md={2} lg={4}>
-        <Col>
-          <Form.Label>Da:</Form.Label>
-          <Form.Control
-            type="date"
-            value={filtro.data1 || ""}
-            onChange={(e) => setFiltro({ ...filtro, data1: e.target.value })}
-          />
-        </Col>
-        <Col>
-          <Form.Label>A:</Form.Label>
-          <Form.Control
-            type="date"
-            value={filtro.data2 || ""}
-            onChange={(e) => setFiltro({ ...filtro, data2: e.target.value })}
-          />
-        </Col>
-        <Col>
-          <Form.Label>Artista:</Form.Label>
-          <Form.Control
-            type="text"
-            value={filtro.artista || ""}
-            onChange={(e) => setFiltro({ ...filtro, artista: e.target.value })}
-          />
-        </Col>
-        <Col>
-          <Form.Label>Nome evento:</Form.Label>
-          <Form.Control
-            type="text"
-            value={filtro.nomeParziale || ""}
-            onChange={(e) => setFiltro({ ...filtro, nomeParziale: e.target.value })}
-          />
-        </Col>
-      </Row>
-      <Row xs={1} md={2} lg={4} className="align-items-end my-4">
-        <Col>
-          <Form.Group controlId="sortBy">
-            <Form.Label>Ordina per:</Form.Label>
-            <Form.Select
-              value={filtro.sort || "dataEvento"}
-              onChange={(e) => setFiltro({ ...filtro, sort: e.target.value })}
-            >
-              <option value="dataEvento">Data evento</option>
-              <option value="dataPrenotazione">Data prenotazione</option>
-            </Form.Select>
-          </Form.Group>
-        </Col>
+      <Container className="bg-secondary my-4 text-white p-3 rounded-3 border border-primary border-3">
+        <Row xs={1} md={2} lg={4}>
+          <Col>
+            <Form.Label>Da:</Form.Label>
+            <Form.Control
+              type="date"
+              value={filtro.data1 || ""}
+              onChange={(e) => setFiltro({ ...filtro, data1: e.target.value })}
+            />
+          </Col>
+          <Col>
+            <Form.Label>A:</Form.Label>
+            <Form.Control
+              type="date"
+              value={filtro.data2 || ""}
+              onChange={(e) => setFiltro({ ...filtro, data2: e.target.value })}
+            />
+          </Col>
+          <Col>
+            <Form.Label>Artista:</Form.Label>
+            <Form.Control
+              type="text"
+              value={filtro.artista || ""}
+              onChange={(e) => setFiltro({ ...filtro, artista: e.target.value })}
+            />
+          </Col>
+          <Col>
+            <Form.Label>Nome evento:</Form.Label>
+            <Form.Control
+              type="text"
+              value={filtro.nomeParziale || ""}
+              onChange={(e) => setFiltro({ ...filtro, nomeParziale: e.target.value })}
+            />
+          </Col>
+        </Row>
+        <Row xs={1} md={2} lg={4} className="align-items-end my-4">
+          <Col>
+            <Form.Group controlId="sortBy">
+              <Form.Label>Ordina per:</Form.Label>
+              <Form.Select
+                value={filtro.sort || "dataEvento"}
+                onChange={(e) => setFiltro({ ...filtro, sort: e.target.value })}
+              >
+                <option value="dataEvento">Data evento</option>
+                <option value="dataPrenotazione">Data prenotazione</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
 
-        <Col>
-          <Form.Group controlId="sortDir">
-            <Form.Label>Direzione:</Form.Label>
-            <Form.Select
-              value={filtro.sortDir || "desc"}
-              onChange={(e) => setFiltro({ ...filtro, sortDir: e.target.value })}
-            >
-              <option value="desc">Decrescente</option>
-              <option value="asc">Crescente</option>
-            </Form.Select>
-          </Form.Group>
-        </Col>
+          <Col>
+            <Form.Group controlId="sortDir">
+              <Form.Label>Direzione:</Form.Label>
+              <Form.Select
+                value={filtro.sortDir || "desc"}
+                onChange={(e) => setFiltro({ ...filtro, sortDir: e.target.value })}
+              >
+                <option value="desc">Decrescente</option>
+                <option value="asc">Crescente</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
 
-        <Col>
-          <Form.Group controlId="pageSize">
-            <Form.Label>Eventi per pagina:</Form.Label>
-            <Form.Select
-              value={filtro.size || 10}
-              onChange={(e) => setFiltro({ ...filtro, size: parseInt(e.target.value), page: 0 })}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </Form.Select>
-          </Form.Group>
-        </Col>
-        <Col>
-          <Form.Label>Solo futuri:</Form.Label>
-          <Form.Check
-            type="checkbox"
-            checked={filtro.soloFuturi || true}
-            onChange={(e) => setFiltro({ ...filtro, soloFuturi: e.target.checked })}
-          />
-        </Col>
-      </Row>
+          <Col>
+            <Form.Group controlId="pageSize">
+              <Form.Label>Eventi per pagina:</Form.Label>
+              <Form.Select
+                value={filtro.size || 10}
+                onChange={(e) => setFiltro({ ...filtro, size: parseInt(e.target.value), page: 0 })}
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Label>Solo futuri:</Form.Label>
+            <Form.Check
+              type="checkbox"
+              checked={filtro.soloFuturi}
+              onChange={(e) => setFiltro({ ...filtro, soloFuturi: e.target.checked })}
+            />
+          </Col>
+        </Row>
+      </Container>
 
       <Row className="justify-content-center my-3">
         <Col xs="auto">
