@@ -15,6 +15,7 @@ import AdminForm from "./component/login/AdminForm";
 import FormEvento from "./component/dashboard/eventi/crea/FormEvento";
 import GestisciEventi from "./component/dashboard/eventi/gestisci/GestisciEventi";
 import EventoDetail from "./component/dashboard/eventi/dettaglio/EventoDetail";
+import TuoiEventi from "./component/dashboard/utenti/eventi/TuoiEventi";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/gestisci-eventi" element={<GestisciEventi />} />
           <Route path="/eventi/:id" element={<EventoDetail />} />
           <Route path="/utenti/:id" element={<Profile />} />
+          <Route path="i-tuoi-eventi" element={<TuoiEventi />} />
         </Routes>
       </BrowserRouter>
     </>

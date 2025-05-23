@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
+import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import AcquistaBiglietto from "../../../acquistabiglietti/AcquistaBiglietto";
@@ -13,6 +13,9 @@ function EventoDetail() {
   const [evento, setEvento] = useState(null);
   const [tipoEvento, setTipoEvento] = useState(null);
   const [modalShow, setModalShow] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("success");
+  const [showAlert, setShowAlert] = useState(false);
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/eventi/${id}`, {
       method: "GET",
@@ -21,7 +24,7 @@ function EventoDetail() {
       },
     })
       .then((res) => {
-        if (!res.ok) throw new Error("Errore nel recupero dell'organizzatore");
+        if (!res.ok) navigate("/");
         return res.json();
       })
       .then((data) => {
@@ -56,7 +59,36 @@ function EventoDetail() {
       }
     }
   }, [evento]);
-
+  const handleDelete = () => {
+    confirm("Sei sicuro di voler eliminare l'evento?") &&
+      fetch(`${import.meta.env.VITE_API_URL}/eventi/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((res) => {
+          if (res.ok) {
+            setAlertMessage("Evento eliminato con successo");
+            setAlertType("success");
+            setShowAlert(true);
+            setTimeout(() => {
+              setShowAlert(false);
+              navigate("/gestisci-eventi");
+            }, 5000);
+          } else {
+            throw new Error("Errore nell'eliminazione dell'evento");
+          }
+        })
+        .catch((error) => {
+          setAlertMessage(error.message);
+          setAlertType("danger");
+          setShowAlert(true);
+          setTimeout(() => {
+            setShowAlert(false);
+          }, 5000);
+        });
+  };
   return (
     <>
       {evento ? (
@@ -127,16 +159,27 @@ function EventoDetail() {
                 </>
               )}
               {userType && userType.includes("ROLE_ORGANIZZATORE") && (
-                <Button
-                  variant="primary"
-                  className="mt-3"
-                  onClick={() => {
-                    navigate(`/edit-evento/${id}`);
-                  }}
-                >
-                  {" "}
-                  Modifica Evento
-                </Button>
+                <div className="d-flex flex-column">
+                  <div className="d-flex  justify-content-between align-items-center w-100">
+                    <Button
+                      variant="primary"
+                      className="mt-3"
+                      onClick={() => {
+                        navigate(`/edit-evento/${id}`);
+                      }}
+                    >
+                      {" "}
+                      Modifica Evento
+                    </Button>
+                    <Button variant="danger" className="mt-3 border border-primary border-2" onClick={handleDelete}>
+                      {" "}
+                      Annulla Evento
+                    </Button>
+                  </div>
+                  <Alert show={showAlert} variant={alertType} className="mt-3">
+                    {alertMessage}
+                  </Alert>
+                </div>
               )}
             </Col>
           </Row>

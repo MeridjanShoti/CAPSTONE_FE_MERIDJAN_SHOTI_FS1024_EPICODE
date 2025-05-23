@@ -1,6 +1,8 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { ArrowRightSquare } from "react-bootstrap-icons";
+import { useNavigate } from "react-router";
 function DashboardUtenti() {
+  const navigate = useNavigate();
   return (
     <div>
       <div>
@@ -18,7 +20,7 @@ function DashboardUtenti() {
               <Col className="dashboard-element d-flex">
                 <Col>I tuoi eventi</Col>
                 <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                  <ArrowRightSquare />
+                  <ArrowRightSquare onClick={() => navigate("/i-tuoi-eventi")} />
                 </Col>
               </Col>
             </Col>

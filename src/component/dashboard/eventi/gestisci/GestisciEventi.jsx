@@ -21,7 +21,7 @@ function GestisciEventi() {
         },
       })
         .then((res) => {
-          if (!res.ok) throw new Error("Errore nel recupero dell'organizzatore");
+          if (!res.ok) navigate("/");
           return res.json();
         })
         .then((data) => {
