@@ -3,7 +3,7 @@ import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { QrCode } from "react-bootstrap-icons";
 import QRCode from "react-qr-code";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 
 function PrenotazioneDetail() {
   const user = useSelector((state) => state.user.user);
@@ -41,8 +41,20 @@ function PrenotazioneDetail() {
                 <img src={prenotazione?.evento.locandina} alt="locandina" className="img-fluid" />
               </Col>
               <Col>
-                <h3 className="text-center my-3 metal-mania-regular">{prenotazione?.evento.nomeEvento}</h3>
-                <p className="text-center">by {prenotazione?.evento.organizzatore.ragioneSociale}</p>
+                <h3 className="text-center my-3 metal-mania-regular">
+                  <Link to={`/eventi/${prenotazione?.evento.id}`} className="text-white text-decoration-none">
+                    {prenotazione?.evento.nomeEvento}
+                  </Link>
+                </h3>
+                <p className="text-center">
+                  by{" "}
+                  <Link
+                    to={`/organizzatori/${prenotazione?.evento.organizzatore.id}`}
+                    className="text-white text-decoration-none"
+                  >
+                    {prenotazione?.evento.organizzatore.ragioneSociale}
+                  </Link>
+                </p>
                 <h4 className="my-3 text-center">
                   <strong>{prenotazione?.evento.artistiPartecipanti.join(", ")}</strong>
                 </h4>
