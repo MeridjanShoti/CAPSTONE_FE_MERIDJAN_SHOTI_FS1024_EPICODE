@@ -24,7 +24,6 @@ function InsegnanteProfile() {
           setInsegnante(data);
         })
         .catch((error) => {
-          alert(error.message);
           navigate("/");
         });
     } else {

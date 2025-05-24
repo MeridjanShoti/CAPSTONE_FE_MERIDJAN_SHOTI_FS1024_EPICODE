@@ -26,7 +26,6 @@ function UtenteProfile() {
           setUtente(data);
         })
         .catch((error) => {
-          alert(error.message);
           navigate("/");
         });
     } else {

@@ -24,7 +24,6 @@ function ScuolaProfile() {
           setScuola(data);
         })
         .catch((error) => {
-          alert(error.message);
           navigate("/");
         });
     } else {
