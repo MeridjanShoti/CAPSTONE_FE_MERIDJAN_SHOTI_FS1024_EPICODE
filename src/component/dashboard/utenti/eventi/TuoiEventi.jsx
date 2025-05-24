@@ -179,52 +179,54 @@ function TuoiEventi() {
         </Container>
       ) : (
         <>
-          <Row xs={1} md={2} lg={4} className="g-3">
-            {prenotazioni.map((prenotazione) => (
-              <Col key={prenotazione.id} className="card m-2">
-                <Card style={{ height: "400px" }}>
-                  <Card.Img
-                    variant="top"
-                    src={prenotazione.evento.locandina}
-                    alt={prenotazione.evento.nomeEvento}
-                    style={{ height: "200px", objectFit: "cover", objectPosition: "center" }}
-                  />
-                  <Card.Body className="d-flex flex-column">
-                    <Card.Title
-                      style={{
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {prenotazione.evento.nomeEvento}
-                    </Card.Title>
-                    <Card.Text
-                      style={{
-                        maxHeight: "70px",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        display: "-webkit-box",
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: "vertical",
-                      }}
-                    >
-                      {prenotazione.evento.dataEvento} - {prenotazione.evento.citta}
-                      <br />
-                      Artisti partecipanti: {prenotazione.evento.artistiPartecipanti.join(", ")}
-                    </Card.Text>
-                    <Button
-                      variant="primary"
-                      className="w-100 mt-auto"
-                      onClick={() => navigate(`/prenotazioni/${prenotazione.id}`)}
-                    >
-                      Dettagli
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+          <Container>
+            <Row xs={1} md={2} lg={4} className="g-3">
+              {prenotazioni.map((prenotazione) => (
+                <Col key={prenotazione.id}>
+                  <Card style={{ height: "400px" }}>
+                    <Card.Img
+                      variant="top"
+                      src={prenotazione.evento.locandina}
+                      alt={prenotazione.evento.nomeEvento}
+                      style={{ height: "200px", objectFit: "cover", objectPosition: "center" }}
+                    />
+                    <Card.Body className="d-flex flex-column">
+                      <Card.Title
+                        style={{
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {prenotazione.evento.nomeEvento}
+                      </Card.Title>
+                      <Card.Text
+                        style={{
+                          maxHeight: "70px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                        }}
+                      >
+                        {prenotazione.evento.dataEvento} - {prenotazione.evento.citta}
+                        <br />
+                        Artisti partecipanti: {prenotazione.evento.artistiPartecipanti.join(", ")}
+                      </Card.Text>
+                      <Button
+                        variant="primary"
+                        className="w-100 mt-auto"
+                        onClick={() => navigate(`/prenotazioni-eventi/${prenotazione.id}`)}
+                      >
+                        Dettagli
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </Container>
         </>
       )}
     </>

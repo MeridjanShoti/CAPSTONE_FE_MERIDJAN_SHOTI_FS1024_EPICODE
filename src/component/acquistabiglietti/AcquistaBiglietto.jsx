@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { Button, Container, Form, Modal } from "react-bootstrap";
+import { Alert, Button, Container, Form, Modal } from "react-bootstrap";
 
 function AcquistaBiglietto(props) {
   const [numeroCarta, setNumeroCarta] = useState("");
   const [cvv, setCvv] = useState("");
   const [dataScadenza, setDataScadenza] = useState("");
   const [numeroBiglietti, setNumeroBiglietti] = useState(1);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("success");
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
   const handleSubmit = (e) => {
@@ -25,7 +28,34 @@ function AcquistaBiglietto(props) {
         body: JSON.stringify({
           numeroBiglietti: numeroBiglietti,
         }),
-      });
+      })
+        .then((res) => {
+          if (res.ok) {
+            setAlertMessage("Biglietto acquistato con successo");
+            setAlertType("success");
+            setShowAlert(true);
+            setTimeout(() => {
+              setShowAlert(false);
+              props.onHide();
+              setNumeroCarta("");
+              setCvv("");
+              setDataScadenza("");
+              setNumeroBiglietti(1);
+            }, 5000);
+          } else {
+            return res.json().then((errorData) => {
+              throw new Error(errorData.message);
+            });
+          }
+        })
+        .catch((error) => {
+          setAlertMessage(error.message + " Errore nell'acquisto del biglietto");
+          setAlertType("danger");
+          setShowAlert(true);
+          setTimeout(() => {
+            setShowAlert(false);
+          }, 5000);
+        });
     } else {
       alert("Carta non valida");
     }
@@ -95,6 +125,11 @@ function AcquistaBiglietto(props) {
             <Button type="submit">Acquista</Button>
           </Container>
         </Form>
+        {showAlert && (
+          <Alert className="my-3" variant={alertType}>
+            {alertMessage}
+          </Alert>
+        )}
       </Modal.Body>
     </Modal>
   );

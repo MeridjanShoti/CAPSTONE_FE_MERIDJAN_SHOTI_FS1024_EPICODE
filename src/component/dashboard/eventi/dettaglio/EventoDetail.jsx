@@ -143,7 +143,7 @@ function EventoDetail() {
                   </Row>
                 </>
               )}
-              {userType && userType.includes("ROLE_USER") && (
+              {userType && userType.includes("ROLE_USER") && evento.dataEvento > new Date().toISOString() && (
                 <>
                   <Button
                     variant="primary"
@@ -158,7 +158,7 @@ function EventoDetail() {
                   <AcquistaBiglietto show={modalShow} onHide={() => setModalShow(false)} evento={evento} />
                 </>
               )}
-              {userType && userType.includes("ROLE_ORGANIZZATORE") && (
+              {userType && userType.includes("ROLE_ORGANIZZATORE") && evento.dataEvento > new Date().toISOString() && (
                 <div className="d-flex flex-column">
                   <div className="d-flex  justify-content-between align-items-center w-100">
                     <Button
