@@ -8,8 +8,6 @@ function UserForm() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("success");
-  const [strumenti, setStrumenti] = useState([""]);
-  const [countStrumenti, setCountStrumenti] = useState(0);
   const [utente, setUtente] = useState(null);
   const formRef = useRef(null);
   const navigate = useNavigate();
@@ -39,8 +37,8 @@ function UserForm() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    let avatarUrl = utente.avatar || null;
-    let copertinaUrl = utente.copertina || null;
+    let avatarUrl = utente?.avatar || null;
+    let copertinaUrl = utente?.copertina || null;
 
     if (formData.get("avatar") instanceof File && formData.get("avatar").name) {
       const avatarFormData = new FormData();
@@ -122,7 +120,7 @@ function UserForm() {
 
   return (
     <>
-      {utente && (
+      {
         <Container>
           <h1 className="metal-mania-regular text-center my-3">
             {id ? "Modifica profilo Utente" : "Registra un nuovo Utente"}
@@ -135,19 +133,19 @@ function UserForm() {
           <Form ref={formRef} className="my-3" onSubmit={handleSubmit}>
             <Form.Group controlId="formBasicUsername">
               <Form.Label>Username</Form.Label>
-              <Form.Control type="text" name="username" defaultValue={utente.username || ""} required />
+              <Form.Control type="text" name="username" defaultValue={utente?.username || ""} required />
             </Form.Group>
             <Form.Group controlId="formBasicNome">
               <Form.Label>Nome</Form.Label>
-              <Form.Control type="text" name="nome" defaultValue={utente.nome || ""} required />
+              <Form.Control type="text" name="nome" defaultValue={utente?.nome || ""} required />
             </Form.Group>
             <Form.Group controlId="formBasicCognome">
               <Form.Label>Cognome</Form.Label>
-              <Form.Control type="text" name="cognome" defaultValue={utente.cognome || ""} required />
+              <Form.Control type="text" name="cognome" defaultValue={utente?.cognome || ""} required />
             </Form.Group>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" name="email" defaultValue={utente.email || ""} required />
+              <Form.Control type="email" name="email" defaultValue={utente?.email || ""} required />
             </Form.Group>
             <Form.Group controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
@@ -159,11 +157,11 @@ function UserForm() {
             </Form.Group>
             <Form.Group controlId="formBasicDataNascita">
               <Form.Label>Data di Nascita</Form.Label>
-              <Form.Control type="date" name="dataNascita" defaultValue={utente.dataNascita || ""} />
+              <Form.Control type="date" name="dataNascita" defaultValue={utente?.dataNascita || ""} />
             </Form.Group>
             <Form.Group controlId="formBasicBio">
               <Form.Label>Bio</Form.Label>
-              <Form.Control as="textarea" name="bio" rows={3} defaultValue={utente.bio || ""} />
+              <Form.Control as="textarea" name="bio" rows={3} defaultValue={utente?.bio || ""} />
             </Form.Group>
             <Form.Group controlId="formBasicAvatar" className="my-3">
               <Form.Label>Carica un'immagine del profilo</Form.Label>
@@ -183,7 +181,7 @@ function UserForm() {
             </Button>
           </Form>
         </Container>
-      )}
+      }
     </>
   );
 }

@@ -17,7 +17,7 @@ function OrganizzatoreProfile() {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((res) => {
-          if (!res.ok) throw new Error("Errore nel recupero dell'organizzatore");
+          if (!res.ok) navigate("/");
           return res.json();
         })
         .then((data) => {

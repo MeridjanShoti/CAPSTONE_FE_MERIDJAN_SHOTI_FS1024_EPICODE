@@ -6,10 +6,40 @@ import InsegnanteProfile from "./insegnanti/InsegnanteProfile";
 import OrganizzatoreProfile from "./eventi/OrganizzatoreProfile";
 import SalaProfile from "./sale/SalaProfile";
 import { Spinner } from "react-bootstrap";
+import { useParams } from "react-router";
 
 function Profile() {
   const user = useSelector((state) => state.user.user);
-  const userType = user?.roles || user?.appUser?.roles;
+  const { tipoutente } = useParams();
+  let userType = null;
+
+  if (tipoutente) {
+    switch (tipoutente) {
+      case "admin":
+        userType = "ROLE_ADMIN";
+        break;
+      case "insegnanti":
+        userType = "ROLE_INSEGNANTE";
+        break;
+      case "scuole":
+        userType = "ROLE_SCUOLA";
+        break;
+      case "utenti":
+        userType = "ROLE_USER";
+        break;
+      case "organizzatori":
+        userType = "ROLE_ORGANIZZATORE";
+        break;
+      case "gestori":
+        userType = "ROLE_GESTORE_SP";
+        break;
+      default:
+        userType = "sconosciuto";
+    }
+  } else {
+    userType = user?.roles || user?.appUser?.roles;
+  }
+
   let profile;
   if (!userType) {
     return <Spinner animation="border" variant="primary" className="d-block mx-auto mt-5" />;
