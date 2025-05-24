@@ -53,6 +53,9 @@ function EventoDetail() {
         case "ALTRO":
           setTipoEvento("Altro");
           break;
+        case "MEET_AND_GREET":
+          setTipoEvento("Meet and greet");
+          break;
         default:
           setTipoEvento("Sconosciuto");
           break;
