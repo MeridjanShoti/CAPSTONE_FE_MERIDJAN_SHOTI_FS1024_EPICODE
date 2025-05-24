@@ -17,6 +17,8 @@ import GestisciEventi from "./component/dashboard/eventi/gestisci/GestisciEventi
 import EventoDetail from "./component/dashboard/eventi/dettaglio/EventoDetail";
 import TuoiEventi from "./component/dashboard/utenti/eventi/TuoiEventi";
 import PrenotazioneDetail from "./component/dashboard/utenti/eventi/PrenotazioneDetail";
+import CercaEventi from "./component/dashboard/utenti/eventi/CercaEventi";
+import OrganizzatoreProfile from "./component/profile/eventi/OrganizzatoreProfile";
 
 function App() {
   return (
@@ -41,6 +43,9 @@ function App() {
           <Route path="/utenti/:id" element={<Profile />} />
           <Route path="/i-tuoi-eventi" element={<TuoiEventi />} />
           <Route path="/prenotazioni-eventi/:id" element={<PrenotazioneDetail />} />
+          <Route path="/cerca-eventi" element={<CercaEventi />} />
+          <Route path="/organizzatori/:id" element={<OrganizzatoreProfile />} />
+          <Route path="/profile/:tipoutente/:id" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import AcquistaBiglietto from "../../../acquistabiglietti/AcquistaBiglietto";
 import Commenti from "../commenti/Commenti";
 
@@ -94,6 +94,9 @@ function EventoDetail() {
       {evento ? (
         <Container fluid>
           <h1 className="text-center metal-mania-regular my-4">{evento?.nomeEvento}</h1>
+          <p>
+            by <Link to={`/organizzatori/${evento?.organizzatore.id}`}>{evento?.organizzatore.ragioneSociale}</Link>
+          </p>
           <p className="text-center ">{evento?.artistiPartecipanti.join(", ")}</p>
           <p className="text-center ">Tipo di evento: {tipoEvento}</p>
           <Row xs={1} lg={2} className="g-3">

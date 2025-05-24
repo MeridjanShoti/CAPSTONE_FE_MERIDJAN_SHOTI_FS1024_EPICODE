@@ -17,7 +17,7 @@ function CommentoSingolo(props) {
   const [comment, setComment] = useState(props?.commento || null);
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
-  const autoreType = comment?.autore.roles;
+  const autoreType = comment?.autore?.roles || comment?.autore?.appUser?.roles;
   const user = useSelector((state) => state.user.user);
   const [modalShow, setModalShow] = useState(false);
   useEffect(() => {
@@ -76,17 +76,17 @@ function CommentoSingolo(props) {
           <Col xs={1} className="d-flex justify-content-center align-items-center">
             <img
               src={
-                comment.autore.roles.includes("ROLE_USER")
+                autoreType.includes("ROLE_USER")
                   ? utenteNormale
-                  : comment.autore.roles.includes("ROLE_ADMIN")
+                  : autoreType.includes("ROLE_ADMIN")
                   ? utenteAdmin
-                  : comment.autore.roles.includes("ROLE_SCUOLA")
+                  : autoreType.includes("ROLE_SCUOLA")
                   ? utenteScuola
-                  : comment.autore.roles.includes("ROLE_INSEGNANTE")
+                  : autoreType.includes("ROLE_INSEGNANTE")
                   ? utenteInsegnante
-                  : comment.autore.roles.includes("ROLE_ORGANIZZATORE")
+                  : autoreType.includes("ROLE_ORGANIZZATORE")
                   ? utenteOrganizzatore
-                  : comment.autore.roles.includes("ROLE_GESTORE_SP")
+                  : autoreType.includes("ROLE_GESTORE_SP")
                   ? utenteGestore
                   : utenteSconosciuto
               }
@@ -95,7 +95,26 @@ function CommentoSingolo(props) {
             />
           </Col>
           <Col className="commento-singolo border border-secondary border-2 rounded-3 bg-light">
-            <Link to={`/profilo/${comment.autore.id}`} className="text-decoration-none">
+            <Link
+              to={
+                autoreType.includes("ROLE_ADMIN")
+                  ? "#"
+                  : `/profile/${
+                      autoreType.includes("ROLE_USER")
+                        ? "utenti"
+                        : autoreType.includes("ROLE_SCUOLA")
+                        ? "scuole"
+                        : autoreType.includes("ROLE_INSEGNANTE")
+                        ? "insegnanti"
+                        : autoreType.includes("ROLE_ORGANIZZATORE")
+                        ? "organizzatori"
+                        : autoreType.includes("ROLE_GESTORE_SP")
+                        ? "gestori"
+                        : "#"
+                    }/${comment.autore.id}`
+              }
+              className="text-decoration-none"
+            >
               {comment.autore.username}
             </Link>
             <p>{comment.testo}</p>

@@ -100,9 +100,7 @@ function ScuolaProfile() {
                   <ul>
                     {scuola.linkSocial &&
                       scuola.linkSocial.map((link, index) => (
-                        <li key={index}>
-                          {<a href={link}>{<a href={link.startsWith("http") ? link : "https://" + link}>{link}</a>}</a>}
-                        </li>
+                        <li key={index}>{<a href={link.startsWith("http") ? link : "https://" + link}>{link}</a>}</li>
                       ))}
                   </ul>
                 </div>

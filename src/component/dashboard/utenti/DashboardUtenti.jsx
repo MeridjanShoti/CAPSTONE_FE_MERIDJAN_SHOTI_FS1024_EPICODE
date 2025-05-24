@@ -34,9 +34,9 @@ function DashboardUtenti() {
             </Col>
             <Col>
               <Col className="dashboard-element d-flex">
-                <Col>Cerca</Col>
+                <Col>Cerca Eventi</Col>
                 <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                  <ArrowRightSquare />
+                  <ArrowRightSquare onClick={() => navigate("/cerca-eventi")} />
                 </Col>
               </Col>
             </Col>
