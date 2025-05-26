@@ -40,6 +40,22 @@ function DashboardUtenti() {
                 </Col>
               </Col>
             </Col>
+            <Col>
+              <Col className="dashboard-element d-flex">
+                <Col>Cerca Sale Prove</Col>
+                <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
+                  <ArrowRightSquare onClick={() => navigate("/cerca-sale")} />
+                </Col>
+              </Col>
+            </Col>
+            <Col>
+              <Col className="dashboard-element d-flex">
+                <Col>Cerca Corsi</Col>
+                <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
+                  <ArrowRightSquare onClick={() => navigate("/cerca-corsi")} />
+                </Col>
+              </Col>
+            </Col>
           </Row>
         </Container>
       </div>

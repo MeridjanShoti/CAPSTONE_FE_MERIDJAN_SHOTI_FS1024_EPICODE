@@ -90,7 +90,7 @@ function DettaglioSalaProve() {
                 src={sala?.copertinaSala}
                 alt={sala?.nomeSala}
                 className="img-fluid rounded-3 border border-primary border-3"
-                style={{ maxWidth: "100%", height: "auto", display: "block" }}
+                style={{ maxWidth: "100%", height: "auto", objectFit: "cover", objectPosition: "center" }}
               />
             </Col>
             <Col className="p-3">

@@ -22,6 +22,8 @@ import OrganizzatoreProfile from "./component/profile/eventi/OrganizzatoreProfil
 import GestisciSaleProva from "./component/dashboard/sale/gestisci/GestisciSaleProva";
 import DettaglioSalaProve from "./component/dashboard/sale/dettaglio/DettaglioSalaProve";
 import CreaSalaProve from "./component/dashboard/sale/crea/CreaSalaProve";
+import CercaSaleProva from "./component/dashboard/utenti/sale/CercaSaleProva";
+import PrenotaSala from "./component/dashboard/utenti/sale/PrenotaSala";
 
 function App() {
   return (
@@ -53,6 +55,8 @@ function App() {
           <Route path="/sale-prove/:id" element={<DettaglioSalaProve />} />
           <Route path="/edit-sala/:id" element={<CreaSalaProve />} />
           <Route path="/inserisci-sala" element={<CreaSalaProve />} />
+          <Route path="/cerca-sale" element={<CercaSaleProva />} />
+          <Route path="/prenota-sala/:id" element={<PrenotaSala />} />
         </Routes>
       </BrowserRouter>
     </>
