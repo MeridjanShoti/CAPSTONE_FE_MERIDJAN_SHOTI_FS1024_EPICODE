@@ -28,7 +28,7 @@ function DashboardUtenti() {
               <Col className="dashboard-element d-flex">
                 <Col>Le tue prenotazioni in sala prove</Col>
                 <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                  <ArrowRightSquare />
+                  <ArrowRightSquare onClick={() => navigate("/tue-prenotazioni-sale")} />
                 </Col>
               </Col>
             </Col>

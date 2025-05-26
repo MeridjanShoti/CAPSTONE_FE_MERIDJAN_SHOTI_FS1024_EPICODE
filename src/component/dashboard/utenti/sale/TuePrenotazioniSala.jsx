@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import { PersonFill } from "react-bootstrap-icons";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
-
-function TuoiEventi() {
+function TuePrenotazioniSala() {
   const user = useSelector((state) => state.user.user);
   const userType = user?.roles || user?.appUser?.roles;
   const [prenotazioni, setPrenotazioni] = useState([]);
@@ -11,12 +11,11 @@ function TuoiEventi() {
   const [filtro, setFiltro] = useState({
     data1: null,
     data2: null,
-    artista: null,
     soloFuturi: true,
-    nomeParziale: null,
+    nomeSala: null,
     page: 0,
     size: 10,
-    sort: "dataEvento",
+    sort: "inizio",
     sortDir: "desc",
   });
   const navigate = useNavigate();
@@ -31,14 +30,14 @@ function TuoiEventi() {
         params.append(key, value);
       }
     });
-    fetch(`${import.meta.env.VITE_API_URL}/prenotazioni-eventi?${params.toString()}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/prenotazioni-sala-prove?${params.toString()}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
       .then((res) => {
-        if (!res.ok) throw new Error("Errore nel recupero dei tuoi eventi");
+        if (!res.ok) throw new Error("Errore nel recupero delle tue prenotazioni");
         return res.json();
       })
       .then((data) => {
@@ -56,7 +55,7 @@ function TuoiEventi() {
 
   return (
     <>
-      <h1 className="text-center metal-mania-regular my-4">I tuoi eventi</h1>
+      <h1 className="text-center metal-mania-regular my-4">Le tue prenotazioni in sala prove</h1>
       <Container className="bg-secondary my-4 text-white p-3 rounded-3 border border-primary border-3">
         <Row xs={1} md={2} lg={4}>
           <Col>
@@ -76,19 +75,11 @@ function TuoiEventi() {
             />
           </Col>
           <Col>
-            <Form.Label>Artista:</Form.Label>
+            <Form.Label>Nome sala:</Form.Label>
             <Form.Control
               type="text"
-              value={filtro.artista || ""}
-              onChange={(e) => setFiltro({ ...filtro, artista: e.target.value })}
-            />
-          </Col>
-          <Col>
-            <Form.Label>Nome evento:</Form.Label>
-            <Form.Control
-              type="text"
-              value={filtro.nomeParziale || ""}
-              onChange={(e) => setFiltro({ ...filtro, nomeParziale: e.target.value })}
+              value={filtro.nomeSala || ""}
+              onChange={(e) => setFiltro({ ...filtro, nomeSala: e.target.value })}
             />
           </Col>
         </Row>
@@ -97,11 +88,11 @@ function TuoiEventi() {
             <Form.Group controlId="sortBy">
               <Form.Label>Ordina per:</Form.Label>
               <Form.Select
-                value={filtro.sort || "dataEvento"}
+                value={filtro.sort || "nomeSala"}
                 onChange={(e) => setFiltro({ ...filtro, sort: e.target.value })}
               >
-                <option value="dataEvento">Data evento</option>
-                <option value="dataPrenotazione">Data prenotazione</option>
+                <option value="nomeSala">Nome</option>
+                <option value="id">Id</option>
               </Form.Select>
             </Form.Group>
           </Col>
@@ -121,7 +112,7 @@ function TuoiEventi() {
 
           <Col>
             <Form.Group controlId="pageSize">
-              <Form.Label>Eventi per pagina:</Form.Label>
+              <Form.Label>Sale per pagina:</Form.Label>
               <Form.Select
                 value={filtro.size || 10}
                 onChange={(e) => setFiltro({ ...filtro, size: parseInt(e.target.value), page: 0 })}
@@ -170,9 +161,9 @@ function TuoiEventi() {
       </Row>
       {!prenotazioni || prenotazioni.length === 0 ? (
         <Container>
-          <h2 className="text-center">Nessun Evento</h2>
-          <p className="text-center">Cerca gli eventi che ti interessano!</p>
-          <Button as={Link} to="/cerca-eventi" variant="primary" className="d-block mx-auto mt-3 text-decoration-none">
+          <h2 className="text-center">Nessuna Prenotazione</h2>
+          <p className="text-center">Cerca sale prove!</p>
+          <Button as={Link} to="/cerca-sale" variant="primary" className="d-block mx-auto mt-3 text-decoration-none">
             DAJE
           </Button>
         </Container>
@@ -185,8 +176,8 @@ function TuoiEventi() {
                   <Card style={{ height: "400px" }}>
                     <Card.Img
                       variant="top"
-                      src={prenotazione.evento.locandina}
-                      alt={prenotazione.evento.nomeEvento}
+                      src={prenotazione.salaProve.copertinaSala}
+                      alt={prenotazione.salaProve.nomeSala}
                       style={{ height: "200px", objectFit: "cover", objectPosition: "center" }}
                     />
                     <Card.Body className="d-flex flex-column">
@@ -197,7 +188,7 @@ function TuoiEventi() {
                           textOverflow: "ellipsis",
                         }}
                       >
-                        {prenotazione.evento.nomeEvento}
+                        {prenotazione.salaProve.nomeSala}
                       </Card.Title>
                       <Card.Text
                         style={{
@@ -209,9 +200,10 @@ function TuoiEventi() {
                           WebkitBoxOrient: "vertical",
                         }}
                       >
-                        {prenotazione.evento.dataEvento} - {prenotazione.evento.citta}
+                        {prenotazione.inizio.slice(11, 16)} - {prenotazione.fine.slice(11, 16)}
                         <br />
-                        Artisti partecipanti: {prenotazione.evento.artistiPartecipanti.join(", ")}
+                        <strong>{prenotazione.inizio.slice(0, 10)}</strong>
+                        <br />x {prenotazione.numMembri} <PersonFill />
                       </Card.Text>
                       <Button
                         variant="primary"
@@ -231,5 +223,4 @@ function TuoiEventi() {
     </>
   );
 }
-
-export default TuoiEventi;
+export default TuePrenotazioniSala;
