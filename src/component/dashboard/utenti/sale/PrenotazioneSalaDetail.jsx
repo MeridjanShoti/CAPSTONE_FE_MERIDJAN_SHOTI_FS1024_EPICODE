@@ -3,15 +3,16 @@ import { Col, Container, Row, Spinner } from "react-bootstrap";
 import QRCode from "react-qr-code";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
-
-function PrenotazioneDetail() {
+function PrenotazioneSalaDetail() {
+  const [inizioDate, setInizioDate] = useState("");
+  const [fineDate, setFineDate] = useState("");
   const user = useSelector((state) => state.user.user);
   const [prenotazione, setPrenotazione] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
   useEffect(() => {
     if (user) {
-      fetch(`${import.meta.env.VITE_API_URL}/prenotazioni-eventi/${id}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/prenotazioni-sala-prove/${id}`, {
         method: "GET",
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
@@ -24,6 +25,8 @@ function PrenotazioneDetail() {
         })
         .then((data) => {
           setPrenotazione(data);
+          setInizioDate(new Date(data.inizio));
+          setFineDate(new Date(data.fine));
         })
         .catch(() => {
           navigate("/");
@@ -37,42 +40,52 @@ function PrenotazioneDetail() {
           <Container className="border border-3 border-primary m-4 rounded-5 overflow-hidden bg-secondary text-white mx-auto">
             <Row xs={1} md={2}>
               <Col className="p-0 bg-primary">
-                <img src={prenotazione?.evento.locandina} alt="locandina" className="img-fluid" />
+                <img src={prenotazione?.salaProve.copertinaSala} alt="copertina sala" className="img-fluid" />
               </Col>
               <Col>
                 <h3 className="text-center my-3 metal-mania-regular">
-                  <Link to={`/eventi/${prenotazione?.evento.id}`} className="text-white text-decoration-none">
-                    {prenotazione?.evento.nomeEvento}
+                  <Link to={`/sale-prove/${prenotazione?.salaProve.id}`} className="text-white text-decoration-none">
+                    {prenotazione?.salaProve.nomeSala}
                   </Link>
                 </h3>
                 <p className="text-center">
                   by{" "}
                   <Link
-                    to={`/organizzatori/${prenotazione?.evento.organizzatore.id}`}
+                    to={`/gestori/${prenotazione?.salaProve.gestoreSala.id}`}
                     className="text-white text-decoration-none"
                   >
-                    {prenotazione?.evento.organizzatore.ragioneSociale}
+                    {prenotazione?.salaProve.gestoreSala.ragioneSociale}
                   </Link>
                 </p>
                 <h4 className="my-3 text-center">
-                  <strong>{prenotazione?.evento.artistiPartecipanti.join(", ")}</strong>
+                  <strong>
+                    {user?.nome} {user?.cognome}
+                  </strong>
                 </h4>
                 <div className="d-flex justify-content-between flex-wrap gap-3">
                   <div className="d-flex flex-column align-items-start justify-content-center">
-                    <h4>{prenotazione?.evento.dataEvento}</h4>
-                    <p>Apertura porte:</p>
-                    <p>{prenotazione?.evento.aperturaPorte.slice(0, 5)}</p>
+                    <h4>{prenotazione?.inizio.slice(0, 10)}</h4>
+                    <p>
+                      {prenotazione?.inizio.slice(11, 16)}-{prenotazione?.fine.slice(11, 16)}
+                    </p>
                   </div>
                   <div className="d-flex flex-column align-items-end justify-content-center">
-                    <h4>{prenotazione?.evento.luogo}</h4>
-                    <p>{prenotazione?.evento.citta}</p>
+                    <h4>{prenotazione?.salaProve.indirizzoSala}</h4>
+                    <p>{prenotazione?.salaProve.citta}</p>
                   </div>
                 </div>
                 <hr className="my-2 text-white" />
-                <p>{prenotazione?.evento.note}</p>
+                <p>{prenotazione?.salaProve.regolamento}</p>
                 <hr className="my-2 text-white" />
-                <p>Numero ingressi: {prenotazione?.numeroBiglietti}</p>
-                <p>Importo totale: {prenotazione?.prezzoPagato} €</p>
+                <p>Numero membri: {prenotazione?.numMembri}</p>
+                <p>Durata: {(fineDate - inizioDate) / (1000 * 60)} min</p>
+                <p>
+                  Importo totale: {((fineDate - inizioDate) / (1000 * 60 * 60)) * prenotazione?.salaProve.prezzoOrario}{" "}
+                  €
+                </p>
+                <p>
+                  <strong>{prenotazione?.pagata ? "PAGATA" : "DA PAGARE"}</strong>{" "}
+                </p>
                 <Container className="d-flex flex-column justify-content-center align-items-center my-4">
                   <QRCode className="border border-3 border-primary" value={prenotazione?.codicePrenotazione} />
                   <p className="mt-3">Codice prenotazione:</p>
@@ -88,4 +101,4 @@ function PrenotazioneDetail() {
     </>
   );
 }
-export default PrenotazioneDetail;
+export default PrenotazioneSalaDetail;

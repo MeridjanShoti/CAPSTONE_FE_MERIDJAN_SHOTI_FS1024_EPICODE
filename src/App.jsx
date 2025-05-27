@@ -25,6 +25,7 @@ import CreaSalaProve from "./component/dashboard/sale/crea/CreaSalaProve";
 import CercaSaleProva from "./component/dashboard/utenti/sale/CercaSaleProva";
 import PrenotaSala from "./component/dashboard/utenti/sale/PrenotaSala";
 import TuePrenotazioniSala from "./component/dashboard/utenti/sale/TuePrenotazioniSala";
+import PrenotazioneSalaDetail from "./component/dashboard/utenti/sale/PrenotazioneSalaDetail";
 
 function App() {
   return (
@@ -59,6 +60,8 @@ function App() {
           <Route path="/cerca-sale" element={<CercaSaleProva />} />
           <Route path="/prenota-sala/:id" element={<PrenotaSala />} />
           <Route path="/tue-prenotazioni-sale" element={<TuePrenotazioniSala />} />
+          <Route path="/profile/:tipoutente" element={<Profile />} />
+          <Route path="/prenotazioni-sale/:id" element={<PrenotazioneSalaDetail />} />
         </Routes>
       </BrowserRouter>
     </>

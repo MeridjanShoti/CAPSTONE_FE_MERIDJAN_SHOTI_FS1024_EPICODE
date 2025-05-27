@@ -208,7 +208,7 @@ function TuePrenotazioniSala() {
                       <Button
                         variant="primary"
                         className="w-100 mt-auto"
-                        onClick={() => navigate(`/prenotazioni-eventi/${prenotazione.id}`)}
+                        onClick={() => navigate(`/prenotazioni-sale/${prenotazione.id}`)}
                       >
                         Dettagli
                       </Button>
