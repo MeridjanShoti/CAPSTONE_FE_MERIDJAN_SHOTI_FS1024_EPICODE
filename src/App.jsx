@@ -28,6 +28,8 @@ import TuePrenotazioniSala from "./component/dashboard/utenti/sale/TuePrenotazio
 import PrenotazioneSalaDetail from "./component/dashboard/utenti/sale/PrenotazioneSalaDetail";
 import SalaProfile from "./component/profile/sale/SalaProfile";
 import ScuolaProfile from "./component/profile/scuole/ScuolaProfile";
+import ModificaPrenotazioneSala from "./component/dashboard/sale/modificaprenotazioni/ModificaPrenotazioneSala";
+import PrenotazioniGestore from "./component/dashboard/sale/prenotazioni/PrenotazioniGestore";
 
 function App() {
   return (
@@ -66,6 +68,8 @@ function App() {
           <Route path="/tue-prenotazioni-sale" element={<TuePrenotazioniSala />} />
           <Route path="/profile/:tipoutente" element={<Profile />} />
           <Route path="/prenotazioni-sale/:id" element={<PrenotazioneSalaDetail />} />
+          <Route path="/modifica-prenotazione-sala/:idPrenotazione" element={<ModificaPrenotazioneSala />} />
+          <Route path="/prenotazioni-gestore" element={<PrenotazioniGestore />} />
         </Routes>
       </BrowserRouter>
     </>

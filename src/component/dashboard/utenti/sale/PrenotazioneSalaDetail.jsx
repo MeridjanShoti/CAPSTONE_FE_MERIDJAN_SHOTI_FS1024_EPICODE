@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import QRCode from "react-qr-code";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
@@ -7,6 +7,7 @@ function PrenotazioneSalaDetail() {
   const [inizioDate, setInizioDate] = useState("");
   const [fineDate, setFineDate] = useState("");
   const user = useSelector((state) => state.user.user);
+  const userType = user?.roles || user?.appUser?.roles;
   const [prenotazione, setPrenotazione] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -92,6 +93,42 @@ function PrenotazioneSalaDetail() {
                   <p className="mb-3 text-center">{prenotazione?.codicePrenotazione}</p>
                 </Container>
               </Col>
+              {userType && userType.includes("ROLE_GESTORE_SP") && (
+                <div className="d-flex flex-column p-0">
+                  <Button
+                    className="border border-3 border-primary"
+                    variant="info"
+                    onClick={() => {
+                      navigate("/modifica-prenotazione-sala/" + prenotazione.id);
+                    }}
+                  >
+                    Modifica Prenotazione
+                  </Button>
+
+                  <Button
+                    variant="danger"
+                    className="border border-3 border-primary"
+                    onClick={() => {
+                      fetch(`${import.meta.env.VITE_API_URL}/prenotazioni-sala-prove/${prenotazione.id}`, {
+                        method: "DELETE",
+                        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                      })
+                        .then((res) => {
+                          if (!res.ok) {
+                            throw new Error("Errore nell'eliminazione della prenotazione");
+                          } else {
+                            navigate("/prenotazioni-gestore");
+                          }
+                        })
+                        .catch((err) => {
+                          alert(err.message);
+                        });
+                    }}
+                  >
+                    Cancella Prenotazione
+                  </Button>
+                </div>
+              )}
             </Row>
           </Container>
         </>

@@ -27,7 +27,7 @@ function DashboardGestore() {
             <Col className="dashboard-element d-flex">
               <Col>Gestisci Le Prenotazioni</Col>
               <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                <ArrowRightSquare />
+                <ArrowRightSquare onClick={() => navigate("/prenotazioni-gestore")} />
               </Col>
             </Col>
           </Col>
