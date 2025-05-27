@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
+import Recensioni from "../recensioni/Recensioni";
 /* import Commenti from "../commenti/Commenti"; */
 function DettaglioSalaProve() {
   const navigate = useNavigate();
@@ -173,7 +174,7 @@ function DettaglioSalaProve() {
               )}
             </Col>
           </Row>
-          {/* <Commenti id={id} /> */}
+          <Recensioni id={id} />
         </Container>
       ) : (
         <Spinner animation="border" />

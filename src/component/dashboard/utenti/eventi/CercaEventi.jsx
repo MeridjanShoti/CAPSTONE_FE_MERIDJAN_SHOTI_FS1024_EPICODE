@@ -191,7 +191,7 @@ function CercaEventi() {
             <Col xs="auto">
               <Button
                 variant="secondary"
-                disabled={filtro.page > elementiTotali / filtro.size - 1}
+                disabled={filtro.page >= Math.ceil(elementiTotali / filtro.size) - 1}
                 onClick={() => {
                   setFiltro({ ...filtro, page: filtro.page + 1 });
                 }}
@@ -278,7 +278,7 @@ function CercaEventi() {
               <Col xs="auto">
                 <Button
                   variant="secondary"
-                  disabled={filtro.page > elementiTotali / filtro.size - 1}
+                  disabled={filtro.page >= Math.ceil(elementiTotali / filtro.size) - 1}
                   onClick={() => {
                     setFiltro({ ...filtro, page: filtro.page + 1 });
                   }}

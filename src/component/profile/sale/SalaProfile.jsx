@@ -12,7 +12,7 @@ function SalaProfile() {
   const navigate = useNavigate();
   useEffect(() => {
     if (id) {
-      fetch(`${apiUrl}/sale/${id}`, {
+      fetch(`${apiUrl}/gestori/${id}`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -29,7 +29,7 @@ function SalaProfile() {
     } else {
       setSala(utente);
     }
-  }, [id, apiUrl, token, utente, navigate]);
+  }, [id, apiUrl, token, utente]);
   const userType = utente?.roles || utente?.appUser?.roles;
   if (!userType) {
     return <Spinner animation="border" variant="primary" className="d-block mx-auto mt-5" />;

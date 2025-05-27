@@ -187,7 +187,14 @@ function PrenotaSala() {
                       placeholder="Inserisci il numero di membri"
                     />
                   </Form.Group>
-
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={usaPagamentoInStruttura}
+                      onChange={(e) => setUsaPagamentoInStruttura(e.target.checked)}
+                    />{" "}
+                    Paga in struttura
+                  </label>
                   <div className="d-flex justify-content-end">
                     <Button
                       variant="primary"
@@ -236,14 +243,6 @@ function PrenotaSala() {
                     }
                   }}
                 />
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={usaPagamentoInStruttura}
-                    onChange={(e) => setUsaPagamentoInStruttura(e.target.checked)}
-                  />{" "}
-                  Paga in struttura
-                </label>
               </div>
             </Col>
             <Col xs={12} lg={6} className="mx-auto p-4">

@@ -48,14 +48,16 @@ function Commenti(props) {
         })}
         <ScriviCommento id={props.id} setUpdate={setUpdate} mode="new" />
         <div className="d-flex justify-content-center gap-2">
-          <Button
-            variant="secondary"
-            onClick={() => {
-              if (commentiMostrati < commentiTotali) setCommentiMostrati(commentiMostrati + 5);
-            }}
-          >
-            Mostra di più
-          </Button>
+          {commentiTotali > commentiMostrati && (
+            <Button
+              variant="secondary"
+              onClick={() => {
+                if (commentiMostrati < commentiTotali) setCommentiMostrati(commentiMostrati + 5);
+              }}
+            >
+              Mostra di più
+            </Button>
+          )}
           {commentiMostrati > 5 && (
             <Button
               variant="secondary"
