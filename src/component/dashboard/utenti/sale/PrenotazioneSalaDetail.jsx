@@ -91,6 +91,18 @@ function PrenotazioneSalaDetail() {
                   <QRCode className="border border-3 border-primary" value={prenotazione?.codicePrenotazione} />
                   <p className="mt-3">Codice prenotazione:</p>
                   <p className="mb-3 text-center">{prenotazione?.codicePrenotazione}</p>
+                  <p>
+                    Per eventuali modifiche{" "}
+                    {prenotazione?.salaProve.gestoreSala.email
+                      ? `scrivere a ${prenotazione?.salaProve.gestoreSala.email}`
+                      : ""}{" "}
+                    {prenotazione?.salaProve.gestoreSala.numeroTelefono && prenotazione?.salaProve.gestoreSala.email
+                      ? "o "
+                      : ""}{" "}
+                    {prenotazione?.salaProve.gestoreSala.numeroTelefono
+                      ? `chiamare al ${prenotazione?.salaProve.gestoreSala.numeroTelefono}`
+                      : ""}
+                  </p>
                 </Container>
               </Col>
               {userType && userType.includes("ROLE_GESTORE_SP") && (
