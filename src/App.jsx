@@ -70,6 +70,7 @@ function App() {
           <Route path="/prenotazioni-sale/:id" element={<PrenotazioneSalaDetail />} />
           <Route path="/modifica-prenotazione-sala/:idPrenotazione" element={<ModificaPrenotazioneSala />} />
           <Route path="/prenotazioni-gestore" element={<PrenotazioniGestore />} />
+          <Route path="/gestisci-prenotazioni/:idSala" element={<PrenotazioniGestore />} />
         </Routes>
       </BrowserRouter>
     </>
