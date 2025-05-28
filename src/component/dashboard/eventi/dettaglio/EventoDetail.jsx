@@ -53,6 +53,9 @@ function EventoDetail() {
         case "ALTRO":
           setTipoEvento("Altro");
           break;
+        case "MEET_AND_GREET":
+          setTipoEvento("Meet and greet");
+          break;
         default:
           setTipoEvento("Sconosciuto");
           break;
@@ -94,8 +97,11 @@ function EventoDetail() {
       {evento ? (
         <Container fluid>
           <h1 className="text-center metal-mania-regular my-4">{evento?.nomeEvento}</h1>
-          <p>
-            by <Link to={`/organizzatori/${evento?.organizzatore.id}`}>{evento?.organizzatore.ragioneSociale}</Link>
+          <p className="text-center">
+            by{" "}
+            <Link to={`/organizzatori/${evento?.organizzatore.id}`} className="text-center">
+              {evento?.organizzatore.ragioneSociale}
+            </Link>
           </p>
           <p className="text-center ">{evento?.artistiPartecipanti.join(", ")}</p>
           <p className="text-center ">Tipo di evento: {tipoEvento}</p>

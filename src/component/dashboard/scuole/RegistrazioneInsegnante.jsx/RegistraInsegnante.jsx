@@ -122,7 +122,7 @@ function RegistraInsegnante() {
         setTimeout(() => {
           setShowAlert(false);
           formRef.current.reset();
-          navigate(id ? `/profile` : "/login");
+          navigate("/dashboard");
           dispatch(fetchUserDetails(token));
         }, 3000);
       }

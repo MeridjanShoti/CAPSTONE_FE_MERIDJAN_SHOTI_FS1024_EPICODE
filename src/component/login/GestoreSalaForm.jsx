@@ -126,7 +126,7 @@ function GestoreSalaForm() {
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
-        navigate(id == user.appUser.id || user.id == id ? "/profile" : "/gestori/" + id);
+        navigate(id == user?.appUser?.id || user?.id == id ? "/" : "/gestori/" + id);
         dispatch(fetchUserDetails(token));
       }, 3000);
     } else {

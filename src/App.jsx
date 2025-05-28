@@ -19,6 +19,17 @@ import TuoiEventi from "./component/dashboard/utenti/eventi/TuoiEventi";
 import PrenotazioneDetail from "./component/dashboard/utenti/eventi/PrenotazioneDetail";
 import CercaEventi from "./component/dashboard/utenti/eventi/CercaEventi";
 import OrganizzatoreProfile from "./component/profile/eventi/OrganizzatoreProfile";
+import GestisciSaleProva from "./component/dashboard/sale/gestisci/GestisciSaleProva";
+import DettaglioSalaProve from "./component/dashboard/sale/dettaglio/DettaglioSalaProve";
+import CreaSalaProve from "./component/dashboard/sale/crea/CreaSalaProve";
+import CercaSaleProva from "./component/dashboard/utenti/sale/CercaSaleProva";
+import PrenotaSala from "./component/dashboard/utenti/sale/PrenotaSala";
+import TuePrenotazioniSala from "./component/dashboard/utenti/sale/TuePrenotazioniSala";
+import PrenotazioneSalaDetail from "./component/dashboard/utenti/sale/PrenotazioneSalaDetail";
+import SalaProfile from "./component/profile/sale/SalaProfile";
+import ScuolaProfile from "./component/profile/scuole/ScuolaProfile";
+import ModificaPrenotazioneSala from "./component/dashboard/sale/modificaprenotazioni/ModificaPrenotazioneSala";
+import PrenotazioniGestore from "./component/dashboard/sale/prenotazioni/PrenotazioniGestore";
 
 function App() {
   return (
@@ -45,7 +56,20 @@ function App() {
           <Route path="/prenotazioni-eventi/:id" element={<PrenotazioneDetail />} />
           <Route path="/cerca-eventi" element={<CercaEventi />} />
           <Route path="/organizzatori/:id" element={<OrganizzatoreProfile />} />
+          <Route path="/gestori/:id" element={<SalaProfile />} />
+          <Route path="/scuole/:id" element={<ScuolaProfile />} />
           <Route path="/profile/:tipoutente/:id" element={<Profile />} />
+          <Route path="/gestisci-sale" element={<GestisciSaleProva />} />
+          <Route path="/sale-prove/:id" element={<DettaglioSalaProve />} />
+          <Route path="/edit-sala/:id" element={<CreaSalaProve />} />
+          <Route path="/inserisci-sala" element={<CreaSalaProve />} />
+          <Route path="/cerca-sale" element={<CercaSaleProva />} />
+          <Route path="/prenota-sala/:id" element={<PrenotaSala />} />
+          <Route path="/tue-prenotazioni-sale" element={<TuePrenotazioniSala />} />
+          <Route path="/profile/:tipoutente" element={<Profile />} />
+          <Route path="/prenotazioni-sale/:id" element={<PrenotazioneSalaDetail />} />
+          <Route path="/modifica-prenotazione-sala/:idPrenotazione" element={<ModificaPrenotazioneSala />} />
+          <Route path="/prenotazioni-gestore" element={<PrenotazioniGestore />} />
         </Routes>
       </BrowserRouter>
     </>

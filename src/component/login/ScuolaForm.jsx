@@ -126,7 +126,7 @@ function ScuolaForm() {
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
-        navigate(id == user.appUser.id || user.id == id ? "/profile" : "/scuole/" + id);
+        navigate(id == user?.appUser?.id || user?.id == id ? "/" : "/scuole/" + id);
         dispatch(fetchUserDetails(token));
       }, 3000);
     } else {

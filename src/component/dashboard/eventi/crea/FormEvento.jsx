@@ -37,7 +37,10 @@ function FormEvento() {
               Authorization: `Bearer ${token}`,
             },
           })
-            .then((res) => res.json())
+            .then((res) => {
+              if (!res.ok) throw new Error("Network response was not ok");
+              return res.json();
+            })
             .then((data) => {
               setNomeEvento(data.nomeEvento);
               setMaxPartecipanti(data.maxPartecipanti);
@@ -244,7 +247,7 @@ function FormEvento() {
             <Form.Control
               type="text"
               placeholder="Inserisci gli artisti partecipanti, separati da virgola"
-              value={artistiPartecipanti}
+              value={artistiPartecipanti.join(",")}
               onChange={(e) => setArtistiPartecipanti(e.target.value.split(","))}
             />
           </Form.Group>

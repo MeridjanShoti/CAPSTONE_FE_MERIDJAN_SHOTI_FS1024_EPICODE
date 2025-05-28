@@ -125,7 +125,7 @@ function OrganizzatoreConcertiForm() {
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
-        navigate(id == user.appUser.id || user.id == id ? "/profile" : "/organizzatori/" + id);
+        navigate(id == user?.appUser?.id || user?.id == id ? "/login" : "/organizzatori/" + id);
         dispatch(fetchUserDetails(token));
       }, 3000);
     } else {
