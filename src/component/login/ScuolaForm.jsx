@@ -27,8 +27,6 @@ function ScuolaForm() {
       const reduxUserId = String(user?.appUser?.id);
 
       if (isEditing && user && id === reduxUserId) {
-        console.log("Stai modificando te stesso (Redux)");
-
         setFormData({
           username: user.appUser.username,
           email: user.email,
@@ -49,8 +47,6 @@ function ScuolaForm() {
         setCountIndirizziSecondari(user.altreSedi?.length ? user.altreSedi.length : 0);
         setCountSocialSecondari(user.linkSocial?.length ? user.linkSocial.length : 0);
       } else if (isEditing) {
-        console.log("Modifica altro utente (via API)");
-
         try {
           const res = await fetch(`${apiUrl}/scuole/${id}`, {
             headers: { Authorization: `Bearer ${token}` },

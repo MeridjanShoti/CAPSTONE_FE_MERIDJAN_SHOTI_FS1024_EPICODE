@@ -30,6 +30,7 @@ import SalaProfile from "./component/profile/sale/SalaProfile";
 import ScuolaProfile from "./component/profile/scuole/ScuolaProfile";
 import ModificaPrenotazioneSala from "./component/dashboard/sale/modificaprenotazioni/ModificaPrenotazioneSala";
 import PrenotazioniGestore from "./component/dashboard/sale/prenotazioni/PrenotazioniGestore";
+import RegistrazioneCorso from "./component/dashboard/scuole/RegistrazioneCorso.jsx/RegistrazioneCorso";
 
 function App() {
   return (
@@ -71,6 +72,8 @@ function App() {
           <Route path="/modifica-prenotazione-sala/:idPrenotazione" element={<ModificaPrenotazioneSala />} />
           <Route path="/prenotazioni-gestore" element={<PrenotazioniGestore />} />
           <Route path="/gestisci-prenotazioni/:idSala" element={<PrenotazioniGestore />} />
+          <Route path="/registra-corso" element={<RegistrazioneCorso />} />
+          <Route path="/edit-corso/:id" element={<RegistrazioneCorso />} />
         </Routes>
       </BrowserRouter>
     </>
