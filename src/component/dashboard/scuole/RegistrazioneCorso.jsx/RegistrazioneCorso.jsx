@@ -27,7 +27,7 @@ function RegistrazioneCorso() {
     strumenti: null,
     maxPartecipanti: "",
     minPartecipanti: "",
-    frequenza: "",
+    giorniLezione: [],
     obiettivi: "",
   });
   const handlesubmit = async (e) => {
@@ -82,7 +82,7 @@ function RegistrazioneCorso() {
             linkLezione: data.linkLezione ? data.linkLezione : "",
             costo: data.costo ? data.costo : "",
             obiettivi: data.obiettivi ? data.obiettivi : "",
-            frequenza: data.frequenza ? data.frequenza : "",
+            giorniLezione: data.giorniLezione ? data.giorniLezione : "",
             minPartecipanti: data.minPartecipanti ? data.minPartecipanti : "",
             maxPartecipanti: data.maxPartecipanti ? data.maxPartecipanti : "",
             dataInizio: data.dataInizio ? data.dataInizio : "",
@@ -219,13 +219,34 @@ function RegistrazioneCorso() {
               placeholder="Inserisci gli obiettivi del corso"
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicFrequenza">
-            <Form.Select onChange={(e) => setCorso({ ...corso, frequenza: e.target.value })} value={corso.frequenza}>
-              <option value={"GIORNALIERA"}>Giornaliera</option>
-              <option value={"BISETTIMANALE"}>2 volte a settimana</option>
-              <option value={"SETTIMANALE"}>1 volta a settimana</option>
-              <option value={"QUINDICINALE"}>1 volta ogni 2 settimane</option>
-            </Form.Select>
+          <Form.Group className="mb-3" controlId="formBasicGiorniLezione">
+            <Form.Label>Giorni Lezione</Form.Label>
+            <div>
+              {[
+                { value: "MONDAY", label: "Lunedì" },
+                { value: "TUESDAY", label: "Martedì" },
+                { value: "WEDNESDAY", label: "Mercoledì" },
+                { value: "THURSDAY", label: "Giovedì" },
+                { value: "FRIDAY", label: "Venerdì" },
+                { value: "SATURDAY", label: "Sabato" },
+                { value: "SUNDAY", label: "Domenica" },
+              ].map(({ value, label }) => (
+                <Form.Check
+                  key={value}
+                  inline
+                  type="checkbox"
+                  label={label}
+                  value={value}
+                  checked={corso.giorniLezione.includes(value)}
+                  onChange={(e) => {
+                    const updatedDays = e.target.checked
+                      ? [...corso.giorniLezione, value]
+                      : corso.giorniLezione.filter((d) => d !== value);
+                    setCorso({ ...corso, giorniLezione: updatedDays });
+                  }}
+                />
+              ))}
+            </div>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicMinPartecipanti">
             <Form.Label>Minimo partecipanti</Form.Label>
