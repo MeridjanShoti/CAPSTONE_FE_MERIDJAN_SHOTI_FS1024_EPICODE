@@ -31,7 +31,7 @@ function GestisciSaleProva() {
           navigate("/");
         });
     }
-  }, [user, userType, navigate, page]);
+  }, [user, userType, page]);
   return (
     <>
       <Container>

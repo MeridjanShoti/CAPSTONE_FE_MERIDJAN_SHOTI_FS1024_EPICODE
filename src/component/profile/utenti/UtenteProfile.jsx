@@ -31,7 +31,7 @@ function UtenteProfile() {
     } else {
       setUtente(utenteLoggato);
     }
-  }, [id, apiUrl, token, utenteLoggato, navigate]);
+  }, [id, apiUrl, token, utenteLoggato]);
 
   return (
     <>

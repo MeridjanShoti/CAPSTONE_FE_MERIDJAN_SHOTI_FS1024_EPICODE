@@ -33,6 +33,9 @@ import PrenotazioniGestore from "./component/dashboard/sale/prenotazioni/Prenota
 import RegistrazioneCorso from "./component/dashboard/scuole/RegistrazioneCorso.jsx/RegistrazioneCorso";
 import CorsoDetail from "./component/dashboard/scuole/dettagliCorso/CorsoDetail";
 import CercaCorsi from "./component/dashboard/utenti/corsi/CercaCorsi";
+import GestisciCorsi from "./component/dashboard/scuole/gestisci/GestisciCorsi";
+import InsegnanteProfile from "./component/profile/insegnanti/InsegnanteProfile";
+import GestisciInsegnanti from "./component/dashboard/scuole/gestisci/GestisciInsegnanti";
 
 function App() {
   return (
@@ -78,6 +81,9 @@ function App() {
           <Route path="/edit-corso/:id" element={<RegistrazioneCorso />} />
           <Route path="/corso/:id" element={<CorsoDetail />} />
           <Route path="/cerca-corsi" element={<CercaCorsi />} />
+          <Route path="/gestisci-corsi" element={<GestisciCorsi />} />
+          <Route path="insegnanti/:id" element={<InsegnanteProfile />} />
+          <Route path="gestisci-insegnanti" element={<GestisciInsegnanti />} />
         </Routes>
       </BrowserRouter>
     </>

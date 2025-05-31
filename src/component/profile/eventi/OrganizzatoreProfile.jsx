@@ -30,7 +30,7 @@ function OrganizzatoreProfile() {
     } else {
       setOrganizzatore(utente);
     }
-  }, [id, apiUrl, token, utente, navigate]);
+  }, [id, apiUrl, token, utente]);
   const userType = utente?.roles || utente?.appUser?.roles;
   if (!userType) {
     return <Spinner animation="border" variant="primary" className="d-block mx-auto mt-5" />;

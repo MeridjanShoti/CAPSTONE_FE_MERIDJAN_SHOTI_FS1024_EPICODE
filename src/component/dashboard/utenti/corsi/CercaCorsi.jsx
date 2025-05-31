@@ -62,7 +62,7 @@ function CercaCorsi() {
           navigate("/");
         });
     }
-  }, [userType, navigate, filtro, apiUrl, token]);
+  }, [userType, filtro, apiUrl, token]);
 
   return (
     <>

@@ -21,7 +21,7 @@ function MyLogin() {
     if (user) {
       navigate("/");
     }
-  }, [user, navigate]);
+  }, [user]);
   useEffect(() => {
     if (error) {
       console.log(error);

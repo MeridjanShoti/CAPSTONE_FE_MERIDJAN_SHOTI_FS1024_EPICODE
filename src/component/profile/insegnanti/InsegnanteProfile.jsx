@@ -12,10 +12,7 @@ function InsegnanteProfile() {
   const navigate = useNavigate();
   useEffect(() => {
     if (id) {
-      fetch(`${apiUrl}/insegnanti/${id}`, {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      fetch(`${apiUrl}/insegnanti/complete/${id}`, { headers: { Authorization: `Bearer ${token}` } })
         .then((res) => {
           if (!res.ok) throw new Error("Errore nel recupero dell'insegnante");
           return res.json();
@@ -23,13 +20,26 @@ function InsegnanteProfile() {
         .then((data) => {
           setInsegnante(data);
         })
-        .catch((error) => {
-          navigate("/");
+        .catch(() => {
+          fetch(`${apiUrl}/insegnanti/${id}`, {
+            method: "GET",
+            headers: { Authorization: `Bearer ${token}` },
+          })
+            .then((res) => {
+              if (!res.ok) throw new Error("Errore nel recupero dell'insegnante");
+              return res.json();
+            })
+            .then((data) => {
+              setInsegnante({ ...data, pagaOraria: null });
+            })
+            .catch((error) => {
+              navigate("/");
+            });
         });
     } else {
       setInsegnante(utente);
     }
-  }, [id, apiUrl, token, utente, navigate]);
+  }, [id, apiUrl, token, utente]);
   const userType = utente?.roles || utente?.appUser?.roles;
   const handleDownload = () => {
     console.log("sono nel download");
@@ -124,8 +134,12 @@ function InsegnanteProfile() {
                     userType.includes("ROLE_ADMIN") ||
                     userType.includes("ROLE_INSEGNANTE")) && (
                     <>
-                      <h4 className="metal-mania-regular">Paga Oraria:</h4>
-                      <p>{insegnante.pagaOraria}</p>
+                      {insegnante.pagaOraria && (
+                        <>
+                          <h4 className="metal-mania-regular">Paga Oraria:</h4>
+                          <p>{insegnante.pagaOraria}</p>
+                        </>
+                      )}
                     </>
                   )}
                   <h4 className="metal-mania-regular">Curriculum:</h4>

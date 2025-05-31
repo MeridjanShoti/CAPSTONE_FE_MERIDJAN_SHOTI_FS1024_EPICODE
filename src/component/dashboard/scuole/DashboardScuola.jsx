@@ -20,7 +20,7 @@ function DashboardScuola() {
             <Col className="dashboard-element d-flex">
               <Col>Gestisci Insegnanti</Col>
               <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                <ArrowRightSquare />
+                <ArrowRightSquare onClick={() => navigate("/gestisci-insegnanti")} />
               </Col>
             </Col>
           </Col>
@@ -36,7 +36,7 @@ function DashboardScuola() {
             <Col className="dashboard-element d-flex">
               <Col>Gestisci Corsi</Col>
               <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                <ArrowRightSquare />
+                <ArrowRightSquare onClick={() => navigate("/gestisci-corsi")} />
               </Col>
             </Col>
           </Col>

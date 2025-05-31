@@ -49,7 +49,7 @@ function PrenotazioniGestore() {
       .catch((error) => {
         navigate("/");
       });
-  }, [user, userType, navigate, filtro]);
+  }, [user, userType, filtro]);
   useEffect(() => {
     if (idSala) {
       setFiltro({ ...filtro, id: idSala });

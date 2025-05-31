@@ -6,12 +6,15 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
+import AssegnaInsegnanteModal from "./AssegnaInsegnanteModal";
 function CorsoDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const user = useSelector((state) => state.user.user);
   const userType = user?.roles || user?.appUser?.roles;
   const [lezioni, setLezioni] = useState([]);
+  const [update, setUpdate] = useState(0);
+  const [showAssegnaInsegnante, setShowAssegnaInsegnante] = useState(false);
   const [corso, setCorso] = useState({
     id: "",
     nomeCorso: "",
@@ -82,7 +85,7 @@ function CorsoDetail() {
             navigate(-1);
           });
       });
-  }, [user, userType, id]);
+  }, [user, userType, id, update]);
   useEffect(() => {
     if (corso.id !== "" && corso.orarioInizio && corso.orarioFine) {
       fetch(`${import.meta.env.VITE_API_URL}/corsi/${id}/date-lezione`, {
@@ -167,6 +170,12 @@ function CorsoDetail() {
                   <p>
                     <strong>Orari</strong> {corso?.orarioInizio.slice(0, 5)} - {corso?.orarioFine.slice(0, 5)}
                   </p>
+                  <p>
+                    A cura di{" "}
+                    <Link to={`/insegnanti/${corso?.insegnante?.id}`}>
+                      {corso?.insegnante?.nome} {corso?.insegnante?.cognome}
+                    </Link>
+                  </p>
                 </Col>
                 <Col>
                   <p>Frequenza:</p>
@@ -213,17 +222,16 @@ function CorsoDetail() {
                       {" "}
                       Modifica corso
                     </Button>
-                    <Button
-                      variant="info"
-                      className="mt-3"
-                      onClick={() => {
-                        navigate(`/gestisci-iscrizioni/${id}`);
-                      }}
-                    >
+                    <Button variant="info" className="mt-3" onClick={() => setShowAssegnaInsegnante(true)}>
                       {" "}
-                      Prenotazioni
+                      Assegna insegnante
                     </Button>
-
+                    <AssegnaInsegnanteModal
+                      show={showAssegnaInsegnante}
+                      id={id}
+                      setUpdate={setUpdate}
+                      onHide={() => setShowAssegnaInsegnante(false)}
+                    />
                     <Button variant="danger" className="mt-3 border border-primary border-2" onClick={handleDelete}>
                       {" "}
                       Elimina Corso

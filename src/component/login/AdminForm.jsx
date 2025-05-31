@@ -21,7 +21,7 @@ function AdminForm() {
         navigate("/");
       }
     }
-  }, [user, userType, navigate]);
+  }, [user, userType]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

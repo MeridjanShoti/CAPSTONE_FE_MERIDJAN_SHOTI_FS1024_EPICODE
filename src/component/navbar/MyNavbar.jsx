@@ -21,7 +21,7 @@ function MyNavbar() {
       dispatch({ type: LOGOUT });
       navigate("/login");
     }
-  }, [token, user, dispatch, navigate]);
+  }, [token, user, dispatch]);
   return (
     <>
       <Navbar expand="lg" className="bg-primary">
