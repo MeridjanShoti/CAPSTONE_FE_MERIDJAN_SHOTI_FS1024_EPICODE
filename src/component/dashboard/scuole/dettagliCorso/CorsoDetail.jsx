@@ -79,7 +79,7 @@ function CorsoDetail() {
             });
           })
           .catch((error) => {
-            console.log(error);
+            navigate(-1);
           });
       });
   }, [user, userType, id]);
@@ -136,7 +136,7 @@ function CorsoDetail() {
   };
   return (
     <>
-      {corso ? (
+      {corso && corso.id !== "" ? (
         <Container fluid>
           <h1 className="text-center metal-mania-regular my-4">{corso?.nomeCorso}</h1>
           <p className="text-center">
@@ -254,7 +254,7 @@ function CorsoDetail() {
           </Row>
         </Container>
       ) : (
-        <Spinner animation="border" />
+        <Spinner animation="border" variant="primary" className="d-block mx-auto mt-5" />
       )}
     </>
   );

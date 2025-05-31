@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes, useNavigate } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./app.scss";
 import MyNavbar from "./component/navbar/MyNavbar";
@@ -32,6 +32,7 @@ import ModificaPrenotazioneSala from "./component/dashboard/sale/modificaprenota
 import PrenotazioniGestore from "./component/dashboard/sale/prenotazioni/PrenotazioniGestore";
 import RegistrazioneCorso from "./component/dashboard/scuole/RegistrazioneCorso.jsx/RegistrazioneCorso";
 import CorsoDetail from "./component/dashboard/scuole/dettagliCorso/CorsoDetail";
+import CercaCorsi from "./component/dashboard/utenti/corsi/CercaCorsi";
 
 function App() {
   return (
@@ -76,6 +77,7 @@ function App() {
           <Route path="/registra-corso" element={<RegistrazioneCorso />} />
           <Route path="/edit-corso/:id" element={<RegistrazioneCorso />} />
           <Route path="/corso/:id" element={<CorsoDetail />} />
+          <Route path="/cerca-corsi" element={<CercaCorsi />} />
         </Routes>
       </BrowserRouter>
     </>
