@@ -20,9 +20,9 @@ function CorsoDetail() {
     nomeCorso: "",
     strumenti: [],
     scuola: null,
-    partecipanti: [],
     maxPartecipanti: "",
     minPartecipanti: "",
+    partecipanti: [],
     giorniLezione: [],
     obiettivi: "",
     livello: "",
@@ -48,6 +48,32 @@ function CorsoDetail() {
     { eng: "SATURDAY", ita: "Sabato" },
     { eng: "SUNDAY", ita: "Domenica" },
   ];
+  const handleIscrizione = () => {
+    fetch(`${import.meta.env.VITE_API_URL}/iscrizioni/${id}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Iscrizione fallita");
+        setAlertMessage("Iscrizione effettuata con successo");
+        setAlertType("success");
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+          setUpdate(update + 1);
+        }, 3000);
+      })
+      .catch((error) => {
+        setAlertMessage(error.message);
+        setAlertType("danger");
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
+      });
+  };
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/corsi/complete/${id}`, {
       method: "GET",
@@ -201,7 +227,7 @@ function CorsoDetail() {
                     variant="primary"
                     className="mt-3"
                     onClick={() => {
-                      navigate(`/corsi/iscriviti/${id}`);
+                      handleIscrizione();
                     }}
                   >
                     {" "}

@@ -5,6 +5,7 @@ import ScriviRecensione from "./ScriviRecensione";
 import { useSelector } from "react-redux";
 function Recensioni(props) {
   const [recensioni, setRecensioni] = useState([]);
+  const [media, setMedia] = useState(null);
   const [recensioniMostrate, setRecensioniMostrate] = useState(5);
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
@@ -38,6 +39,19 @@ function Recensioni(props) {
       .then((data) => {
         setRecensioni(data.content);
         setRecensioniTotali(data.totalElements);
+        fetch(apiUrl + "/recensioni-sala/media/" + props.id, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            setMedia(data.media);
+          })
+          .catch((error) => {
+            console.error(error.message);
+          });
       })
       .catch((error) => {
         console.error(error.message);
@@ -47,9 +61,10 @@ function Recensioni(props) {
   return (
     <>
       <Container fluid className="d-flex flex-column border border-2 rounded border-secondary bg-primary p-2 my-3">
-        <h3 className="text-center my-3 p-2 bg-secondary metal-mania-regular text-white rounded-3 border border-2 border-light">
-          Recensioni:
-        </h3>
+        <div className="text-center my-3 p-2 bg-secondary text-white rounded-3 border border-2 border-light">
+          <h3 className="metal-mania-regular">Recensioni</h3>
+          {media && <p>Media recensioni: {media.toFixed(2)}/5</p>}
+        </div>
         {recensioni.map((recensione) => {
           return <RecensioneSingola key={recensione.id} recensione={recensione} setUpdate={setUpdate} />;
         })}

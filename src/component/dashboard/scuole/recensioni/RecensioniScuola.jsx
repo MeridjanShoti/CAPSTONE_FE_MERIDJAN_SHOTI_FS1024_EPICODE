@@ -10,6 +10,7 @@ function RecensioniScuola(props) {
   const token = localStorage.getItem("token");
   const [update, setUpdate] = useState(0);
   const [recensioniTotali, setRecensioniTotali] = useState(0);
+  const [media, setMedia] = useState(null);
   const user = useSelector((state) => state.user.user);
   const userType = user?.roles || user?.appUser?.roles;
   useEffect(() => {
@@ -38,6 +39,19 @@ function RecensioniScuola(props) {
       .then((data) => {
         setRecensioni(data.content);
         setRecensioniTotali(data.totalElements);
+        fetch(apiUrl + "/recensioni-scuola/media/" + props.id, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            setMedia(data.media);
+          })
+          .catch((error) => {
+            console.error(error.message);
+          });
       })
       .catch((error) => {
         console.error(error.message);
@@ -47,9 +61,10 @@ function RecensioniScuola(props) {
   return (
     <>
       <Container fluid className="d-flex flex-column border border-2 rounded border-secondary bg-primary p-2 my-3">
-        <h3 className="text-center my-3 p-2 bg-secondary metal-mania-regular text-white rounded-3 border border-2 border-light">
-          Recensioni:
-        </h3>
+        <div className="text-center my-3 p-2 bg-secondary text-white rounded-3 border border-2 border-light">
+          <h3 className="metal-mania-regular">Recensioni</h3>
+          {media && <p>Media recensioni: {media.toFixed(2)}/5</p>}
+        </div>
         {recensioni.map((recensione) => {
           return <RecensioneScuolaSingola key={recensione.id} recensione={recensione} setUpdate={setUpdate} />;
         })}

@@ -14,7 +14,7 @@ function AssegnaInsegnanteModal(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch(apiUrl + "/corsi/assegna-insegnante/" + props.id + "/" + insegnante, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
