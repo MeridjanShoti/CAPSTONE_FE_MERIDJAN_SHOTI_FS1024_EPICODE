@@ -36,6 +36,7 @@ import CercaCorsi from "./component/dashboard/utenti/corsi/CercaCorsi";
 import GestisciCorsi from "./component/dashboard/scuole/gestisci/GestisciCorsi";
 import InsegnanteProfile from "./component/profile/insegnanti/InsegnanteProfile";
 import GestisciInsegnanti from "./component/dashboard/scuole/gestisci/GestisciInsegnanti";
+import TuoiCorsi from "./component/dashboard/utenti/corsi/TuoiCorsi";
 
 function App() {
   return (
@@ -82,8 +83,9 @@ function App() {
           <Route path="/corso/:id" element={<CorsoDetail />} />
           <Route path="/cerca-corsi" element={<CercaCorsi />} />
           <Route path="/gestisci-corsi" element={<GestisciCorsi />} />
-          <Route path="insegnanti/:id" element={<InsegnanteProfile />} />
-          <Route path="gestisci-insegnanti" element={<GestisciInsegnanti />} />
+          <Route path="/insegnanti/:id" element={<InsegnanteProfile />} />
+          <Route path="/gestisci-insegnanti" element={<GestisciInsegnanti />} />
+          <Route path="/tuoi-corsi" element={<TuoiCorsi />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -7,6 +7,7 @@ import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
 import AssegnaInsegnanteModal from "./AssegnaInsegnanteModal";
+import PagaCorsoModal from "./PagaCorsoModal";
 function CorsoDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -15,6 +16,10 @@ function CorsoDetail() {
   const [lezioni, setLezioni] = useState([]);
   const [update, setUpdate] = useState(0);
   const [showAssegnaInsegnante, setShowAssegnaInsegnante] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [iscrizione, setIscrizione] = useState(null);
+  const [mostraValutazioni, setMostraValutazioni] = useState(false);
+  const [mostraPresenze, setMostraPresenze] = useState(false);
   const [corso, setCorso] = useState({
     id: "",
     nomeCorso: "",
@@ -48,32 +53,7 @@ function CorsoDetail() {
     { eng: "SATURDAY", ita: "Sabato" },
     { eng: "SUNDAY", ita: "Domenica" },
   ];
-  const handleIscrizione = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/iscrizioni/${id}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Iscrizione fallita");
-        setAlertMessage("Iscrizione effettuata con successo");
-        setAlertType("success");
-        setShowAlert(true);
-        setTimeout(() => {
-          setShowAlert(false);
-          setUpdate(update + 1);
-        }, 3000);
-      })
-      .catch((error) => {
-        setAlertMessage(error.message);
-        setAlertType("danger");
-        setShowAlert(true);
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000);
-      });
-  };
+
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/corsi/complete/${id}`, {
       method: "GET",
@@ -89,6 +69,22 @@ function CorsoDetail() {
         setCorso({
           ...data,
         });
+        fetch(`${import.meta.env.VITE_API_URL}/iscrizioni/corso/${id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+          .then((res) => {
+            if (!res.ok) throw new Error("Secondo fetch fallita");
+            return res.json();
+          })
+          .then((data) => {
+            setIscrizione(data);
+          })
+          .catch((error) => {
+            console.error("Errore nel recupero delle iscrizioni:", error);
+          });
       })
       .catch(() => {
         fetch(`${import.meta.env.VITE_API_URL}/corsi/${id}`, {
@@ -177,6 +173,16 @@ function CorsoDetail() {
             )}
           </p>
           <p className="text-center ">Massimo Partecipanti: {corso?.maxPartecipanti} persone</p>
+          <p className="text-center ">
+            Stato Corso:{" "}
+            <strong>
+              {corso?.statoCorso === "IN_PROGRAMMA"
+                ? "In programma"
+                : corso?.statoCorso === "IN_CORSO"
+                ? "In corso"
+                : "Terminato"}
+            </strong>
+          </p>
 
           <Row xs={1} lg={2} className="g-3">
             <Col className="d-flex justify-content-center p-3">
@@ -218,21 +224,44 @@ function CorsoDetail() {
               </Row>
               <p className="bg-secondary text-white p-3 border border-primary border-3 rounded-3">{corso?.note}</p>
               <hr />
+              <h4 className="metal-mania-regular my-3 text-center">Strumenti</h4>
+              <p className="text-center">{corso?.strumenti.join(", ")}</p>
+              <hr />
               <h4 className="metal-mania-regular my-3 text-center">Obiettivi Del Corso</h4>
               <p>{corso?.obiettivi}</p>
+              <hr />
+              {corso?.linkLezione && (
+                <>
+                  <h4 className="metal-mania-regular my-3 text-center">Link della lezione</h4>
+                  <p className="text-center">
+                    <a
+                      href={corso.linkLezione.startsWith("http") ? corso?.linkLezione : "https://" + corso?.linkLezione}
+                    >
+                      {corso?.linkLezione}
+                    </a>
+                  </p>
+                </>
+              )}
 
-              {userType && userType.includes("ROLE_USER") && (
+              {userType && userType.includes("ROLE_USER") && corso.linkLezione === null && (
                 <>
                   <Button
                     variant="primary"
                     className="mt-3"
                     onClick={() => {
-                      handleIscrizione();
+                      setShowModal(true);
                     }}
                   >
                     {" "}
                     Iscriviti
                   </Button>
+                  <PagaCorsoModal
+                    show={showModal}
+                    id={id}
+                    corso={corso}
+                    setUpdate={setUpdate}
+                    onHide={() => setShowModal(false)}
+                  />
                 </>
               )}
               {userType && userType.includes("ROLE_SCUOLA") && corso?.scuola && user.id === corso?.scuola.id && (
@@ -256,6 +285,7 @@ function CorsoDetail() {
                       show={showAssegnaInsegnante}
                       id={id}
                       setUpdate={setUpdate}
+                      insegnante={corso?.insegnante}
                       onHide={() => setShowAssegnaInsegnante(false)}
                     />
                     <Button variant="danger" className="mt-3 border border-primary border-2" onClick={handleDelete}>
@@ -286,6 +316,76 @@ function CorsoDetail() {
               )}
             </Col>
           </Row>
+          {iscrizione && (iscrizione?.presenze.length > 0 || iscrizione?.valutazioni.length > 0) && (
+            <Container>
+              <Row xs={1} md={2} className="g-3 my-3 border border-primary border-3 rounded-3 bg-secondary text-white">
+                {iscrizione?.presenze && iscrizione.presenze.length > 0 && (
+                  <Col className="d-flex flex-column align-items-center">
+                    <h4 className="metal-mania-regular my-3 text-center">Presenze:</h4>
+                    <p className="text-center text-white fw-bold">
+                      {(
+                        (iscrizione?.presenze.filter((p) => p.presenza).length / iscrizione?.presenze.length) *
+                        100
+                      ).toFixed(2)}
+                      %
+                    </p>
+                    {mostraPresenze && (
+                      <ul className="bg-light p-3 rounded-3 border border-primary border-3 text-dark">
+                        {iscrizione.presenze.map((p, i) => (
+                          <li key={i}>
+                            {p.data.slice(0, 10)}:{" "}
+                            {p.presenza ? (
+                              <strong className="text-success">Presente</strong>
+                            ) : (
+                              <strong className="text-danger">Assente</strong>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <Button
+                      variant="primary"
+                      className="my-3"
+                      onClick={() => {
+                        setMostraPresenze(!mostraPresenze);
+                      }}
+                    >
+                      {mostraPresenze ? "Nascondi" : "Mostra tutto"}
+                    </Button>
+                  </Col>
+                )}
+                {iscrizione.valutazioni && iscrizione.valutazioni.length > 0 && (
+                  <Col className="d-flex flex-column align-items-center">
+                    <h4 className="metal-mania-regular my-3 text-center">Media:</h4>
+                    <p className="text-center text-white">
+                      <strong>
+                        {(
+                          iscrizione.valutazioni.reduce((acc, val) => acc + val, 0) / iscrizione.valutazioni.length
+                        ).toFixed(2)}
+                      </strong>
+                      /10
+                    </p>
+                    {mostraValutazioni && (
+                      <ul className="bg-light p-3 rounded-3 border border-primary border-3 text-dark">
+                        {iscrizione.valutazioni.map((v, i) => (
+                          <li key={i}>{v}</li>
+                        ))}
+                      </ul>
+                    )}
+                    <Button
+                      variant="primary"
+                      className="my-3"
+                      onClick={() => {
+                        setMostraValutazioni(!mostraValutazioni);
+                      }}
+                    >
+                      {mostraValutazioni ? "Nascondi" : "Mostra tutto"}
+                    </Button>
+                  </Col>
+                )}
+              </Row>
+            </Container>
+          )}
         </Container>
       ) : (
         <Spinner animation="border" variant="primary" className="d-block mx-auto mt-5" />

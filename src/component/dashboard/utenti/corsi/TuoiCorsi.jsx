@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-function GestisciCorsi() {
+function TuoiCorsi() {
   const user = useSelector((state) => state.user.user);
   const userType = user?.roles || user?.appUser?.roles;
   const [corsi, setCorsi] = useState([]);
@@ -20,7 +20,7 @@ function GestisciCorsi() {
   ];
   const navigate = useNavigate();
   useEffect(() => {
-    if (userType && !userType.includes("ROLE_SCUOLA") && !userType.includes("ROLE_INSEGNANTE")) {
+    if (userType && !userType.includes("ROLE_USER")) {
       navigate("/");
     } else {
       const params = new URLSearchParams();
@@ -45,7 +45,7 @@ function GestisciCorsi() {
           navigate("/");
         });
     }
-  }, [user, userType, page]);
+  }, [user, userType, page, statoCorso]);
   return (
     <>
       <Container>
@@ -77,7 +77,7 @@ function GestisciCorsi() {
           <option value="IN_CORSO">In Corso</option>
           <option value="TERMINATO">Terminato</option>
         </Form.Select>
-        <h1 className="text-center metal-mania-regular my-4">Gestisci Corsi</h1>
+        <h1 className="text-center metal-mania-regular my-4">I tuoi corsi</h1>
         <Row xs={1} md={2} lg={4} className="g-3">
           {corsi &&
             corsi.map((corso) => (
@@ -157,4 +157,4 @@ function GestisciCorsi() {
   );
 }
 
-export default GestisciCorsi;
+export default TuoiCorsi;

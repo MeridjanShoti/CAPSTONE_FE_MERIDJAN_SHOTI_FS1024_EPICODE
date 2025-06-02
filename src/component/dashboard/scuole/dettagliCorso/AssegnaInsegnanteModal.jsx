@@ -7,7 +7,7 @@ function AssegnaInsegnanteModal(props) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
   const [insegnanti, setInsegnanti] = useState([]);
-  const [insegnante, setInsegnante] = useState("");
+  const [insegnante, setInsegnante] = useState(props.insegnante.id || "");
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("success");
@@ -73,7 +73,7 @@ function AssegnaInsegnanteModal(props) {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={(e) => handleSubmit(e)}>
-          <Form.Select onChange={(e) => setInsegnante(e.target.value)} aria-label="Default select example">
+          <Form.Select value={insegnante} onChange={(e) => setInsegnante(e.target.value)}>
             {insegnanti &&
               insegnanti.map((insegnante) => {
                 return (
@@ -83,7 +83,9 @@ function AssegnaInsegnanteModal(props) {
                 );
               })}
           </Form.Select>
-          <Button type="submit">Assegna Insegnante</Button>
+          <Button type="submit" className="my-3">
+            Assegna Insegnante
+          </Button>
         </Form>
         {showAlert && (
           <Alert variant={alertType} onClose={() => setShowAlert(false)} dismissible>
