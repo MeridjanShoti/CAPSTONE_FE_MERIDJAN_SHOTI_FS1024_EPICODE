@@ -1,4 +1,4 @@
-import { LOGIN_FAILURE, LOGOUT, SET_USER } from "../actions";
+import { CLEAR_ERROR, LOGIN_FAILURE, LOGOUT, SET_USER } from "../actions";
 
 const userReducer = (state = { user: null }, action) => {
   switch (action.type) {
@@ -8,6 +8,8 @@ const userReducer = (state = { user: null }, action) => {
       return { ...state, user: null };
     case LOGIN_FAILURE:
       return { ...state, error: action.payload.error };
+    case CLEAR_ERROR:
+      return { ...state, error: null };
 
     default:
       return state;

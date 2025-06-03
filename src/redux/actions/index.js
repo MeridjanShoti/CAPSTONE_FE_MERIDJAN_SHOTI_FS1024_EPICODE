@@ -2,8 +2,9 @@ const SET_USER = "SET_USER";
 const LOGIN_FAILURE = "LOGIN_FAILURE";
 const LOGOUT = "LOGOUT";
 const SET_TOKEN = "SET_TOKEN";
+const CLEAR_ERROR = "CLEAR_ERROR";
 
-export { SET_USER, LOGIN_FAILURE, LOGOUT, SET_TOKEN };
+export { SET_USER, LOGIN_FAILURE, LOGOUT, SET_TOKEN, CLEAR_ERROR };
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
