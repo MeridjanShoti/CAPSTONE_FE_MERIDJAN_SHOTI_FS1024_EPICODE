@@ -7,13 +7,13 @@ function AssegnaInsegnanteModal(props) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
   const [insegnanti, setInsegnanti] = useState([]);
-  const [insegnante, setInsegnante] = useState(props.insegnante.id || "");
+  const [insegnante, setInsegnante] = useState(props?.insegnante?.id || "");
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("success");
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(apiUrl + "/corsi/assegna-insegnante/" + props.id + "/" + insegnante, {
+    fetch(apiUrl + "/corsi/assegna-insegnante/" + props?.id + "/" + insegnante, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -62,6 +62,9 @@ function AssegnaInsegnanteModal(props) {
       })
       .then((data) => {
         setInsegnanti(data);
+        if (insegnante === "" || !insegnante) {
+          setInsegnante(data[0]?.id);
+        }
       });
   }, []);
   return (
@@ -77,7 +80,7 @@ function AssegnaInsegnanteModal(props) {
             {insegnanti &&
               insegnanti.map((insegnante) => {
                 return (
-                  <option key={insegnante.id} value={insegnante.id}>
+                  <option key={insegnante?.id} value={insegnante?.id}>
                     {insegnante.nome} {insegnante.cognome}
                   </option>
                 );

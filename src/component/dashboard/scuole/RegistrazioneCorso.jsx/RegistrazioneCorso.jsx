@@ -21,7 +21,7 @@ function RegistrazioneCorso() {
     orarioInizio: "",
     orarioFine: "",
     locandina: null,
-    livello: "",
+    livello: "PRINCIPIANTE",
     linkLezione: "",
     costo: "",
     strumenti: null,

@@ -69,22 +69,24 @@ function CorsoDetail() {
         setCorso({
           ...data,
         });
-        fetch(`${import.meta.env.VITE_API_URL}/iscrizioni/corso/${id}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-          .then((res) => {
-            if (!res.ok) throw new Error("Secondo fetch fallita");
-            return res.json();
+        if (userType && !userType.includes("ROLE_SCUOLA")) {
+          fetch(`${import.meta.env.VITE_API_URL}/iscrizioni/corso/${id}`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           })
-          .then((data) => {
-            setIscrizione(data);
-          })
-          .catch((error) => {
-            console.error("Errore nel recupero delle iscrizioni:", error);
-          });
+            .then((res) => {
+              if (!res.ok) throw new Error("Secondo fetch fallita");
+              return res.json();
+            })
+            .then((data) => {
+              setIscrizione(data);
+            })
+            .catch((error) => {
+              console.error("Errore nel recupero delle iscrizioni:", error);
+            });
+        }
       })
       .catch(() => {
         fetch(`${import.meta.env.VITE_API_URL}/corsi/${id}`, {
