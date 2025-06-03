@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
 import utenteGenerico from "../../../assets/img/user-generico.png";
 import { useEffect, useState } from "react";
+import RecensioniScuola from "../../dashboard/scuole/recensioni/RecensioniScuola";
 function ScuolaProfile() {
   const utente = useSelector((state) => state.user.user);
   const [scuola, setScuola] = useState(null);
@@ -29,7 +30,7 @@ function ScuolaProfile() {
     } else {
       setScuola(utente);
     }
-  }, [id, apiUrl, token, utente, navigate]);
+  }, [id, apiUrl, token, utente]);
   const userType = utente?.roles || utente?.appUser?.roles;
   if (!userType) {
     return <Spinner animation="border" variant="primary" className="d-block mx-auto mt-5" />;
@@ -120,8 +121,11 @@ function ScuolaProfile() {
               </Col>
             </Row>
           </Container>
-          <h2 className="mt-5 metal-mania-regular text-center">Bio</h2>
-          <p className="text-center">{scuola.bio}</p>
+          <Container>
+            <h2 className="mt-5 metal-mania-regular text-center">Bio</h2>
+            <p className="text-center">{scuola.bio}</p>
+            <RecensioniScuola id={scuola.id} />
+          </Container>
         </>
       ) : (
         <Spinner animation="border" variant="primary" className="d-block mx-auto mt-5" />

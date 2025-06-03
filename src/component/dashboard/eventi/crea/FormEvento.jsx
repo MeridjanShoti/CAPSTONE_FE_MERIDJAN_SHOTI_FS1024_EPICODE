@@ -63,7 +63,7 @@ function FormEvento() {
         }
       }
     }
-  }, [user, navigate, userType, id, token, apiUrl]);
+  }, [user, userType, id, token, apiUrl]);
   const handleLocandinaUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;

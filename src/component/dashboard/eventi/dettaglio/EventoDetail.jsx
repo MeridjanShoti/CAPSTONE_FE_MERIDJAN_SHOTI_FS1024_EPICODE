@@ -34,7 +34,7 @@ function EventoDetail() {
         alert(error.message);
         navigate("/");
       });
-  }, [user, userType, id, navigate]);
+  }, [user, userType, id]);
   useEffect(() => {
     if (evento) {
       switch (evento.tipoEvento) {

@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import { PersonFill } from "react-bootstrap-icons";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 function PrenotazioniGestore() {
   const user = useSelector((state) => state.user.user);
+  const { idSala } = useParams();
   const userType = user?.roles || user?.appUser?.roles;
   const [prenotazioni, setPrenotazioni] = useState([]);
   const [elementiTotali, setElementiTotali] = useState(0);
@@ -48,7 +49,12 @@ function PrenotazioniGestore() {
       .catch((error) => {
         navigate("/");
       });
-  }, [user, userType, navigate, filtro]);
+  }, [user, userType, filtro]);
+  useEffect(() => {
+    if (idSala) {
+      setFiltro({ ...filtro, id: idSala });
+    }
+  }, []);
 
   if (!userType) {
     return <Spinner animation="border" variant="primary" className="d-block mx-auto mt-5" />;
@@ -90,6 +96,7 @@ function PrenotazioniGestore() {
               min="1"
               value={filtro.id || ""}
               onChange={(e) => setFiltro({ ...filtro, id: e.target.value })}
+              readOnly={idSala ? true : false}
             />
           </Col>
         </Row>

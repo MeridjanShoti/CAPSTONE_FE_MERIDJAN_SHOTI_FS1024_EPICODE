@@ -47,7 +47,7 @@ function TuePrenotazioniSala() {
       .catch((error) => {
         navigate("/");
       });
-  }, [user, userType, navigate, filtro]);
+  }, [user, userType, filtro]);
 
   if (!userType) {
     return <Spinner animation="border" variant="primary" className="d-block mx-auto mt-5" />;

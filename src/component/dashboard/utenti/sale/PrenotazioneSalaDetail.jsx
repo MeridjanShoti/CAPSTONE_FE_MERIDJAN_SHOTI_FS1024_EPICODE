@@ -33,7 +33,7 @@ function PrenotazioneSalaDetail() {
           navigate("/");
         });
     }
-  }, [user, navigate, id]);
+  }, [user, id]);
   return (
     <>
       {prenotazione ? (

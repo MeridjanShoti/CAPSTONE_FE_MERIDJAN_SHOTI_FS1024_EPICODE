@@ -12,7 +12,7 @@ function DashboardUtenti() {
               <Col className="dashboard-element d-flex">
                 <Col>I tuoi corsi</Col>
                 <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                  <ArrowRightSquare />
+                  <ArrowRightSquare onClick={() => navigate("/tuoi-corsi")} />
                 </Col>
               </Col>
             </Col>

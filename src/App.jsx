@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes, useNavigate } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./app.scss";
 import MyNavbar from "./component/navbar/MyNavbar";
@@ -30,6 +30,14 @@ import SalaProfile from "./component/profile/sale/SalaProfile";
 import ScuolaProfile from "./component/profile/scuole/ScuolaProfile";
 import ModificaPrenotazioneSala from "./component/dashboard/sale/modificaprenotazioni/ModificaPrenotazioneSala";
 import PrenotazioniGestore from "./component/dashboard/sale/prenotazioni/PrenotazioniGestore";
+import RegistrazioneCorso from "./component/dashboard/scuole/RegistrazioneCorso.jsx/RegistrazioneCorso";
+import CorsoDetail from "./component/dashboard/scuole/dettagliCorso/CorsoDetail";
+import CercaCorsi from "./component/dashboard/utenti/corsi/CercaCorsi";
+import GestisciCorsi from "./component/dashboard/scuole/gestisci/GestisciCorsi";
+import InsegnanteProfile from "./component/profile/insegnanti/InsegnanteProfile";
+import GestisciInsegnanti from "./component/dashboard/scuole/gestisci/GestisciInsegnanti";
+import TuoiCorsi from "./component/dashboard/utenti/corsi/TuoiCorsi";
+import GestisciStudenti from "./component/dashboard/insegnanti/gestiscistudenti/GestisciStudenti";
 
 function App() {
   return (
@@ -70,6 +78,16 @@ function App() {
           <Route path="/prenotazioni-sale/:id" element={<PrenotazioneSalaDetail />} />
           <Route path="/modifica-prenotazione-sala/:idPrenotazione" element={<ModificaPrenotazioneSala />} />
           <Route path="/prenotazioni-gestore" element={<PrenotazioniGestore />} />
+          <Route path="/gestisci-prenotazioni/:idSala" element={<PrenotazioniGestore />} />
+          <Route path="/registra-corso" element={<RegistrazioneCorso />} />
+          <Route path="/edit-corso/:id" element={<RegistrazioneCorso />} />
+          <Route path="/corso/:id" element={<CorsoDetail />} />
+          <Route path="/cerca-corsi" element={<CercaCorsi />} />
+          <Route path="/gestisci-corsi" element={<GestisciCorsi />} />
+          <Route path="/insegnanti/:id" element={<InsegnanteProfile />} />
+          <Route path="/gestisci-insegnanti" element={<GestisciInsegnanti />} />
+          <Route path="/tuoi-corsi" element={<TuoiCorsi />} />
+          <Route path="/gestisci-studenti" element={<GestisciStudenti />} />
         </Routes>
       </BrowserRouter>
     </>

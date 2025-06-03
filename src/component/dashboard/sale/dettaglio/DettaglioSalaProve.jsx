@@ -40,7 +40,7 @@ function DettaglioSalaProve() {
         alert(error.message);
         navigate("/");
       });
-  }, [user, userType, id, navigate]);
+  }, [user, userType, id]);
 
   const handleDelete = () => {
     confirm("Sei sicuro di voler eliminare la sala?") &&

@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row, Spinner } from "react-bootstrap";
-import { PersonFill } from "react-bootstrap-icons";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-function CercaSaleProva() {
+function CercaCorsi() {
   const [filtro, setFiltro] = useState({
-    citta: "",
-    capienzaMin: 0,
-    prezzoOrarioMax: "",
-    giornoApertura: "",
+    nomeCorso: "",
+    livello: "",
+    dataInizio: "",
+    dataFine: "",
+    giorniASettimana: "",
+    strumenti: "",
+    costo: "",
     page: 0,
     size: 10,
-    sortBy: "id",
+    sortBy: "dataInizio",
     sortDir: "asc",
   });
-  const [sale, setSale] = useState([]);
+  const [corsi, setCorsi] = useState([]);
   const [elementiTotali, setElementiTotali] = useState(0);
   const user = useSelector((state) => state.user.user);
   const userType = user?.roles || user?.appUser?.roles;
@@ -42,19 +44,18 @@ function CercaSaleProva() {
           params.append(key, value);
         }
       });
-      fetch(`${apiUrl}/saleprove?${params.toString()}`, {
+      fetch(`${apiUrl}/corsi?${params.toString()}`, {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       })
         .then((res) => {
-          if (!res.ok) throw new Error("Errore nel recupero delle sale prove");
+          if (!res.ok) throw new Error("Errore nel recupero dei corsi");
           return res.json();
         })
         .then((data) => {
-          setSale(data.content);
+          setCorsi(data.content);
           setElementiTotali(data.totalElements);
         })
         .catch(() => {
@@ -65,49 +66,69 @@ function CercaSaleProva() {
 
   return (
     <>
-      <h1 className="text-center metal-mania-regular my-4">Cerca Sale Prove</h1>
+      <h1 className="text-center metal-mania-regular my-4">Cerca Corsi</h1>
       {userType && userType.includes("ROLE_USER") ? (
         <>
           <Container className="bg-secondary my-4 text-white p-3 rounded-3 border border-primary border-3">
-            <Row xs={1} md={2} lg={4}>
+            <Row xs={1} md={2} lg={4} className="gy-3">
               <Col>
-                <Form.Label>Aperte il giorno: </Form.Label>
+                <Form.Label>Nome Corso</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={filtro.nomeCorso || ""}
+                  onChange={(e) => setFiltro({ ...filtro, nomeCorso: e.target.value })}
+                />
+              </Col>
+              <Col>
+                <Form.Label>Livello</Form.Label>
                 <Form.Select
-                  value={filtro.giornoApertura || ""}
-                  onChange={(e) => setFiltro({ ...filtro, giornoApertura: e.target.value })}
+                  value={filtro.livello || ""}
+                  onChange={(e) => setFiltro({ ...filtro, livello: e.target.value })}
                 >
                   <option value="">Tutti</option>
-                  <option value="MONDAY">Lunedì</option>
-                  <option value="TUESDAY">Martedi</option>
-                  <option value="WEDNESDAY">Mercoledi</option>
-                  <option value="THURSDAY">Giovedi</option>
-                  <option value="FRIDAY">Venerdi</option>
-                  <option value="SATURDAY">Sabato</option>
-                  <option value="SUNDAY">Domenica</option>
+                  <option value="PRINCIPIANTE">Principiante</option>
+                  <option value="MEDIO">Intermedio</option>
+                  <option value="AVANZATO">Avanzato</option>
                 </Form.Select>
               </Col>
               <Col>
-                <Form.Label>Capienza minima:</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={filtro.capienzaMin || ""}
-                  onChange={(e) => setFiltro({ ...filtro, capienzaMin: e.target.value })}
-                />
-              </Col>
-              <Col>
-                <Form.Label>Prezzo orario max:</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={filtro.prezzoOrarioMax || ""}
-                  onChange={(e) => setFiltro({ ...filtro, prezzoOrarioMax: e.target.value })}
-                />
-              </Col>
-              <Col>
-                <Form.Label>Città:</Form.Label>
+                <Form.Label>Strumenti</Form.Label>
                 <Form.Control
                   type="text"
+                  value={filtro.strumenti || ""}
+                  onChange={(e) => setFiltro({ ...filtro, strumenti: e.target.value })}
+                />
+              </Col>
+              <Col>
+                <Form.Label>Giorni a settimana </Form.Label>
+                <Form.Control
+                  type="number"
+                  value={filtro.giorniASettimana || ""}
+                  onChange={(e) => setFiltro({ ...filtro, giorniASettimana: e.target.value })}
+                />
+              </Col>
+              <Col>
+                <Form.Label>Costo massimo</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={filtro.costo || ""}
+                  onChange={(e) => setFiltro({ ...filtro, costo: e.target.value })}
+                />
+              </Col>
+              <Col>
+                <Form.Label>Dal</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={filtro.dataInizio || ""}
+                  onChange={(e) => setFiltro({ ...filtro, dataInizio: e.target.value })}
+                />
+              </Col>
+              <Col>
+                <Form.Label>Al</Form.Label>
+                <Form.Control
+                  type="date"
                   value={filtro.citta || ""}
-                  onChange={(e) => setFiltro({ ...filtro, citta: e.target.value })}
+                  onChange={(e) => setFiltro({ ...filtro, dataFine: e.target.value })}
                 />
               </Col>
             </Row>
@@ -121,8 +142,9 @@ function CercaSaleProva() {
                     onChange={(e) => setFiltro({ ...filtro, sortBy: e.target.value })}
                   >
                     <option value="id">id</option>
-                    <option value="prezzoOrario">Prezzo</option>
-                    <option value="nomeSala">Nome Sala</option>
+                    <option value="costo">Prezzo</option>
+                    <option value="nomeCorso">Nome corso</option>
+                    <option value="dataInizio">data inizio</option>
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -141,7 +163,7 @@ function CercaSaleProva() {
               </Col>
               <Col>
                 <Form.Group controlId="pageSize">
-                  <Form.Label>Sale per pagina:</Form.Label>
+                  <Form.Label>Corsi per pagina:</Form.Label>
                   <Form.Select
                     value={filtro.size || 10}
                     onChange={(e) => setFiltro({ ...filtro, size: parseInt(e.target.value), page: 0 })}
@@ -181,72 +203,82 @@ function CercaSaleProva() {
           </Row>
           <Container>
             <Row xs={1} md={2} lg={4} className="g-3">
-              {sale &&
-                sale.map((sala) => (
-                  <Col key={sala.id}>
-                    <Card style={{ height: "450px" }}>
-                      <div className="position-relative">
-                        <Card.Img
-                          variant="top"
-                          src={sala.copertinaSala}
-                          alt={sala.nomeSala}
-                          style={{ height: "200px", objectFit: "cover", objectPosition: "center" }}
-                        />
-                      </div>
-                      <span
-                        className="badge bg-success rounded-pill"
-                        style={{
-                          position: "absolute",
-                          top: "10px",
-                          right: "10px",
-                          fontSize: "0.9rem",
-                          padding: "0.4em 0.7em",
-                        }}
-                      >
-                        {sala.prezzoOrario}€
-                      </span>
-                      <Card.Body className="d-flex flex-column">
-                        <Card.Title
+              {corsi ? (
+                corsi.length > 0 ? (
+                  corsi.map((corso) => (
+                    <Col key={corso.id}>
+                      <Card style={{ height: "450px" }}>
+                        <div className="position-relative">
+                          <Card.Img
+                            variant="top"
+                            src={corso.locandina}
+                            alt={corso.nomeCorso}
+                            style={{ height: "200px", objectFit: "cover", objectPosition: "center" }}
+                          />
+                        </div>
+                        <span
+                          className="badge bg-success rounded-pill"
                           style={{
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
+                            position: "absolute",
+                            top: "10px",
+                            right: "10px",
+                            fontSize: "0.9rem",
+                            padding: "0.4em 0.7em",
                           }}
                         >
-                          {sala.nomeSala}
-                        </Card.Title>
-                        <Card.Text
-                          style={{
-                            maxHeight: "70px",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            display: "-webkit-box",
-                            WebkitLineClamp: 4,
-                            WebkitBoxOrient: "vertical",
-                          }}
-                        >
-                          Max <PersonFill className="align-middle" />: {sala.capienzaMax} - {sala.citta}
-                          <br />
-                          {sala.orarioApertura} - {sala.orarioChiusura}
-                          <br />
-                          <strong>
-                            {giorniOrdinati
-                              .filter((g) => sala?.giorniApertura?.includes(g.eng))
-                              .map((g) => g.ita)
-                              .join("-")}
-                          </strong>
-                        </Card.Text>
-                        <Button
-                          variant="primary"
-                          className="w-100 mt-auto"
-                          onClick={() => navigate(`/sale-prove/${sala.id}`)}
-                        >
-                          Dettagli
-                        </Button>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
+                          {corso.costo}€
+                        </span>
+                        <Card.Body className="d-flex flex-column">
+                          <Card.Title
+                            style={{
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {corso.nomeCorso}
+                          </Card.Title>
+                          <Card.Text
+                            style={{
+                              maxHeight: "70px",
+                              textOverflow: "ellipsis",
+                              display: "-webkit-box",
+                              WebkitLineClamp: 4,
+                              WebkitBoxOrient: "vertical",
+                            }}
+                          >
+                            <strong> {corso.strumenti.join(", ")}</strong>
+                            <br />
+                            Dal {corso.dataInizio} al {corso.dataFine}
+                            <br />
+                            {corso.orarioInizio.slice(0, 5)} - {corso.orarioFine.slice(0, 5)}
+                            <br />
+                            <strong>
+                              {giorniOrdinati
+                                .filter((g) => corso?.giorniLezione?.includes(g.eng))
+                                .map((g) => g.ita)
+                                .join("-")}
+                            </strong>
+                            <br />
+                            {corso.livello}
+                          </Card.Text>
+                          <Button
+                            variant="primary"
+                            className="w-100 mt-auto"
+                            onClick={() => navigate(`/corso/${corso.id}`)}
+                          >
+                            Dettagli
+                          </Button>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))
+                ) : (
+                  <h1 className="text-center mt-5 metal-mania-regular mx-auto">Nessun Risultato</h1>
+                )
+              ) : (
+                <Spinner animation="border" variant="primary" className="d-block mx-auto mt-5" />
+              )}
             </Row>
             <Row className="justify-content-center my-3">
               <Col xs="auto">
@@ -281,4 +313,4 @@ function CercaSaleProva() {
     </>
   );
 }
-export default CercaSaleProva;
+export default CercaCorsi;

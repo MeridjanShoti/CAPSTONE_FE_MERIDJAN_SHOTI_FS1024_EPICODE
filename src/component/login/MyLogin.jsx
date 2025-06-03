@@ -10,6 +10,7 @@ function MyLogin() {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const error = useSelector((state) => state.user.error);
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,12 +22,16 @@ function MyLogin() {
     if (user) {
       navigate("/");
     }
-  }, [user, navigate]);
+  }, [user]);
   useEffect(() => {
     if (error) {
-      console.log(error);
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+        dispatch({ type: "CLEAR_ERROR" });
+      }, 5000);
     }
-  });
+  }, [error]);
   return (
     <div>
       <h1 className="text-center metal-mania-regular my-4">Login</h1>
@@ -55,9 +60,6 @@ function MyLogin() {
           </Row>
         </Container>
       </Form>
-      <Alert show={error ? true : false} variant="danger" className="mt-3 text-center">
-        {error}
-      </Alert>
       <div className="d-flex justify-content-center">
         <div className="position-relative">
           <img
@@ -68,6 +70,11 @@ function MyLogin() {
           />
         </div>
       </div>
+      <Container>
+        <Alert show={showAlert} variant="danger" className="mt-3 text-center">
+          {error}
+        </Alert>
+      </Container>
     </div>
   );
 }

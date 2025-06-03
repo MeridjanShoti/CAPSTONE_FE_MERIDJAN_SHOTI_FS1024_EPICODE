@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
 import { Button, Container } from "react-bootstrap";
-import RecensioneSingola from "./RecensioneSingola";
-import ScriviRecensione from "./ScriviRecensione";
 import { useSelector } from "react-redux";
-function Recensioni(props) {
+import RecensioneScuolaSingola from "./RecensioneScuolaSingola";
+import ScriviRecensioneScuola from "./ScriviRecensioneScuola";
+function RecensioniScuola(props) {
   const [recensioni, setRecensioni] = useState([]);
-  const [media, setMedia] = useState(null);
   const [recensioniMostrate, setRecensioniMostrate] = useState(5);
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
   const [update, setUpdate] = useState(0);
   const [recensioniTotali, setRecensioniTotali] = useState(0);
+  const [media, setMedia] = useState(null);
   const user = useSelector((state) => state.user.user);
   const userType = user?.roles || user?.appUser?.roles;
   useEffect(() => {
     fetch(
       apiUrl +
-        "/recensioni-sala/sale/" +
+        "/recensioni-scuola/scuole/" +
         props.id +
         "?page=0&size=" +
         recensioniMostrate +
@@ -39,7 +39,7 @@ function Recensioni(props) {
       .then((data) => {
         setRecensioni(data.content);
         setRecensioniTotali(data.totalElements);
-        fetch(apiUrl + "/recensioni-sala/media/" + props.id, {
+        fetch(apiUrl + "/recensioni-scuola/media/" + props.id, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -66,10 +66,10 @@ function Recensioni(props) {
           {media && <p>Media recensioni: {media.toFixed(2)}/5</p>}
         </div>
         {recensioni.map((recensione) => {
-          return <RecensioneSingola key={recensione.id} recensione={recensione} setUpdate={setUpdate} />;
+          return <RecensioneScuolaSingola key={recensione.id} recensione={recensione} setUpdate={setUpdate} />;
         })}
         {userType && userType.includes("ROLE_USER") && (
-          <ScriviRecensione id={props.id} setUpdate={setUpdate} mode="new" />
+          <ScriviRecensioneScuola id={props.id} setUpdate={setUpdate} mode="new" />
         )}
         <div className="d-flex justify-content-center gap-2">
           {recensioniTotali > recensioniMostrate && (
@@ -97,4 +97,4 @@ function Recensioni(props) {
     </>
   );
 }
-export default Recensioni;
+export default RecensioniScuola;

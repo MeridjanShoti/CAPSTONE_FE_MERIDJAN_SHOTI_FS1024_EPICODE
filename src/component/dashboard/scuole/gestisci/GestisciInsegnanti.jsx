@@ -2,19 +2,18 @@ import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-
-function GestisciEventi() {
+function GestisciInsegnanti() {
   const user = useSelector((state) => state.user.user);
   const userType = user?.roles || user?.appUser?.roles;
-  const [eventi, setEventi] = useState([]);
+  const [insegnanti, setInsegnanti] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const navigate = useNavigate();
   useEffect(() => {
-    if (userType && !userType.includes("ROLE_ORGANIZZATORE")) {
+    if (userType && !userType.includes("ROLE_SCUOLA")) {
       navigate("/");
     } else {
-      fetch(`${import.meta.env.VITE_API_URL}/eventi/my-events?page=${page}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/insegnanti/page?page=${page}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -25,7 +24,7 @@ function GestisciEventi() {
           return res.json();
         })
         .then((data) => {
-          setEventi(data.content);
+          setInsegnanti(data.content);
           setTotalPages(data.totalPages);
         })
         .catch((error) => {
@@ -57,16 +56,16 @@ function GestisciEventi() {
             Successiva
           </Button>
         </div>
-        <h1 className="text-center metal-mania-regular my-4">Gestisci Eventi</h1>
+        <h1 className="text-center metal-mania-regular my-4">Gestisci Insegnanti</h1>
         <Row xs={1} md={2} lg={4} className="g-3">
-          {eventi &&
-            eventi.map((evento) => (
-              <Col key={evento.id}>
+          {insegnanti &&
+            insegnanti.map((insegnante) => (
+              <Col key={insegnante.id}>
                 <Card style={{ height: "400px" }}>
                   <Card.Img
                     variant="top"
-                    src={evento.locandina}
-                    alt={evento.nomeEvento}
+                    src={insegnante.avatar}
+                    alt={insegnante.nome + " " + insegnante.cognome}
                     style={{ height: "200px", objectFit: "cover", objectPosition: "center" }}
                   />
                   <Card.Body className="d-flex flex-column">
@@ -77,7 +76,7 @@ function GestisciEventi() {
                         textOverflow: "ellipsis",
                       }}
                     >
-                      {evento.nomeEvento}
+                      {insegnante.nome + " " + insegnante.cognome}
                     </Card.Title>
                     <Card.Text
                       style={{
@@ -89,14 +88,14 @@ function GestisciEventi() {
                         WebkitBoxOrient: "vertical",
                       }}
                     >
-                      {evento.dataEvento} - {evento.citta}
+                      {insegnante.email}
                       <br />
-                      Artisti partecipanti: {evento.artistiPartecipanti.join(", ")}
+                      strumenti: {insegnante.strumenti.join(", ")}
                     </Card.Text>
                     <Button
                       variant="primary"
                       className="w-100 mt-auto"
-                      onClick={() => navigate(`/eventi/${evento.id}`)}
+                      onClick={() => navigate(`/insegnanti/${insegnante.id}`)}
                     >
                       Dettagli
                     </Button>
@@ -131,4 +130,4 @@ function GestisciEventi() {
   );
 }
 
-export default GestisciEventi;
+export default GestisciInsegnanti;
