@@ -45,7 +45,7 @@ function GestisciCorsi() {
           navigate("/");
         });
     }
-  }, [user, userType, page]);
+  }, [user, userType, page, statoCorso]);
   return (
     <>
       <Container>
@@ -71,7 +71,7 @@ function GestisciCorsi() {
           </Button>
         </div>
         <Form.Label>filtra per Stato:</Form.Label>
-        <Form.Select onChange={(e) => setStatoCorso(e.target.value)}>
+        <Form.Select value={statoCorso} onChange={(e) => setStatoCorso(e.target.value)}>
           <option value="">Tutti</option>
           <option value="IN_PROGRAMMA">In programma</option>
           <option value="IN_CORSO">In Corso</option>
