@@ -38,6 +38,7 @@ import InsegnanteProfile from "./component/profile/insegnanti/InsegnanteProfile"
 import GestisciInsegnanti from "./component/dashboard/scuole/gestisci/GestisciInsegnanti";
 import TuoiCorsi from "./component/dashboard/utenti/corsi/TuoiCorsi";
 import GestisciStudenti from "./component/dashboard/insegnanti/gestiscistudenti/GestisciStudenti";
+import GestisciSegnalazioni from "./component/dashboard/admin/gestiscisegnalazioni/GestisciSegnalazioni";
 
 function App() {
   return (
@@ -88,6 +89,7 @@ function App() {
           <Route path="/gestisci-insegnanti" element={<GestisciInsegnanti />} />
           <Route path="/tuoi-corsi" element={<TuoiCorsi />} />
           <Route path="/gestisci-studenti" element={<GestisciStudenti />} />
+          <Route path="gestisci-segnalazioni" element={<GestisciSegnalazioni />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -3,8 +3,11 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
 import utenteGenerico from "../../../assets/img/user-generico.png";
 import { useEffect, useState } from "react";
+import { FlagFill } from "react-bootstrap-icons";
+import SegnalazioneModal from "../../segnalazioni/SegnalazioneModal";
 function InsegnanteProfile() {
   const utente = useSelector((state) => state.user.user);
+  const [showSegnalazione, setShowSegnalazione] = useState(false);
   const [insegnante, setInsegnante] = useState(null);
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
@@ -97,7 +100,7 @@ function InsegnanteProfile() {
                 transform: "translate(-50%, -50%)",
               }}
             />
-            {insegnante.id === utente.id && (
+            {insegnante.id === utente.id ? (
               <Button
                 as={Link}
                 to={`/edit-profile/${insegnante.id}`}
@@ -106,6 +109,24 @@ function InsegnanteProfile() {
               >
                 Modifica profilo
               </Button>
+            ) : (
+              <>
+                <Button
+                  as={Link}
+                  onClick={() => setShowSegnalazione(true)}
+                  variant="primary"
+                  className="d-block mx-auto mt-2 position-absolute top-0"
+                >
+                  <FlagFill />
+                </Button>
+                <SegnalazioneModal
+                  id={insegnante.id}
+                  onHide={() => setShowSegnalazione(false)}
+                  show={showSegnalazione}
+                  tipoSegnalazione="INSEGNANTE"
+                  titolo={insegnante.nome + " " + insegnante.cognome}
+                />
+              </>
             )}
           </Container>
           <Container

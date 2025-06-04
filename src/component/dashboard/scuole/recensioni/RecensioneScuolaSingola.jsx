@@ -11,6 +11,7 @@ import { Col, Row, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Flag, Pencil, Star, StarFill, Trash } from "react-bootstrap-icons";
 import UpdateRecensioneScuolaModal from "./UpdateRecensioneScuolaModal";
+import SegnalazioneModal from "../../../segnalazioni/SegnalazioneModal";
 function RecensioneScuolaSingola(props) {
   const { id } = useParams();
   const [recensione, setRecensione] = useState(props?.recensione || null);
@@ -18,6 +19,7 @@ function RecensioneScuolaSingola(props) {
   const token = localStorage.getItem("token");
   const autoreType = recensione?.autore?.roles || recensione?.autore?.appUser?.roles;
   const user = useSelector((state) => state.user.user);
+  const [showSegnalazione, setShowSegnalazione] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   useEffect(() => {
     if (!props.recensione) {
@@ -65,9 +67,7 @@ function RecensioneScuolaSingola(props) {
         alert("Errore nell'eliminazione della recensione:", error);
       });
   };
-  const handleFlag = () => {
-    console.log("flag");
-  };
+
   return (
     <>
       {recensione && autoreType ? (
@@ -142,7 +142,14 @@ function RecensioneScuolaSingola(props) {
               </>
             ) : (
               <div className="d-flex justify-content-center align-items-center bg-light rounded-3 border border-secondary border-2 p-1">
-                <Flag className="flag-icon" onClick={handleFlag} />
+                <Flag className="flag-icon" onClick={() => setShowSegnalazione(true)} />
+                <SegnalazioneModal
+                  id={recensione.id}
+                  onHide={() => setShowSegnalazione(false)}
+                  show={showSegnalazione}
+                  tipoSegnalazione="RECENSIONE_SCUOLA"
+                  titolo={recensione?.testo?.length > 20 ? recensione?.testo?.slice(0, 20) + "..." : recensione?.testo}
+                />
               </div>
             )}
           </Col>

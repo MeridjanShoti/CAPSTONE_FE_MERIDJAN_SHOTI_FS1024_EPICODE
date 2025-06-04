@@ -3,9 +3,12 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
 import utenteGenerico from "../../../assets/img/user-generico.png";
 import { useEffect, useState } from "react";
+import { FlagFill } from "react-bootstrap-icons";
+import SegnalazioneModal from "../../segnalazioni/SegnalazioneModal";
 
 function UtenteProfile() {
   const utenteLoggato = useSelector((state) => state.user.user);
+  const [showSegnalazione, setShowSegnalazione] = useState(false);
   const [utente, setUtente] = useState(null);
   const { id } = useParams();
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -64,7 +67,7 @@ function UtenteProfile() {
                 transform: "translate(-50%, -50%)",
               }}
             />
-            {utente.id === utenteLoggato.id && (
+            {utente.id === utenteLoggato.id ? (
               <Button
                 as={Link}
                 to={`/edit-profile/${utente.id}`}
@@ -73,6 +76,24 @@ function UtenteProfile() {
               >
                 Modifica profilo
               </Button>
+            ) : (
+              <>
+                <Button
+                  as={Link}
+                  onClick={() => setShowSegnalazione(true)}
+                  variant="primary"
+                  className="d-block mx-auto mt-2 position-absolute top-0"
+                >
+                  <FlagFill />
+                </Button>
+                <SegnalazioneModal
+                  id={utente.id}
+                  onHide={() => setShowSegnalazione(false)}
+                  show={showSegnalazione}
+                  tipoSegnalazione="UTENTE"
+                  titolo={utente.nome + " " + utente.cognome}
+                />
+              </>
             )}
           </Container>
           <Container

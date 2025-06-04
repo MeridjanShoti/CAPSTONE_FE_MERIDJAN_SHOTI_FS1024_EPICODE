@@ -4,12 +4,15 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
 import AcquistaBiglietto from "../../../acquistabiglietti/AcquistaBiglietto";
 import Commenti from "../commenti/Commenti";
+import { FlagFill } from "react-bootstrap-icons";
+import SegnalazioneModal from "../../../segnalazioni/SegnalazioneModal";
 
 function EventoDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const user = useSelector((state) => state.user.user);
   const userType = user?.roles || user?.appUser?.roles;
+  const [showSegnalazione, setShowSegnalazione] = useState(false);
   const [evento, setEvento] = useState(null);
   const [tipoEvento, setTipoEvento] = useState(null);
   const [modalShow, setModalShow] = useState(false);
@@ -107,12 +110,33 @@ function EventoDetail() {
           <p className="text-center ">Tipo di evento: {tipoEvento}</p>
           <Row xs={1} lg={2} className="g-3">
             <Col className="d-flex justify-content-center p-3">
-              <img
-                src={evento?.locandina}
-                alt={evento?.nomeEvento}
-                className="img-fluid rounded-3 border border-primary border-3"
-                style={{ maxWidth: "100%", height: "auto", display: "block" }}
-              />
+              <div style={{ position: "relative" }}>
+                <img
+                  src={evento?.locandina}
+                  alt={evento?.nomeEvento}
+                  className="img-fluid rounded-3 border border-primary border-3"
+                  style={{ maxWidth: "100%", height: "auto", display: "block" }}
+                />
+                {evento?.organizzatore.id !== user.id && (
+                  <div style={{ position: "absolute", top: "10px", right: "50px" }}>
+                    <Button
+                      as={Link}
+                      onClick={() => setShowSegnalazione(true)}
+                      variant="primary"
+                      className="d-block mx-auto mt-2 position-absolute top-0"
+                    >
+                      <FlagFill />
+                    </Button>
+                    <SegnalazioneModal
+                      id={evento.id}
+                      onHide={() => setShowSegnalazione(false)}
+                      show={showSegnalazione}
+                      tipoSegnalazione="EVENTO"
+                      titolo={evento.ragioneSociale}
+                    />
+                  </div>
+                )}
+              </div>
             </Col>
             <Col className="p-3">
               <Row>

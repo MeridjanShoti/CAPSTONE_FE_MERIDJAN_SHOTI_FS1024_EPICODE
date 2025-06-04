@@ -11,9 +11,11 @@ import { Col, Row, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Flag, Pencil, Star, StarFill, Trash } from "react-bootstrap-icons";
 import UpdateRecensioneModal from "./updateRecensioneModal";
+import SegnalazioneModal from "../../../segnalazioni/SegnalazioneModal";
 function RecensioneSingola(props) {
   const { id } = useParams();
   const [recensione, setRecensione] = useState(props?.recensione || null);
+  const [showSegnalazione, setShowSegnalazione] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
   const autoreType = recensione?.autore?.roles || recensione?.autore?.appUser?.roles;
@@ -65,9 +67,7 @@ function RecensioneSingola(props) {
         alert("Errore nell'eliminazione della recensione:", error);
       });
   };
-  const handleFlag = () => {
-    console.log("flag");
-  };
+
   return (
     <>
       {recensione && autoreType ? (
@@ -142,7 +142,14 @@ function RecensioneSingola(props) {
               </>
             ) : (
               <div className="d-flex justify-content-center align-items-center bg-light rounded-3 border border-secondary border-2 p-1">
-                <Flag className="flag-icon" onClick={handleFlag} />
+                <Flag className="flag-icon" onClick={() => setShowSegnalazione(true)} />
+                <SegnalazioneModal
+                  id={recensione.id}
+                  onHide={() => setShowSegnalazione(false)}
+                  show={showSegnalazione}
+                  tipoSegnalazione="RECENSIONE_SALA"
+                  titolo={recensione?.testo?.length > 20 ? recensione?.testo?.slice(0, 20) + "..." : recensione?.testo}
+                />
               </div>
             )}
           </Col>

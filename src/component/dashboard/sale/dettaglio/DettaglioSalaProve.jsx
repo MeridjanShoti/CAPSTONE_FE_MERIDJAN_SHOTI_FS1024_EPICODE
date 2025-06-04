@@ -3,12 +3,15 @@ import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
 import Recensioni from "../recensioni/Recensioni";
+import { FlagFill } from "react-bootstrap-icons";
+import SegnalazioneModal from "../../../segnalazioni/SegnalazioneModal";
 /* import Commenti from "../commenti/Commenti"; */
 function DettaglioSalaProve() {
   const navigate = useNavigate();
   const { id } = useParams();
   const user = useSelector((state) => state.user.user);
   const userType = user?.roles || user?.appUser?.roles;
+  const [showSegnalazione, setShowSegnalazione] = useState(false);
   const [sala, setSala] = useState(null);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("success");
@@ -87,12 +90,32 @@ function DettaglioSalaProve() {
 
           <Row xs={1} lg={2} className="g-3">
             <Col className="d-flex justify-content-center p-3">
-              <img
-                src={sala?.copertinaSala}
-                alt={sala?.nomeSala}
-                className="img-fluid rounded-3 border border-primary border-3"
-                style={{ maxWidth: "100%", height: "auto", objectFit: "cover", objectPosition: "center" }}
-              />
+              <div style={{ position: "relative" }}>
+                <img
+                  src={sala?.copertinaSala}
+                  alt={sala?.nomeSala}
+                  className="img-fluid rounded-3 border border-primary border-3"
+                  style={{ maxWidth: "100%", height: "auto", objectFit: "cover", objectPosition: "center" }}
+                />
+                {sala?.gestoreSala?.id !== user.id && (
+                  <div style={{ position: "absolute", top: "10px", right: "50px" }}>
+                    <Button
+                      onClick={() => setShowSegnalazione(true)}
+                      variant="primary"
+                      className="d-block mx-auto mt-2 position-absolute top-0"
+                    >
+                      <FlagFill />
+                    </Button>
+                    <SegnalazioneModal
+                      id={sala.id}
+                      onHide={() => setShowSegnalazione(false)}
+                      show={showSegnalazione}
+                      tipoSegnalazione="SALA"
+                      titolo={sala?.nomeSala}
+                    />
+                  </div>
+                )}
+              </div>
             </Col>
             <Col className="p-3">
               <Row>
