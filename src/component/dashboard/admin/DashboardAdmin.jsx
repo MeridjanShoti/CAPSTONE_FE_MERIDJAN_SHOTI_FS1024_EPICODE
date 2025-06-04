@@ -19,23 +19,7 @@ function DashboardAdmin() {
           </Col>
           <Col>
             <Col className="dashboard-element d-flex">
-              <Col>Gestisci Segnalazioni su Utenti</Col>
-              <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                <ArrowRightSquare />
-              </Col>
-            </Col>
-          </Col>
-          <Col>
-            <Col className="dashboard-element d-flex">
-              <Col>Gestisci Segnalazioni su Commenti</Col>
-              <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                <ArrowRightSquare />
-              </Col>
-            </Col>
-          </Col>
-          <Col>
-            <Col className="dashboard-element d-flex">
-              <Col>Gestisci Segnalazioni su recensioni</Col>
+              <Col>Gestisci Segnalazioni</Col>
               <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
                 <ArrowRightSquare />
               </Col>

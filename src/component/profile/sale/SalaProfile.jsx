@@ -3,7 +3,10 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
 import utenteGenerico from "../../../assets/img/user-generico.png";
 import { useEffect, useState } from "react";
+import { Flag, FlagFill } from "react-bootstrap-icons";
+import SegnalazioneModal from "../../segnalazioni/SegnalazioneModal";
 function SalaProfile() {
+  const [showSegnalazione, setShowSegnalazione] = useState(false);
   const utente = useSelector((state) => state.user.user);
   const [sala, setSala] = useState(null);
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -65,7 +68,7 @@ function SalaProfile() {
                 transform: "translate(-50%, -50%)",
               }}
             />
-            {sala.id === utente.id && (
+            {sala.id === utente.id ? (
               <Button
                 as={Link}
                 to={`/edit-profile/${sala.id}`}
@@ -74,6 +77,24 @@ function SalaProfile() {
               >
                 Modifica profilo
               </Button>
+            ) : (
+              <>
+                <Button
+                  as={Link}
+                  onClick={() => setShowSegnalazione(true)}
+                  variant="primary"
+                  className="d-block mx-auto mt-2 position-absolute top-0"
+                >
+                  <FlagFill />
+                </Button>
+                <SegnalazioneModal
+                  id={sala.id}
+                  onHide={() => setShowSegnalazione(false)}
+                  show={showSegnalazione}
+                  tipoSegnalazione="GESTORE_SP"
+                  titolo={sala.ragioneSociale}
+                />
+              </>
             )}
           </Container>
           <Container
