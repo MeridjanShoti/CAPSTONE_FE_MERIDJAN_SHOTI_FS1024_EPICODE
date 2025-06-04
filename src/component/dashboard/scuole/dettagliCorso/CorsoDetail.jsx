@@ -8,12 +8,15 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
 import AssegnaInsegnanteModal from "./AssegnaInsegnanteModal";
 import PagaCorsoModal from "./PagaCorsoModal";
+import SegnalazioneModal from "../../../segnalazioni/SegnalazioneModal";
+import { FlagFill } from "react-bootstrap-icons";
 function CorsoDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const user = useSelector((state) => state.user.user);
   const userType = user?.roles || user?.appUser?.roles;
   const [lezioni, setLezioni] = useState([]);
+  const [showSegnalazione, setShowSegnalazione] = useState(false);
   const [update, setUpdate] = useState(0);
   const [showAssegnaInsegnante, setShowAssegnaInsegnante] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -188,12 +191,33 @@ function CorsoDetail() {
 
           <Row xs={1} lg={2} className="g-3">
             <Col className="d-flex justify-content-center p-3">
-              <img
-                src={corso?.locandina}
-                alt={corso?.nomeCorso}
-                className="img-fluid rounded-3 border border-primary border-3"
-                style={{ maxWidth: "100%", height: "auto", objectFit: "cover", objectPosition: "center" }}
-              />
+              <div style={{ position: "relative" }}>
+                <img
+                  src={corso?.locandina}
+                  alt={corso?.nomeCorso}
+                  className="img-fluid rounded-3 border border-primary border-3"
+                  style={{ maxWidth: "100%", height: "auto", objectFit: "cover", objectPosition: "center" }}
+                />
+                {corso?.scuola?.id !== user.id && corso?.insegnante?.id !== user.id && (
+                  <div style={{ position: "absolute", top: "10px", right: "50px" }}>
+                    <Button
+                      as={Link}
+                      onClick={() => setShowSegnalazione(true)}
+                      variant="primary"
+                      className="d-block mx-auto mt-2 position-absolute top-0"
+                    >
+                      <FlagFill />
+                    </Button>
+                    <SegnalazioneModal
+                      id={corso.id}
+                      onHide={() => setShowSegnalazione(false)}
+                      show={showSegnalazione}
+                      tipoSegnalazione="CORSO"
+                      titolo={corso?.nomeCorso}
+                    />
+                  </div>
+                )}
+              </div>
             </Col>
             <Col className="p-3">
               <Row>

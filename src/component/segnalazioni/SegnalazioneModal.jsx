@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form } from "react-bootstrap";
+import { Alert, Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
@@ -7,6 +7,9 @@ function SegnalazioneModal(props) {
   const [motivo, setMotivo] = useState("");
   const [idSegnalazione, setIdSegnalazione] = useState(props.id);
   const [tipoSegnalazione, setTipoSegnalazione] = useState(props.tipoSegnalazione);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("success");
+  const [showAlert, setShowAlert] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch(`${import.meta.env.VITE_API_URL}/segnalazioni/${idSegnalazione}`, {
@@ -25,11 +28,22 @@ function SegnalazioneModal(props) {
         }
       })
       .then((data) => {
-        console.log(data);
-        props.onHide();
+        setAlertMessage("Segnalazione inviata con successo");
+        setAlertType("success");
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+          setMotivo("");
+          props.onHide();
+        }, 3000);
       })
       .catch((error) => {
-        console.error("Errore nella creazione della segnalazione:", error);
+        setAlertMessage(error.message);
+        setAlertType("danger");
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
       });
   };
 
@@ -46,6 +60,9 @@ function SegnalazioneModal(props) {
           </Form.Group>
           <Button type="submit">Invia</Button>
         </Form>
+        <Alert show={showAlert} variant={alertType} onClose={() => setShowAlert(false)} dismissible className="my-3">
+          {alertMessage}
+        </Alert>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>

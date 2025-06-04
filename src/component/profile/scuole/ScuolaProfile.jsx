@@ -4,9 +4,12 @@ import { Link, useNavigate, useParams } from "react-router";
 import utenteGenerico from "../../../assets/img/user-generico.png";
 import { useEffect, useState } from "react";
 import RecensioniScuola from "../../dashboard/scuole/recensioni/RecensioniScuola";
+import { FlagFill } from "react-bootstrap-icons";
+import SegnalazioneModal from "../../segnalazioni/SegnalazioneModal";
 function ScuolaProfile() {
   const utente = useSelector((state) => state.user.user);
   const [scuola, setScuola] = useState(null);
+  const [showSegnalazione, setShowSegnalazione] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
   const { id } = useParams();
@@ -66,7 +69,7 @@ function ScuolaProfile() {
                 transform: "translate(-50%, -50%)",
               }}
             />
-            {scuola.id === utente.id && (
+            {scuola.id === utente.id ? (
               <Button
                 as={Link}
                 to={`/edit-profile/${scuola.id}`}
@@ -75,6 +78,24 @@ function ScuolaProfile() {
               >
                 Modifica profilo
               </Button>
+            ) : (
+              <>
+                <Button
+                  as={Link}
+                  onClick={() => setShowSegnalazione(true)}
+                  variant="primary"
+                  className="d-block mx-auto mt-2 position-absolute top-0"
+                >
+                  <FlagFill />
+                </Button>
+                <SegnalazioneModal
+                  id={scuola.id}
+                  onHide={() => setShowSegnalazione(false)}
+                  show={showSegnalazione}
+                  tipoSegnalazione="SCUOLA"
+                  titolo={scuola.ragioneSociale}
+                />
+              </>
             )}
           </Container>
           <Container

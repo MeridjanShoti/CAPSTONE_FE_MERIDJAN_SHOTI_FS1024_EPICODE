@@ -11,10 +11,12 @@ import { Col, Row, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Flag, Pencil, Trash } from "react-bootstrap-icons";
 import UpdateCommentModal from "./UpdateCommentModal";
+import SegnalazioneModal from "../../../segnalazioni/SegnalazioneModal";
 
 function CommentoSingolo(props) {
   const { id } = useParams();
   const [comment, setComment] = useState(props?.commento || null);
+  const [showSegnalazione, setShowSegnalazione] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
   const autoreType = comment?.autore?.roles || comment?.autore?.appUser?.roles;
@@ -66,9 +68,7 @@ function CommentoSingolo(props) {
         alert("Errore nell'eliminazione del commento:", error);
       });
   };
-  const handleFlag = () => {
-    console.log("flag");
-  };
+
   return (
     <>
       {comment && autoreType ? (
@@ -138,7 +138,14 @@ function CommentoSingolo(props) {
               </>
             ) : (
               <div className="d-flex justify-content-center align-items-center bg-light rounded-3 border border-secondary border-2 p-1">
-                <Flag className="flag-icon" onClick={handleFlag} />
+                <Flag className="flag-icon" onClick={() => setShowSegnalazione(true)} />
+                <SegnalazioneModal
+                  id={comment.id}
+                  onHide={() => setShowSegnalazione(false)}
+                  show={showSegnalazione}
+                  tipoSegnalazione="COMMENTO"
+                  titolo={comment.testo.length > 20 ? comment.testo.slice(0, 20) + "..." : comment.testo}
+                />
               </div>
             )}
           </Col>

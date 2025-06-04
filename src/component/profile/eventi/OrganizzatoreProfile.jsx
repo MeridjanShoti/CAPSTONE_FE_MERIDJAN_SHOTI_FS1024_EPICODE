@@ -3,9 +3,12 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
 import utenteGenerico from "../../../assets/img/user-generico.png";
 import { useEffect, useState } from "react";
+import { FlagFill } from "react-bootstrap-icons";
+import SegnalazioneModal from "../../segnalazioni/SegnalazioneModal";
 function OrganizzatoreProfile() {
   const utente = useSelector((state) => state.user.user);
   const [organizzatore, setOrganizzatore] = useState(null);
+  const [showSegnalazione, setShowSegnalazione] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
   const { id } = useParams();
@@ -66,7 +69,7 @@ function OrganizzatoreProfile() {
                 transform: "translate(-50%, -50%)",
               }}
             />
-            {organizzatore.id === utente.id && (
+            {organizzatore.id === utente.id ? (
               <Button
                 as={Link}
                 to={`/edit-profile/${organizzatore.id}`}
@@ -75,6 +78,24 @@ function OrganizzatoreProfile() {
               >
                 Modifica profilo
               </Button>
+            ) : (
+              <>
+                <Button
+                  as={Link}
+                  onClick={() => setShowSegnalazione(true)}
+                  variant="primary"
+                  className="d-block mx-auto mt-2 position-absolute top-0"
+                >
+                  <FlagFill />
+                </Button>
+                <SegnalazioneModal
+                  id={organizzatore.id}
+                  onHide={() => setShowSegnalazione(false)}
+                  show={showSegnalazione}
+                  tipoSegnalazione="ORGANIZZATORE"
+                  titolo={organizzatore.ragioneSociale}
+                />
+              </>
             )}
           </Container>
           <Container
