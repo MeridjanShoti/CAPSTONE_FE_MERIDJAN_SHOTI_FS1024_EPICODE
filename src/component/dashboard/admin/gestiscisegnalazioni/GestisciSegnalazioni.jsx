@@ -122,6 +122,7 @@ function GestisciSegnalazioni() {
                       Da: {segnalazione.autore.username}
                       <br />
                       Motivazione: {segnalazione.descrizione}
+                      <br />
                       id Elemento: {segnalazione.idElemento}
                     </Card.Text>
                     <div>
@@ -216,8 +217,12 @@ function GestisciSegnalazioni() {
                               Authorization: `Bearer ${localStorage.getItem("token")}`,
                             },
                           })
-                            .then((res) => res.json())
-                            .then((data) => {
+                            .then((res) => {
+                              if (!res.ok) {
+                                throw new Error("Errore nella creazione della segnalazione");
+                              }
+                            })
+                            .then(() => {
                               setAlertMessage("segnalazione rifiutata con successo");
                               setAlertType("success");
                               setShowAlert(true);
@@ -248,9 +253,11 @@ function GestisciSegnalazioni() {
                               Authorization: `Bearer ${localStorage.getItem("token")}`,
                             },
                           })
-                            .then((res) => res.json())
                             .then((data) => {
-                              setAlertMessage(data.message);
+                              if (!data.ok) {
+                                throw new Error("Errore nella creazione della segnalazione");
+                              }
+                              setAlertMessage("segnalazione approvata con successo");
                               setAlertType("success");
                               setShowAlert(true);
                               setUpdate(update + 1);
