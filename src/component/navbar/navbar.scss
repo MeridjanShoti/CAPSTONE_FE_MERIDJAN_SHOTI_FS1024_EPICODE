@@ -1,0 +1,28 @@
+@import "../../app.scss";
+.navbar {
+  color: $warning;
+  .navbar-brand {
+    color: $warning;
+
+    &:hover {
+      color: $danger;
+    }
+  }
+  .nav-link {
+    color: $light;
+
+    &:hover {
+      color: $danger;
+    }
+
+    &.active {
+      -webkit-text-stroke: 1px $warning;
+      text-shadow: 0 0 5px $warning;
+      font-weight: bold;
+    }
+  }
+}
+
+.navbar .navbar-brand:visited {
+  color: $warning;
+}

@@ -1,0 +1,78 @@
+@import "bootstrap/scss/functions";
+$primary: #8b0000;
+$secondary: #3e3e3e;
+$success: #4b5320;
+$info: #6f42c1;
+$warning: #ffa500;
+$danger: #ff0000;
+$light: #e0dede;
+$dark: #0a0a0a;
+$white: #fdfdfd;
+$black: #000000;
+
+$custom-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": $danger,
+  "light": $light,
+  "dark": $dark,
+  "white": $white,
+  "black": $black,
+);
+@import "bootstrap/scss/variables";
+$theme-colors: map-merge($theme-colors, $custom-colors);
+@import "bootstrap/scss/bootstrap";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: $light;
+  color: $dark;
+}
+.metal-mania-regular {
+  font-family: "Metal Mania", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+.btn {
+  font-family: "Metal Mania", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+.dashboard-element {
+  background-color: transparentize($primary, 0.3);
+  color: $light;
+  padding: 20px;
+  border-radius: 5px;
+  border: $warning 1px solid;
+}
+ul li {
+  list-style: none;
+  position: relative;
+  padding-left: 24px;
+}
+ul li::before {
+  content: "";
+  background-image: url("/assets/img/teschio.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 0;
+  top: 0.4em;
+}
+.copertina {
+  h1,
+  h3,
+  p {
+    -webkit-text-stroke: 1px $primary;
+    text-shadow: 0 0 5px $warning;
+  }
+}
