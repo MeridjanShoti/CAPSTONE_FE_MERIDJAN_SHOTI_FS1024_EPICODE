@@ -30,9 +30,12 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
   padding: 0;
   box-sizing: border-box;
 }
+html,
 body {
   background-color: $light;
   color: $dark;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 .metal-mania-regular {
   font-family: "Metal Mania", system-ui;

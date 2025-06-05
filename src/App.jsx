@@ -47,52 +47,54 @@ function App() {
       <BrowserRouter>
         <div style={{ minHeight: "100vh" }} className="d-flex flex-column">
           <MyNavbar />
-          <Routes>
-            <Route path="/" element={<MyHome />} />
-            <Route path="/login" element={<MyLogin />} />
-            <Route path="/register" element={<MyRegister />} />
-            <Route path="/dashboard" element={<MyDashboard />} />
-            <Route path="/test" element={<DashboardGestore />} />
-            <Route path="*" element={<ChiEQuestaPersona />} />
-            <Route path="/registra-insegnante" element={<RegistraInsegnante />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/edit-profile/:id" element={<EditProfile />} />
-            <Route path="/register-admin" element={<AdminForm />} />
-            <Route path="/registra-evento" element={<FormEvento />} />
-            <Route path="/edit-evento/:id" element={<FormEvento />} />
-            <Route path="/gestisci-eventi" element={<GestisciEventi />} />
-            <Route path="/eventi/:id" element={<EventoDetail />} />
-            <Route path="/utenti/:id" element={<Profile />} />
-            <Route path="/i-tuoi-eventi" element={<TuoiEventi />} />
-            <Route path="/prenotazioni-eventi/:id" element={<PrenotazioneDetail />} />
-            <Route path="/cerca-eventi" element={<CercaEventi />} />
-            <Route path="/organizzatori/:id" element={<OrganizzatoreProfile />} />
-            <Route path="/gestori/:id" element={<SalaProfile />} />
-            <Route path="/scuole/:id" element={<ScuolaProfile />} />
-            <Route path="/profile/:tipoutente/:id" element={<Profile />} />
-            <Route path="/gestisci-sale" element={<GestisciSaleProva />} />
-            <Route path="/sale-prove/:id" element={<DettaglioSalaProve />} />
-            <Route path="/edit-sala/:id" element={<CreaSalaProve />} />
-            <Route path="/inserisci-sala" element={<CreaSalaProve />} />
-            <Route path="/cerca-sale" element={<CercaSaleProva />} />
-            <Route path="/prenota-sala/:id" element={<PrenotaSala />} />
-            <Route path="/tue-prenotazioni-sale" element={<TuePrenotazioniSala />} />
-            <Route path="/profile/:tipoutente" element={<Profile />} />
-            <Route path="/prenotazioni-sale/:id" element={<PrenotazioneSalaDetail />} />
-            <Route path="/modifica-prenotazione-sala/:idPrenotazione" element={<ModificaPrenotazioneSala />} />
-            <Route path="/prenotazioni-gestore" element={<PrenotazioniGestore />} />
-            <Route path="/gestisci-prenotazioni/:idSala" element={<PrenotazioniGestore />} />
-            <Route path="/registra-corso" element={<RegistrazioneCorso />} />
-            <Route path="/edit-corso/:id" element={<RegistrazioneCorso />} />
-            <Route path="/corso/:id" element={<CorsoDetail />} />
-            <Route path="/cerca-corsi" element={<CercaCorsi />} />
-            <Route path="/gestisci-corsi" element={<GestisciCorsi />} />
-            <Route path="/insegnanti/:id" element={<InsegnanteProfile />} />
-            <Route path="/gestisci-insegnanti" element={<GestisciInsegnanti />} />
-            <Route path="/tuoi-corsi" element={<TuoiCorsi />} />
-            <Route path="/gestisci-studenti" element={<GestisciStudenti />} />
-            <Route path="gestisci-segnalazioni" element={<GestisciSegnalazioni />} />
-          </Routes>
+          <div className="mb-2">
+            <Routes>
+              <Route path="/" element={<MyHome />} />
+              <Route path="/login" element={<MyLogin />} />
+              <Route path="/register" element={<MyRegister />} />
+              <Route path="/dashboard" element={<MyDashboard />} />
+              <Route path="/test" element={<DashboardGestore />} />
+              <Route path="*" element={<ChiEQuestaPersona />} />
+              <Route path="/registra-insegnante" element={<RegistraInsegnante />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/edit-profile/:id" element={<EditProfile />} />
+              <Route path="/register-admin" element={<AdminForm />} />
+              <Route path="/registra-evento" element={<FormEvento />} />
+              <Route path="/edit-evento/:id" element={<FormEvento />} />
+              <Route path="/gestisci-eventi" element={<GestisciEventi />} />
+              <Route path="/eventi/:id" element={<EventoDetail />} />
+              <Route path="/utenti/:id" element={<Profile />} />
+              <Route path="/i-tuoi-eventi" element={<TuoiEventi />} />
+              <Route path="/prenotazioni-eventi/:id" element={<PrenotazioneDetail />} />
+              <Route path="/cerca-eventi" element={<CercaEventi />} />
+              <Route path="/organizzatori/:id" element={<OrganizzatoreProfile />} />
+              <Route path="/gestori/:id" element={<SalaProfile />} />
+              <Route path="/scuole/:id" element={<ScuolaProfile />} />
+              <Route path="/profile/:tipoutente/:id" element={<Profile />} />
+              <Route path="/gestisci-sale" element={<GestisciSaleProva />} />
+              <Route path="/sale-prove/:id" element={<DettaglioSalaProve />} />
+              <Route path="/edit-sala/:id" element={<CreaSalaProve />} />
+              <Route path="/inserisci-sala" element={<CreaSalaProve />} />
+              <Route path="/cerca-sale" element={<CercaSaleProva />} />
+              <Route path="/prenota-sala/:id" element={<PrenotaSala />} />
+              <Route path="/tue-prenotazioni-sale" element={<TuePrenotazioniSala />} />
+              <Route path="/profile/:tipoutente" element={<Profile />} />
+              <Route path="/prenotazioni-sale/:id" element={<PrenotazioneSalaDetail />} />
+              <Route path="/modifica-prenotazione-sala/:idPrenotazione" element={<ModificaPrenotazioneSala />} />
+              <Route path="/prenotazioni-gestore" element={<PrenotazioniGestore />} />
+              <Route path="/gestisci-prenotazioni/:idSala" element={<PrenotazioniGestore />} />
+              <Route path="/registra-corso" element={<RegistrazioneCorso />} />
+              <Route path="/edit-corso/:id" element={<RegistrazioneCorso />} />
+              <Route path="/corso/:id" element={<CorsoDetail />} />
+              <Route path="/cerca-corsi" element={<CercaCorsi />} />
+              <Route path="/gestisci-corsi" element={<GestisciCorsi />} />
+              <Route path="/insegnanti/:id" element={<InsegnanteProfile />} />
+              <Route path="/gestisci-insegnanti" element={<GestisciInsegnanti />} />
+              <Route path="/tuoi-corsi" element={<TuoiCorsi />} />
+              <Route path="/gestisci-studenti" element={<GestisciStudenti />} />
+              <Route path="gestisci-segnalazioni" element={<GestisciSegnalazioni />} />
+            </Routes>
+          </div>
           <MyFooter />
         </div>
       </BrowserRouter>
