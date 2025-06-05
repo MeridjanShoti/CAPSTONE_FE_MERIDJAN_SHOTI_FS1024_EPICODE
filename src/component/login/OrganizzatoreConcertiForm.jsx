@@ -211,7 +211,7 @@ function OrganizzatoreConcertiForm() {
           <Form.Label>Telefono</Form.Label>
           <Form.Control
             name="numeroTelefono"
-            type="tel"
+            type="number"
             value={formData.numeroTelefono || ""}
             onChange={handleChange}
           />
@@ -286,7 +286,9 @@ function OrganizzatoreConcertiForm() {
           </Form.Group>
         )}
 
-        <Button type="submit">{isEditing ? "Salva modifiche" : "Registrati"}</Button>
+        <Button type="submit" className="my-3">
+          {isEditing ? "Salva modifiche" : "Registrati"}
+        </Button>
       </Form>
     </div>
   );

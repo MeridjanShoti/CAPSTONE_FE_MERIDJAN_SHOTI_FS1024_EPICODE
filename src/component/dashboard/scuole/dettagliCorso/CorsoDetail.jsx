@@ -193,7 +193,7 @@ function CorsoDetail() {
             <Col className="d-flex justify-content-center p-3">
               <div style={{ position: "relative" }}>
                 <img
-                  src={corso?.locandina}
+                  src={corso?.locandina || "assets/img/copertina-default.png"}
                   alt={corso?.nomeCorso}
                   className="img-fluid rounded-3 border border-primary border-3"
                   style={{ maxWidth: "100%", height: "auto", objectFit: "cover", objectPosition: "center" }}

@@ -176,7 +176,7 @@ function UserForm() {
                 <Form.Check type="checkbox" label="Accetto i termini e le condizioni" required />
               </Form.Group>
             )}
-            <Button type="submit" className="d-block mx-auto">
+            <Button type="submit" className="d-block mx-auto my-3">
               {id ? "Salva modifiche" : "Registrati"}
             </Button>
           </Form>

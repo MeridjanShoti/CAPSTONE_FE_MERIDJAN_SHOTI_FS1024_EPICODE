@@ -251,7 +251,7 @@ function RegistraInsegnante() {
           </Form.Group>
         )}
 
-        <Button type="submit" className="d-block mx-auto">
+        <Button type="submit" className="d-block mx-auto my-3">
           {id ? "Salva modifiche" : "Registrati"}
         </Button>
       </Form>

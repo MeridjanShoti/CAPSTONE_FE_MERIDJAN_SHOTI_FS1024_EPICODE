@@ -165,7 +165,7 @@ function EventoDetail() {
                       <Col key={index}>
                         <a href={foto}>
                           <img
-                            src={foto}
+                            src={foto || evento?.locandina}
                             alt={evento?.nomeEvento}
                             className="img-fluid rounded-3 border border-primary border-3"
                             style={{ maxWidth: "100%", height: "auto", display: "block" }}
