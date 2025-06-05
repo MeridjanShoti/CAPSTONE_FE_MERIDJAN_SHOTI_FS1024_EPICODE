@@ -10,7 +10,7 @@ import utenteSconosciuto from "../../../../assets/img/user-generico.png";
 import { Col, Row, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Flag, Pencil, Star, StarFill, Trash } from "react-bootstrap-icons";
-import UpdateRecensioneModal from "./updateRecensioneModal";
+import UpdateRecensioneModal from "./UpdateRecensioneModal";
 import SegnalazioneModal from "../../../segnalazioni/SegnalazioneModal";
 function RecensioneSingola(props) {
   const { id } = useParams();
