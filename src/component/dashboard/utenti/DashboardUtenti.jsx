@@ -18,17 +18,17 @@ function DashboardUtenti() {
             </Col>
             <Col>
               <Col className="dashboard-element d-flex">
-                <Col>I tuoi eventi</Col>
+                <Col>Cerca Corsi</Col>
                 <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                  <ArrowRightSquare onClick={() => navigate("/i-tuoi-eventi")} />
+                  <ArrowRightSquare onClick={() => navigate("/cerca-corsi")} />
                 </Col>
               </Col>
             </Col>
             <Col>
               <Col className="dashboard-element d-flex">
-                <Col>Le tue prenotazioni in sala prove</Col>
+                <Col>I tuoi eventi</Col>
                 <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                  <ArrowRightSquare onClick={() => navigate("/tue-prenotazioni-sale")} />
+                  <ArrowRightSquare onClick={() => navigate("/i-tuoi-eventi")} />
                 </Col>
               </Col>
             </Col>
@@ -42,17 +42,17 @@ function DashboardUtenti() {
             </Col>
             <Col>
               <Col className="dashboard-element d-flex">
-                <Col>Cerca Sale Prove</Col>
+                <Col>Le tue prenotazioni in sala prove</Col>
                 <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                  <ArrowRightSquare onClick={() => navigate("/cerca-sale")} />
+                  <ArrowRightSquare onClick={() => navigate("/tue-prenotazioni-sale")} />
                 </Col>
               </Col>
             </Col>
             <Col>
               <Col className="dashboard-element d-flex">
-                <Col>Cerca Corsi</Col>
+                <Col>Cerca Sale Prove</Col>
                 <Col xs={2} sm={1} className="bg-primary text-center p-2 m-0">
-                  <ArrowRightSquare onClick={() => navigate("/cerca-corsi")} />
+                  <ArrowRightSquare onClick={() => navigate("/cerca-sale")} />
                 </Col>
               </Col>
             </Col>
