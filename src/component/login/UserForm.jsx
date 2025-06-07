@@ -79,8 +79,8 @@ function UserForm() {
         password: data.password?.trim() || null,
         dataNascita: data.dataNascita,
         bio: data.bio,
-        avatar: avatarUrl || "",
-        copertina: copertinaUrl || "",
+        avatar: avatarUrl || null,
+        copertina: copertinaUrl || null,
       };
 
       const method = id ? "PUT" : "POST";
