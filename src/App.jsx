@@ -40,6 +40,7 @@ import TuoiCorsi from "./component/dashboard/utenti/corsi/TuoiCorsi";
 import GestisciStudenti from "./component/dashboard/insegnanti/gestiscistudenti/GestisciStudenti";
 import GestisciSegnalazioni from "./component/dashboard/admin/gestiscisegnalazioni/GestisciSegnalazioni";
 import MyFooter from "./component/footer/MyFooter";
+import Contacts from "./contacts/Contacts";
 
 function App() {
   return (
@@ -92,7 +93,8 @@ function App() {
               <Route path="/gestisci-insegnanti" element={<GestisciInsegnanti />} />
               <Route path="/tuoi-corsi" element={<TuoiCorsi />} />
               <Route path="/gestisci-studenti" element={<GestisciStudenti />} />
-              <Route path="gestisci-segnalazioni" element={<GestisciSegnalazioni />} />
+              <Route path="/gestisci-segnalazioni" element={<GestisciSegnalazioni />} />
+              <Route path="/contacts" element={<Contacts />} />
             </Routes>
           </div>
           <MyFooter />
